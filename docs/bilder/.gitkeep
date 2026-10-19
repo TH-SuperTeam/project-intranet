@@ -1,0 +1,4 @@
+<!-- .gitkeep är en tom fil som används för att Git ska kunna hålla reda på mappar som annars är tomma.
+
+Varför behövs den?
+Git spårar filer, inte mappar. Om du skapar en tom mapp kommer Git därför inte att inkludera den när du gör en commit. -->
