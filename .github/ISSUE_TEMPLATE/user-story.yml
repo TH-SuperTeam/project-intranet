@@ -1,37 +1,36 @@
-
 name: User Story
 description: Skapa en ny User Story till produktbackloggen
-title: ""
+title: "Title"
 labels: ["user story"]
 body:
-  - type: textarea
-    id: user-story
-    attributes:
-      label: User Story
-      description: Beskriv funktionen ur användarens perspektiv.
-      placeholder: "Som [roll] vill jag [funktion] så att [nytta]."
-    validations:
-      required: true
+    - type: textarea
+      id: user-story
+      attributes:
+          label: User Story
+          description: Beskriv funktionen ur användarens perspektiv.
+          placeholder: "Som [roll] vill jag [funktion] så att [nytta]."
+      validations:
+          required: true
 
-  - type: textarea
-    id: acceptance-criteria
-    attributes:
-      label: Acceptanskriterier
-      description: Vad måste fungera för att storyn ska vara klar?
-      placeholder: |
-        - [ ] Användaren ska kunna...
-        - [ ] Systemet ska...
-    validations:
-      required: true
+    - type: textarea
+      id: acceptance-criteria
+      attributes:
+          label: Acceptanskriterier
+          description: Vad måste fungera för att storyn ska vara klar?
+          placeholder: |
+              - [ ] Användaren ska kunna...
+              - [ ] Systemet ska...
+      validations:
+          required: true
 
-  - type: textarea
-    id: subtasks
-    attributes:
-      label: Tekniska deluppgifter
-      description: Uppgifter som behövs för att implementera funktionen.
-      placeholder: |
-        - [ ] Backend:
-        - [ ] Frontend:
-        - [ ] Testning:
-    validations:
-      required: false
+    - type: textarea
+      id: subtasks
+      attributes:
+          label: Tekniska deluppgifter
+          description: Uppgifter som behövs för att implementera funktionen.
+          placeholder: |
+              - [ ] Backend:
+              - [ ] Frontend:
+              - [ ] Testning:
+      validations:
+          required: false
