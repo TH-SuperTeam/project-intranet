@@ -21,3 +21,6 @@ out/
 *.iml
 .DS_Store
 Thumbs.db
+
+# Local database configuration
+application-local.properties
