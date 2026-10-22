@@ -1,60 +1,105 @@
+
 # Databasschema
 
-<!--
-  INSTRUKTION
-  Utgå från era Must-stories: vilka tabeller och fält behövs för att bygga dem?
-  Ni kan antingen
-    a) rita schemat i ett verktyg (dbdiagram.io, drawSQL, Excalidraw) och lägga in bilden här, eller
-    b) skriva det som ett Mermaid-diagram direkt i den här filen. GitHub ritar upp det automatiskt.
-  Uppdatera schemat när det ändras. Större ändringar skrivs också in i beslutsloggen.
--->
+Databasen `school_intranet` används för att hantera användare och nyheter i skolans intranät.
 
 ## Diagram
 
-<!-- Alternativ a: lägg bilden i docs/bilder/ och länka den så här: -->
-<!-- ![Databasschema](bilder/databasschema.png) -->
-
-<!-- Alternativ b: Mermaid. Exemplet nedan är Sysslo. Ersätt det med ert eget schema. -->
-
 ```mermaid
 erDiagram
-    HOUSEHOLD ||--o{ MEMBER : har
-    HOUSEHOLD ||--o{ CHORE : har
-    MEMBER ||--o{ CHORE : "är tilldelad"
+    USERS ||--o{ NEWS : publicerar
 
-    HOUSEHOLD {
-        int id PK
-        string name
+    USERS {
+        bigint id PK
+        string first_name
+        string last_name
+        string email UK
+        string password_hash
+        string user_type
+        string access_role
+        string bio
+        string profile_image_url
         datetime created_at
+        datetime updated_at
     }
-    MEMBER {
-        int id PK
-        int household_id FK
-        string name
-        string email
-    }
-    CHORE {
-        int id PK
-        int household_id FK
-        int assigned_to FK
+
+    NEWS {
+        bigint id PK
         string title
-        date due_date
-        boolean done
+        string content
+        bigint user_id FK
+        boolean is_published
+        string target_audience
+        datetime created_at
+        datetime updated_at
     }
 ```
 
 ## Tabeller
 
-<!-- Kort förklaring av varje tabell: vad den innehåller och varför den finns. -->
-
-> **Exempel:**
->
-> | Tabell      | Innehåll                                             |
-> | ----------- | ---------------------------------------------------- |
-> | `household` | Ett hushåll, t.ex. "Korridor 4B".                    |
-> | `member`    | En person i ett hushåll.                             |
-> | `chore`     | En syssla. Kan vara tilldelad en medlem eller ingen. |
-
 | Tabell | Innehåll |
 | ------ | -------- |
-|        |          |
+| `users` | Lagrar användarnas personuppgifter, inloggningsuppgifter, användartyp och behörighet. |
+| `news` | Lagrar nyheter på intranätet, inklusive författare, publiceringsstatus och målgrupp. |
+
+## Relationer
+
+| Relation | Beskrivning |
+| -------- | ----------- |
+| `users` → `news` | En användare kan publicera flera nyheter. |
+| `news.user_id` → `users.id` | Varje nyhet tillhör en användare. |
+
+## Användartyper och behörigheter
+
+Tabellen `users` innehåller två separata fält för användartyp och behörighet.
+
+### user_type
+
+| Värde | Beskrivning |
+| ----- | ----------- |
+| `STUDENT` | Student på skolan. |
+| `TEACHER` | Lärare eller personal på skolan. |
+
+### access_role
+
+| Värde | Beskrivning |
+| ----- | ----------- |
+| `USER` | Vanlig användare. |
+| `ADMIN` | Administratör med utökade behörigheter. |
+
+## Nyheternas målgrupp
+
+Fältet `target_audience` i tabellen `news` styr vilka användartyper en nyhet riktar sig till.
+
+| Värde | Beskrivning |
+| ----- | ----------- |
+| `ALL` | Nyheten riktar sig till alla användare. |
+| `STUDENT` | Nyheten riktar sig till studenter. |
+| `TEACHER` | Nyheten riktar sig till lärare och personal. |
+
+Fältet `is_published` avgör om en nyhet är publicerad eller ett utkast.
+
+## Databasregler
+
+- `users.email` måste vara unikt.
+- `users.user_type` har standardvärdet `STUDENT`.
+- `users.access_role` har standardvärdet `USER`.
+- `news.is_published` har standardvärdet `FALSE`.
+- `news.target_audience` har standardvärdet `ALL`.
+- Varje nyhet måste ha en giltig användare som författare.
+- En användare kan inte raderas om användaren har kopplade nyheter (`ON DELETE RESTRICT`).
+- Lösenord lagras som hashvärden, inte i klartext.
+
+## Index
+
+| Index | Tabell | Kolumner | Syfte |
+| ----- | ------ | -------- | ----- |
+| `idx_news_user_id` | `news` | `user_id` | Effektiv sökning av nyheter per användare. |
+| `idx_news_published_created` | `news` | `is_published`, `created_at` | Effektiv hämtning och sortering av publicerade nyheter efter datum. |
+
+## Versioner
+
+| Version | Datum | Ändring | Varför |
+| ------- | ----- | ------- | ------ |
+| 1 | 2026-10-22 | Dokumenterade databasschemat med tabellerna `users` och `news`. | Stöd för användarhantering och nyhetspublicering. |
+| 2 | 2026-10-22 | Lade till `target_audience` i tabellen `news`. | Möjliggöra målgruppsanpassade nyheter för studenter och lärare. |
