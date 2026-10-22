@@ -8,7 +8,7 @@
 
 <!-- En eller två meningar: vad gör applikationen och för vem? -->
 
-> **Exempel (Sysslo):** En webbapp där studenter som delar lägenhet fördelar och bockar av hushållssysslor.
+> **Project Intranet:** Ett webbaserat intranät för studenter och personal på Teknikhögskolan, där användare kan hantera profiler, läsa nyheter och ta del av relevant information via en gemensam dashboard. Projektet utvecklas med Java/Spring Boot och React/TypeScript enligt Scrum.
 
 ## Teamet
 
@@ -73,7 +73,64 @@ Backend körs normalt på `http://localhost:8080`.
 
 ### 4. Starta frontend
 
-*Instruktioner för frontend läggs till när den är uppsatt.*
+Frontend är byggd med React, TypeScript och Vite.
+
+#### Installera beroenden
+
+Öppna en ny terminal i projektets rotmapp och gå till frontend-mappen:
+
+```bash
+cd frontend
+```
+
+Installera alla beroenden:
+
+```bash
+npm install
+```
+
+Detta behöver normalt bara göras första gången, eller när beroendena har ändrats.
+
+#### Starta utvecklingsservern
+
+Kör följande kommando:
+
+```bash
+npm run dev
+```
+
+Terminalen visar en lokal URL, vanligtvis:
+
+```text
+http://localhost:5173
+```
+
+Öppna URL:en i webbläsaren för att se applikationen. Vite uppdaterar normalt sidan automatiskt när du sparar ändringar i koden.
+
+#### Kontrollera koden
+
+För att kontrollera att frontend-koden bygger utan fel:
+
+```bash
+npm run build
+```
+
+För att kontrollera kodens kvalitet med ESLint:
+
+```bash
+npm run lint
+```
+
+#### Starta både frontend och backend
+
+Frontend och backend körs i separata terminaler.
+
+- **Terminal 1:** Starta backend enligt instruktionerna ovan. Den körs normalt på `http://localhost:8080`.
+- **Terminal 2:** Starta frontend enligt instruktionerna ovan. Den körs normalt på `http://localhost:5173`.
+
+När båda är igång kan frontend och backend utvecklas och testas parallellt.
+
+**Tips:** Om `npm` inte känns igen i terminalen behöver Node.js installeras. Om du får problem med beroenden, kontrollera att du står i `frontend`-mappen och att du använder en Node.js-version som stöds av projektets Vite-version.
 
 ## Dokumentation
 
