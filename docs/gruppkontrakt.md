@@ -1,121 +1,77 @@
 # Gruppkontrakt
 
-<!--
-  INSTRUKTION
-  Fyll i varje avsnitt tillsammans. Ändra, ta bort eller lägg till det som passar er grupp.
-  Var konkreta: "vi svarar inom 4 timmar under arbetstid" går att följa upp, "vi kommunicerar bra" gör det inte.
-  Ta bort exemplen när ni skrivit era egna punkter.
-  Kontraktet får ändras under kursen. Ändringar tas upp på retron och alla måste vara överens.
--->
-
-**Grupp:**
-**Datum:**
+**Grupp:** SuperTeam  
+**Datum:** 2026-10-13
 
 ## Tillgänglighet
 
-<!-- Vilka tider jobbar ni? När är det okej att inte svara? Hur snabbt förväntas man svara? -->
-
-> **Exempel:**
->
-> - Vi jobbar vardagar kl. 9–16.
-> - Kvällar och helger är frivilligt. Ingen förväntas svara då.
-> - Under arbetstid svarar vi på meddelanden inom 2 timmar.
-
--
--
+- Vi jobbar vardagar kl. 9–16.
+- Daily standup kl. 9.00 tis–fre om inget annat kommuniceras.
+- Scrum Master loggar the daily standups.
+- Kvällar och helger är frivilligt. Ingen förväntas svara då.
+- Under arbetstid svarar vi på meddelanden inom 2 timmar.
 
 ## Kommunikation
 
-<!-- Vilken kanal används till vad? Hur ger ni feedback till varandra? -->
-
-> **Exempel:**
->
-> - Discord för snabba frågor och daglig kontakt.
-> - Frågor om specifik kod tas i kommentarer på pull requesten.
-> - Vi ger feedback på koden, inte på personen.
-
--
--
+- Slack för snabba frågor och daglig kontakt.
+- Frågor om specifik kod tas i `#code-comments`.
+- Vi ger feedback på koden, inte på personen.
 
 ## Närvaro och frånvaro
 
-<!-- Hur och när meddelar man frånvaro? Vad händer om någon missar en ceremoni? -->
-
-> **Exempel:**
->
-> - Frånvaro meddelas i Discord senast kl. 9 samma dag.
-> - Den som missar daily standup skriver sin rad i loggen själv samma dag.
-
--
--
+- Frånvaro meddelas i `#meeting-channel`.
+- Den som missar daily standup skriver sin rad i loggen själv samma dag.
 
 ## Arbetsfördelning
 
-<!-- Hur fördelas uppgifter? Vad gör man om man blir klar eller kör fast? -->
-
-> **Exempel:**
->
-> - Man tar själv en story från "Att göra" och sätter sig som ansvarig.
-> - Den som kört fast i mer än en timme ber om hjälp.
-> - Den som blir klar hjälper till med granskning innan den tar en ny story.
-
--
--
+- Vi kommer överens om vilka "Att göra" vi ansvarar för.
+- Den som kört fast i mer än en timme ber om hjälp.
+- Den som blir klar hjälper till med granskning innan den tar en ny story.
 
 ## Beslut
 
-<!-- Hur fattar ni beslut? Vad gör ni om ni inte kommer överens? -->
-
-> **Exempel:**
->
-> - Mindre beslut tar den som äger frågan.
-> - Större beslut (stack, arkitektur, större ändringar i MVP) tas gemensamt och skrivs in i beslutsloggen.
-> - Om vi inte kommer överens röstar vi. Vid lika har Product Owner sista ordet om vad som byggs.
-
--
--
+- Mindre beslut tar den som äger frågan.
+- Större beslut (stack, arkitektur, större ändringar i MVP) tas gemensamt och skrivs in i beslutsloggen.
+- Om vi inte kommer överens röstar vi. Vid lika har Product Owner sista ordet om vad som byggs.
 
 ## Kod och kvalitet
 
-<!-- Fylls på efter pass 3. Hur snabbt granskas PR:er? Får man merga sin egen kod? -->
+- Pull requests granskas inom 24 timmar på vardagar.
+- Man mergar sin egen pull request efter godkänd review.
+- Commits sker löpande under kodning. När något fungerar committar man.
+- Vi namnger branches på engelska och med prefix:
 
-> **Exempel:**
->
-> - Pull requests granskas inom 24 timmar.
-> - Ingen mergar sin egen pull request.
-
--
--
+| Prefix | Beskrivning |
+|--------|-------------|
+| `feature/` | Ny funktionalitet |
+| `fix/` | Buggfixar |
+| `hotfix/` | Akuta buggar, ofta i produktion |
+| `chore/` | Underhåll, dependencies, konfiguration |
+| `refactor/` | Förbättra kod utan att ändra funktionalitet |
+| `test/` | Skriva eller förbättra tester |
+| `docs/` | Dokumentation |
+| `ci/` | CI/CD, exempelvis GitHub Actions |
 
 ## Om någon inte följer kontraktet
 
-<!-- Bestäm en trappa: vad händer, i vilken ordning? -->
-
-> **Exempel:**
->
-> 1. Vi tar upp det direkt med personen.
-> 2. Om det fortsätter tar vi upp det på retron.
-> 3. Om det fortfarande inte löser sig tar vi upp det med läraren.
-
-1.
-2.
-3.
+1. Vi tar upp det direkt med personen.
+2. Om det fortsätter tar vi upp det på retron.
+3. Om det fortfarande inte löser sig tar vi upp det med läraren.
 
 ## Underskrifter
 
-Vi har läst kontraktet och är överens om det.
+**Vi har läst kontraktet och är överens om det.**
 
 | Namn | Datum |
-| ---- | ----- |
-|      |       |
-|      |       |
-|      |       |
-|      |       |
+|------|-------|
+| Sofie Törnqvist | 2026-10-13 |
+| Josefine Asplund | 2026-10-13 |
+| Mette Karlsson | 2026-10-13 |
+| Inna Kuljanac | 2026-10-13 |
+| Caroline Enggren | 2026-10-13 |
 
 ## Ändringar
 
-<!-- Fyll i när kontraktet ändras. -->
-
-| Datum | Ändring | Varför |
-| ----- | ------- | ------ |
-|       |         |        |
+| Datum | Ändring | Anledning |
+|-------|---------|-----------|
+| 2026-10-22 | Ändrade merge-punkten under Kod och kvalitet och la till daily standup. | Förberedelser inför första sprinten. |
