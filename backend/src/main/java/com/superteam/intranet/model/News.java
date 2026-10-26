@@ -45,7 +45,7 @@ public class News {
     private LocalDateTime updatedAt;
 
     // JPA behöver en konstruktor som är åtkomlig för ORM-ramverket.
-    protected News() {
+   public News() {
     }
 
     // Körs automatiskt av JPA innan en ny post sparas.
