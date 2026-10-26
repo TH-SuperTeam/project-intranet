@@ -68,6 +68,15 @@ const CreateNews = () => {
             <h1 className={styles.title}>Skapa en nyhet</h1>
 
             <form className={styles.form} onSubmit={handleSubmit} noValidate>
+import { TargetAudience } from "../../types/TargetAudience";
+import styles from "./CreateNews.module.css";
+
+const CreateNews = () => {
+    return (
+        <div className={styles.container}>
+            <h1 className={styles.title}>Skapa en nyhet</h1>
+
+            <form className={styles.form}>
                 <div className={styles.formGroup}>
                     <label className={styles.label} htmlFor="title">
                         Titel:
@@ -136,6 +145,8 @@ const CreateNews = () => {
                     disabled={mutation.isPending}
                 >
                     {mutation.isPending ? "Publicerar..." : "Publicera"}
+                <button className={styles.submitButton} type="submit">
+                    Publicera
                 </button>
             </form>
         </div>
