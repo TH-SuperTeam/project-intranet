@@ -88,6 +88,31 @@
     outline-offset: 3px;
 }
 
+.backLink {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--color-text-primary);
+    text-decoration: none;
+    font-size: 0.9rem;
+    font-weight: 500;
+    margin-bottom: 1.5rem;
+    transition: color 0.2s ease;
+}
+
+.backLink:hover {
+    color: var(--color-primary-hover);
+}
+
+.backLink span {
+    font-size: 1.25rem;
+    transition: transform 0.2s ease;
+}
+
+.backLink:hover span {
+    transform: translateX(-4px);
+}
+
 @media (max-width: 600px) {
     .container {
         padding: 1rem;
