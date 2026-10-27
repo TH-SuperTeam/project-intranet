@@ -1,5 +1,6 @@
 import type { CreateNewsRequest } from "../types/CreateNewsRequest";
 import type { News } from "../types/News";
+import type { TargetAudience } from "../types/TargetAudience";
 
 export const publishNews = async (news: CreateNewsRequest) => {
     const res = await fetch("http://localhost:8080/api/news", {
@@ -17,12 +18,13 @@ export const publishNews = async (news: CreateNewsRequest) => {
     return res.json();
 };
 
-export const getNews = async (): Promise<News[]> => {
-    const res = await fetch("http://localhost:8080/api/news");
+export const getNews = async (audience: TargetAudience): Promise<News[]> => {
+    const params = new URLSearchParams({ targetAudience: audience });
+    const res = await fetch(`http://localhost:8080/api/news?${params}`);
 
     if (!res.ok) {
-        throw new Error("Kunde inte hämta nyheter.");
+        throw new Error(`Kunde inte hämta nyheter (${res.status}).`);
     }
-    const news: News[] = await res.json();
-    return news;
+
+    return res.json();
 };

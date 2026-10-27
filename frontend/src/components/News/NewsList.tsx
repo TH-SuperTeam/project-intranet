@@ -2,16 +2,21 @@ import NewsCard from "./NewsCard";
 import type { News } from "../../types/News";
 import { getNews } from "../../services/newsApi";
 import { useQuery } from "@tanstack/react-query";
+import type { TargetAudience } from "../../types/TargetAudience";
 
-const NewsList = () => {
+type NewsListProps = {
+    audience: TargetAudience;
+};
+
+const NewsList = ({ audience }: NewsListProps) => {
     const {
         data: news,
         isPending,
         isError,
         error,
     } = useQuery({
-        queryKey: ["news"],
-        queryFn: getNews,
+        queryKey: ["news", audience],
+        queryFn: () => getNews(audience),
     });
 
     if (isPending) {
@@ -23,13 +28,11 @@ const NewsList = () => {
     }
 
     return (
-        <>
-            <ul>
-                {news.map((news: News) => (
-                    <NewsCard key={news.id} news={news}></NewsCard>
-                ))}
-            </ul>
-        </>
+        <ul>
+            {news.map((item: News) => (
+                <NewsCard key={item.id} news={item} />
+            ))}
+        </ul>
     );
 };
 
