@@ -2,6 +2,7 @@ package com.superteam.intranet.controller;
 
 import com.superteam.intranet.dto.CreateNewsRequest;
 import com.superteam.intranet.dto.NewsResponse;
+import com.superteam.intranet.dto.UpdateNewsRequest;
 import com.superteam.intranet.service.NewsService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
@@ -20,16 +21,7 @@ public class NewsController {
         this.newsService = newsService;
     }
 
-    @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
-    public NewsResponse publishNews(
-            @Valid @RequestBody CreateNewsRequest request) {
-
-        Long userId = 1L; // Tillfälligt för lokal testning
-
-        return newsService.publishNews(request, userId);
-    }
-
+    //Endpoint för att hämta alla nyheter
     @GetMapping
     public List<NewsResponse> getPublishedNews(
             @RequestParam TargetAudience targetAudience) {
@@ -37,6 +29,7 @@ public class NewsController {
         return newsService.getPublishedNews(targetAudience);
     }
 
+    //Endpoint för att hämta en nyhet
     @GetMapping("/{id}")
     public NewsResponse getPublishedNewsById(
             @PathVariable Long id,
@@ -47,4 +40,26 @@ public class NewsController {
                 targetAudience
         );
     }
+
+    //Endpoint för att publicera en nyhet
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    public NewsResponse publishNews(
+            @Valid @RequestBody CreateNewsRequest request) {
+
+        Long userId = 1L; // Tillfälligt för lokal testning
+
+        return newsService.publishNews(request, userId);
+    }
+
+
+    //Endpoint för att ändra en nyhet
+    @PutMapping("/{id}")
+    public NewsResponse updatePublishedNews(
+            @PathVariable Long id,
+            @Valid @RequestBody UpdateNewsRequest request) {
+
+        return newsService.updatePublishedNews(id, request);
+    }
+
 }

@@ -2,6 +2,7 @@ package com.superteam.intranet.service;
 
 import com.superteam.intranet.dto.CreateNewsRequest;
 import com.superteam.intranet.dto.NewsResponse;
+import com.superteam.intranet.dto.UpdateNewsRequest;
 import com.superteam.intranet.mapper.NewsMapper;
 import com.superteam.intranet.model.News;
 import com.superteam.intranet.repository.NewsRepository;
@@ -108,4 +109,41 @@ public class NewsService {
 
         return newsMapper.toResponse(news);
     }
+
+
+    @Transactional
+    public NewsResponse updatePublishedNews(
+            Long id,
+            UpdateNewsRequest request) {
+
+        // Hämta nyheten från databasen.
+        News news = newsRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND,
+                        "News not found."
+                ));
+
+        // Redigering gäller endast publicerade nyheter.
+        if (!news.isPublished()) {
+            throw new ResponseStatusException(
+                    HttpStatus.BAD_REQUEST,
+                    "Only published news can be edited."
+            );
+        }
+
+        // Uppdatera endast fälten som får ändras.
+        news.setTitle(request.title().trim());
+        news.setContent(request.content().trim());
+        news.setTargetAudience(request.targetAudience());
+
+        // Spara ändringarna i databasen.
+        News updatedNews = newsRepository.save(news);
+
+        return newsMapper.toResponse(updatedNews);
+    }
+
+
+
+
+
 }
