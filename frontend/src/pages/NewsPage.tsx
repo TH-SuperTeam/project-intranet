@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import styles from "../components/News/News.module.css";
+import NewsList from "../components/News/NewsList";
 
 const NewsPage = () => {
     return (
@@ -9,6 +10,8 @@ const NewsPage = () => {
             <Link to="/news/create" className={styles.createButton}>
                 Skapa nyhet
             </Link>
+
+            <NewsList />
         </div>
     );
 };
