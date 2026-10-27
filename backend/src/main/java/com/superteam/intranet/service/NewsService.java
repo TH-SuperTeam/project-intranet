@@ -5,9 +5,12 @@ import com.superteam.intranet.dto.NewsResponse;
 import com.superteam.intranet.mapper.NewsMapper;
 import com.superteam.intranet.model.News;
 import com.superteam.intranet.repository.NewsRepository;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import com.superteam.intranet.model.TargetAudience;
+import org.springframework.web.server.ResponseStatusException;
+
 import java.util.List;
 
 @Service
@@ -68,5 +71,41 @@ public class NewsService {
                 .stream()
                 .map(newsMapper::toResponse)
                 .toList();
+    }
+//Vad gör metoden?
+//1. Den kontrollerar att målgruppen är STUDENT eller TEACHER.
+//2. Den tillåter nyheter riktade till ALL samt den aktuella målgruppen.
+//3. Den söker efter rätt ID och filtrerar samtidigt bort opublicerade nyheter.
+//4. Om ingen tillåten nyhet hittas returneras ett 404 Not Found.
+//5. Om nyheten hittas omvandlas den till NewsResponse med hjälp av er befintliga mapper.
+    @Transactional(readOnly = true)
+    public NewsResponse getPublishedNewsById(
+            Long id,
+            TargetAudience audience) {
+
+        if (audience != TargetAudience.STUDENT
+                && audience != TargetAudience.TEACHER) {
+            throw new ResponseStatusException(
+                    HttpStatus.BAD_REQUEST,
+                    "Invalid target audience."
+            );
+        }
+
+        List<TargetAudience> audiences = List.of(
+                TargetAudience.ALL,
+                audience
+        );
+
+        News news = newsRepository
+                .findByIdAndIsPublishedTrueAndTargetAudienceIn(
+                        id,
+                        audiences
+                )
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND,
+                        "News not found."
+                ));
+
+        return newsMapper.toResponse(news);
     }
 }
