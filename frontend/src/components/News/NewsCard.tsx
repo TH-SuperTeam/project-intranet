@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import type { News } from "../../types/News";
 import styles from "./News.module.css";
 
@@ -23,6 +24,9 @@ const NewsCard = ({ news }: NewsCardProps) => {
             </div>
 
             <p className={styles.content}>{news.content}</p>
+            <Link to={`/news/${news.id}`} className={styles.readMore}>
+                Läs mer...
+            </Link>
         </li>
     );
 };

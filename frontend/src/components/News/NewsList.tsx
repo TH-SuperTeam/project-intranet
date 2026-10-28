@@ -1,22 +1,14 @@
 import NewsCard from "./NewsCard";
-import { getNews } from "../../services/newsApi";
-import { useQuery } from "@tanstack/react-query";
 import type { TargetAudience } from "../../types/TargetAudience";
 import styles from "./News.module.css";
+import { useNews } from "../../hooks/useNews";
 
 type NewsListProps = {
     audience: TargetAudience;
 };
 
 const NewsList = ({ audience }: NewsListProps) => {
-    const {
-        data: news,
-        isPending,
-        isError,
-    } = useQuery({
-        queryKey: ["news", audience],
-        queryFn: () => getNews(audience),
-    });
+    const { data: news, isPending, isError } = useNews({ audience });
 
     if (isPending) {
         return <div className={styles.state}>Laddar nyheter...</div>;
@@ -41,8 +33,8 @@ const NewsList = ({ audience }: NewsListProps) => {
 
     return (
         <ul className={styles.newsList}>
-            {news.map((item) => (
-                <NewsCard key={item.id} news={item} />
+            {news.map(news => (
+                <NewsCard key={news.id} news={news} />
             ))}
         </ul>
     );
