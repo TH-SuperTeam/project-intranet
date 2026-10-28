@@ -4,7 +4,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { publishNews } from "../../services/newsApi";
 import { TargetAudience } from "../../types/TargetAudience";
 import styles from "./CreateNews.module.css";
-import { Link } from "react-router-dom";
+import BackLink from "../common/BackLink";
 
 const CreateNews = () => {
     // State för formulärets värden
@@ -61,10 +61,7 @@ const CreateNews = () => {
 
     return (
         <div className={styles.container}>
-            <Link to="/news" className={styles.backLink}>
-                <span aria-hidden="true">←</span>
-                Tillbaka
-            </Link>
+            <BackLink to="/news" />
             <h1 className={styles.title}>Skapa en nyhet</h1>
 
             <form className={styles.form} onSubmit={handleSubmit} noValidate>
@@ -78,7 +75,7 @@ const CreateNews = () => {
                         id="title"
                         name="title"
                         value={title}
-                        onChange={e => setTitle(e.target.value)}
+                        onChange={(e) => setTitle(e.target.value)}
                         maxLength={255}
                         required
                     />
@@ -93,7 +90,7 @@ const CreateNews = () => {
                         id="content"
                         name="content"
                         value={content}
-                        onChange={e => setContent(e.target.value)}
+                        onChange={(e) => setContent(e.target.value)}
                         required
                     />
                 </div>
@@ -107,7 +104,7 @@ const CreateNews = () => {
                         id="targetAudience"
                         name="targetAudience"
                         value={targetAudience}
-                        onChange={e =>
+                        onChange={(e) =>
                             setTargetAudience(e.target.value as TargetAudience)
                         }
                     >

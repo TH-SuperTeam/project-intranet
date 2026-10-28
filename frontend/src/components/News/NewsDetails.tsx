@@ -1,4 +1,5 @@
 import type { News } from "../../types/News";
+import BackLink from "../common/BackLink";
 import styles from "./News.module.css";
 
 interface NewsDetailsProps {
@@ -8,22 +9,31 @@ interface NewsDetailsProps {
 const NewsDetails = ({ news }: NewsDetailsProps) => {
     const formattedDate = new Date(news.createdAt).toLocaleDateString("sv-SE", {
         day: "numeric",
-        month: "short",
+        month: "long",
         year: "numeric",
     });
 
     return (
-        <>
-            <div className={styles.cardHeader}>
-                <h2 className={styles.title}>{news.title}</h2>
+        <article className={styles.newsDetails}>
+            <BackLink to="/news" />
 
-                <time dateTime={news.createdAt} className={styles.date}>
-                    {formattedDate}
-                </time>
+            <div className={styles.detailsCard}>
+                <header className={styles.detailsHeader}>
+                    <h1 className={styles.detailsTitle}>{news.title}</h1>
+
+                    <time
+                        dateTime={news.createdAt}
+                        className={styles.detailsDate}
+                    >
+                        {formattedDate}
+                    </time>
+                </header>
+
+                <div className={styles.detailsDivider} />
+
+                <p className={styles.detailsContent}>{news.content}</p>
             </div>
-
-            <p className={styles.content}>{news.content}</p>
-        </>
+        </article>
     );
 };
 
