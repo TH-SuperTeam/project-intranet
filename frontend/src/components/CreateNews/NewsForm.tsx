@@ -1,8 +1,5 @@
 import type { FormEvent, Dispatch, SetStateAction } from "react";
-import type { UseMutationResult } from "@tanstack/react-query";
 import { TargetAudience } from "../../types/TargetAudience";
-import type { CreateNewsRequest } from "../../types/CreateNewsRequest";
-import type { News } from "../../types/News";
 import styles from "./CreateNews.module.css";
 
 // Dispatch<SetStateAction<T>> är Reacts typ för en state-setter från useState.
@@ -15,8 +12,16 @@ type NewsFormProps = {
     targetAudience: TargetAudience;
     setTargetAudience: Dispatch<SetStateAction<TargetAudience>>;
     validationError: string;
-    mutation: UseMutationResult<News, Error, CreateNewsRequest>;
+    mutation: {
+        isPending: boolean;
+        isError: boolean;
+        isSuccess: boolean;
+    };
     handleSubmit: (e: FormEvent<HTMLFormElement>) => void;
+    submitLabel: string;
+    pendingLabel: string;
+    errorMessage: string;
+    successMessage: string;
 };
 
 const NewsForm = ({
@@ -29,6 +34,10 @@ const NewsForm = ({
     validationError,
     mutation,
     handleSubmit,
+    submitLabel,
+    pendingLabel,
+    errorMessage,
+    successMessage,
 }: NewsFormProps) => {
     return (
         <form className={styles.form} onSubmit={handleSubmit} noValidate>
@@ -85,21 +94,24 @@ const NewsForm = ({
             {validationError && <p role="alert">{validationError}</p>}
 
             {/* Visar fel om API-anropet misslyckas */}
-            {mutation.isError && (
-                <p role="alert">Något gick fel vid publiceringen.</p>
-            )}
+            {mutation.isError && <p role="alert">{errorMessage}</p>}
 
-            {/* Visar bekräftelse när nyheten publicerats */}
-            {mutation.isSuccess && (
-                <p role="status">Nyheten har publicerats!</p>
-            )}
+            {mutation.isSuccess && <p role="status">{successMessage}</p>}
 
             <button
                 className={styles.submitButton}
                 type="submit"
                 disabled={mutation.isPending}
             >
-                {mutation.isPending ? "Publicerar..." : "Publicera"}
+                {mutation.isPending ? pendingLabel : submitLabel}
+            </button>
+
+            <button
+                className={styles.submitButton}
+                type="submit"
+                disabled={mutation.isPending}
+            >
+                {mutation.isPending ? pendingLabel : submitLabel}
             </button>
         </form>
     );

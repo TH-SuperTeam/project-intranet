@@ -51,7 +51,7 @@ const NewsDetails = ({ news }: NewsDetailsProps) => {
             </article>
             <div className="flex items-center justify-end gap-2">
                 <Link
-                    to="{/news/${news.id}/edit}"
+                    to={`/news/${news.id}/edit`}
                     className="inline-flex items-center gap-2 rounded-lg bg-(--color-primary-soft) px-3 py-2 text-sm font-medium text-(--color-primary) transition-colors hover:bg-(--color-surface-hover)"
                 >
                     <Pencil size={16} />

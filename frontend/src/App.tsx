@@ -4,6 +4,7 @@ import NewsPage from "./pages/NewsPage";
 import NewsDetailsPage from "./pages/NewsDetailsPage";
 import { TargetAudience } from "./types/TargetAudience";
 import CreateNewsPage from "./pages/CreateNewsPage";
+import EditNewsPage from "./pages/EditNewsPage";
 
 function App() {
     return (
@@ -15,6 +16,7 @@ function App() {
                     path="/news/:id"
                     element={<NewsDetailsPage audience={TargetAudience.ALL} />}
                 />
+                <Route path="/news/:id/edit" element={<EditNewsPage />} />
             </Routes>
         </>
     );

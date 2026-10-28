@@ -29,6 +29,35 @@ export const getNews = async (audience: TargetAudience): Promise<News[]> => {
     return res.json();
 };
 
+export const getNewsById = async (id: number): Promise<News> => {
+    const res = await fetch(`http://localhost:8080/api/news/${id}`);
+
+    if (!res.ok) {
+        throw new Error(`Kunde inte hämta nyheten (${res.status}).`);
+    }
+
+    return res.json();
+};
+
+export const updateNews = async (
+    id: number,
+    news: CreateNewsRequest,
+): Promise<News> => {
+    const res = await fetch(`http://localhost:8080/api/news/${id}`, {
+        method: "PUT",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(news),
+    });
+
+    if (!res.ok) {
+        throw new Error(`Kunde inte uppdatera nyheten (${res.status}).`);
+    }
+
+    return res.json();
+};
+
 export const deleteNews = async (id: number): Promise<void> => {
     const res = await fetch(`http://localhost:8080/api/news/${id}`, {
         method: "DELETE",

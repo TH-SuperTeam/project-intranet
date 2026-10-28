@@ -74,6 +74,10 @@ const CreateNewsPage = () => {
                 validationError={validationError}
                 mutation={mutation}
                 handleSubmit={handleSubmit}
+                submitLabel="Publicera"
+                pendingLabel="Publicerar..."
+                errorMessage="Kunde inte publicera nyhet."
+                successMessage="Nyheten är publicerad!"
             />
         </div>
     );
