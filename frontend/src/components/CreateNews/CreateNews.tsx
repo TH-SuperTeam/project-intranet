@@ -22,7 +22,7 @@ const CreateNews = () => {
         mutationFn: publishNews,
 
         onSuccess: () => {
-            // Markerar nyhetslistan som inaktuell så att den hämtas om. Nyhetslistan kommer skapas i komponenten NewsList som använder useQuery med queryKey ["news"] men denna finns ej än.
+            // Markerar nyhetslistan som inaktuell så att den hämtas om.
             queryClient.invalidateQueries({ queryKey: ["news"] });
 
             // Återställer formuläret
