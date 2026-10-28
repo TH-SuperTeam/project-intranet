@@ -5,19 +5,19 @@ import NewsDetailsPage from "./pages/NewsDetailsPage";
 import { TargetAudience } from "./types/TargetAudience";
 import CreateNewsPage from "./pages/CreateNewsPage";
 import EditNewsPage from "./pages/EditNewsPage";
+import { AudienceProvider } from "./contexts/AudienceProvider";
 
 function App() {
     return (
         <>
-            <Routes>
-                <Route path="/news" element={<NewsPage />} />
-                <Route path="/news/create" element={<CreateNewsPage />} />
-                <Route
-                    path="/news/:id"
-                    element={<NewsDetailsPage audience={TargetAudience.ALL} />}
-                />
-                <Route path="/news/:id/edit" element={<EditNewsPage />} />
-            </Routes>
+            <AudienceProvider>
+                <Routes>
+                    <Route path="/news" element={<NewsPage />} />
+                    <Route path="/news/create" element={<CreateNewsPage />} />
+                    <Route path="/news/:id" element={<NewsDetailsPage />} />
+                    <Route path="/news/:id/edit" element={<EditNewsPage />} />
+                </Routes>
+            </AudienceProvider>
         </>
     );
 }

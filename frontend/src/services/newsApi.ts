@@ -29,8 +29,12 @@ export const getNews = async (audience: TargetAudience): Promise<News[]> => {
     return res.json();
 };
 
-export const getNewsById = async (id: number): Promise<News> => {
-    const res = await fetch(`http://localhost:8080/api/news/${id}`);
+export const getNewsById = async (
+    id: number,
+    audience: TargetAudience,
+): Promise<News> => {
+    const params = new URLSearchParams({ targetAudience: audience });
+    const res = await fetch(`http://localhost:8080/api/news/${id}?${params}`);
 
     if (!res.ok) {
         throw new Error(`Kunde inte hämta nyheten (${res.status}).`);

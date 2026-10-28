@@ -10,7 +10,7 @@ const EditNewsPage = () => {
     const newsId = Number(id);
 
     // Hämtar nyheten som ska redigeras
-    const { data: news, isLoading, isError } = useNewsById(newsId);
+    const { data: news, isLoading, isError } = useNewsById(newsId, audience);
 
     if (!id || !Number.isSafeInteger(newsId) || newsId <= 0) {
         return <p>Ogiltigt nyhets-ID.</p>;
