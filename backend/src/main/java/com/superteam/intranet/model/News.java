@@ -59,6 +59,11 @@ public class News {
         updatedAt = createdAt;
     }
 
+    @PreUpdate
+    protected void onUpdate() {
+        updatedAt = LocalDateTime.now();
+    }
+
     // Getters och setters ger åtkomst till fälten utan att exponera dem direkt.
     public Long getId() { return id; }
     public String getTitle() { return title; }
