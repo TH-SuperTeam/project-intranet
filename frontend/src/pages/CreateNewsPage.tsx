@@ -4,8 +4,8 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { publishNews } from "../services/newsApi";
 import { TargetAudience } from "../types/TargetAudience";
 import BackLink from "../components/common/BackLink";
-import styles from "../components/CreateNews/CreateNews.module.css";
-import NewsForm from "../components/CreateNews/NewsForm";
+import styles from "../components/News/NewsForm.module.css";
+import NewsForm from "../components/News/NewsForm";
 
 const CreateNewsPage = () => {
     // State för formulärets värden

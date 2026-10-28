@@ -1,6 +1,6 @@
 import type { FormEvent, Dispatch, SetStateAction } from "react";
 import { TargetAudience } from "../../types/TargetAudience";
-import styles from "./CreateNews.module.css";
+import styles from "./NewsForm.module.css";
 
 // Dispatch<SetStateAction<T>> är Reacts typ för en state-setter från useState.
 // Den kan uppdatera state med ett nytt värde eller en funktion som utgår från föregående värde.
@@ -51,7 +51,7 @@ const NewsForm = ({
                     id="title"
                     name="title"
                     value={title}
-                    onChange={e => setTitle(e.target.value)}
+                    onChange={(e) => setTitle(e.target.value)}
                     maxLength={255}
                     required
                 />
@@ -66,7 +66,7 @@ const NewsForm = ({
                     id="content"
                     name="content"
                     value={content}
-                    onChange={e => setContent(e.target.value)}
+                    onChange={(e) => setContent(e.target.value)}
                     required
                 />
             </div>
@@ -80,7 +80,7 @@ const NewsForm = ({
                     id="targetAudience"
                     name="targetAudience"
                     value={targetAudience}
-                    onChange={e =>
+                    onChange={(e) =>
                         setTargetAudience(e.target.value as TargetAudience)
                     }
                 >

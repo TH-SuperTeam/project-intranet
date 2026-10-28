@@ -36,42 +36,42 @@ const NewsDetails = ({ news }: NewsDetailsProps) => {
 
                 <div className={styles.detailsCard}>
                     <header className={styles.detailsHeader}>
-                        <h1 className={styles.detailsTitle}>{news.title}</h1>
-
                         <time
                             dateTime={news.createdAt}
                             className={styles.detailsDate}
                         >
                             {formattedDate}
                         </time>
+                        <h1 className={styles.detailsTitle}>{news.title}</h1>
                     </header>
 
                     <div className={styles.detailsDivider} />
 
                     <p className={styles.detailsContent}>{news.content}</p>
                 </div>
+
+                <div className="flex items-center justify-end gap-2">
+                    {canManageNews && (
+                        <Link
+                            to={`/news/${news.id}/edit`}
+                            className="inline-flex items-center gap-2 rounded-lg bg-(--color-primary-soft) px-3 py-2 text-sm font-medium text-(--color-primary) transition-colors hover:bg-(--color-surface-hover)"
+                        >
+                            <Pencil size={16} />
+                            Redigera
+                        </Link>
+                    )}
+                    {canManageNews && (
+                        <button
+                            type="button"
+                            onClick={handleDelete}
+                            className="inline-flex items-center gap-2 rounded-lg bg-(--color-error-light) px-3 py-2 text-sm font-medium text-(--color-error) transition-colors hover:opacity-80"
+                        >
+                            <Trash2 size={16} />
+                            Ta bort
+                        </button>
+                    )}
+                </div>
             </article>
-            <div className="flex items-center justify-end gap-2">
-                {canManageNews && (
-                    <Link
-                        to={`/news/${news.id}/edit`}
-                        className="inline-flex items-center gap-2 rounded-lg bg-(--color-primary-soft) px-3 py-2 text-sm font-medium text-(--color-primary) transition-colors hover:bg-(--color-surface-hover)"
-                    >
-                        <Pencil size={16} />
-                        Redigera
-                    </Link>
-                )}
-                {canManageNews && (
-                    <button
-                        type="button"
-                        onClick={handleDelete}
-                        className="inline-flex items-center gap-2 rounded-lg bg-(--color-error-light) px-3 py-2 text-sm font-medium text-(--color-error) transition-colors hover:opacity-80"
-                    >
-                        <Trash2 size={16} />
-                        Ta bort
-                    </button>
-                )}
-            </div>
         </>
     );
 };

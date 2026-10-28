@@ -2,7 +2,7 @@ import { useState, type FormEvent } from "react";
 import type { News } from "../../types/News";
 import type { TargetAudience } from "../../types/TargetAudience";
 import { useUpdateNews } from "../../hooks/useUpdateNews";
-import NewsForm from "./NewsForm";
+import NewsForm from "../News/NewsForm";
 
 const EditNewsForm = ({ news }: { news: News }) => {
     // State för formulärets värden, med nyhetens befintliga information
