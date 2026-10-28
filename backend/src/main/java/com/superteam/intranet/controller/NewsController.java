@@ -62,4 +62,14 @@ public class NewsController {
         return newsService.updatePublishedNews(id, request);
     }
 
+    @GetMapping("/{id}")
+    public NewsResponse getPublishedNewsById(
+            @PathVariable Long id,
+            @RequestParam TargetAudience targetAudience) {
+
+        return newsService.getPublishedNewsById(
+                id,
+                targetAudience
+        );
+    }
 }
