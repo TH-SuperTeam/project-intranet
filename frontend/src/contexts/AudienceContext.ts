@@ -1,11 +1,15 @@
 import { createContext } from "react";
 import type { TargetAudience } from "../types/TargetAudience";
 
+export type MockRole = "STUDENT" | "TEACHER" | "ADMIN";
+
 // Beskriver vad som ligger i "lådan" som delas mellan sidorna:
 // det valda värdet och en funktion för att ändra det.
 export type AudienceContextValue = {
     audience: TargetAudience;
     setAudience: (audience: TargetAudience) => void;
+    role: MockRole;
+    setRole: (role: MockRole) => void;
 };
 
 // createContext skapar själva lådan. Den är tom (null) från början.

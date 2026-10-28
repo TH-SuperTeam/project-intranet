@@ -15,8 +15,10 @@ const useDeleteNews = () => {
             // Uppdaterar nyhetslistan efter borttagning
             queryClient.invalidateQueries({ queryKey: ["news"] });
 
-            // Navigerar tillbaka till nyhetslistan
-            navigate("/news");
+            // Navigerar tillbaka till nyhetslistan efter
+            navigate("/news", {
+                state: { successMessage: "Nyheten har raderats." },
+            });
         },
     });
 

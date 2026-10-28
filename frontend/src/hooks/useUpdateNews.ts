@@ -13,11 +13,11 @@ const useUpdateNews = () => {
 
         //_ (nämner man den så undviker man klagomål från ts när man inte använder den) är originalnyheten innan redigering, updatedNewsData är den redigerade nyheten
         onSuccess: (_, updatedNewsData) => {
-            // Markerar nyhetslistan som inaktuell så att den hämtas om.
             queryClient.invalidateQueries({ queryKey: ["news"] });
 
-            // Navigerar tillbaka till den uppdaterade nyheten.
-            navigate(`/news/${updatedNewsData.id}`);
+            setTimeout(() => {
+                navigate(`/news/${updatedNewsData.id}`);
+            }, 2000);
         },
     });
 
