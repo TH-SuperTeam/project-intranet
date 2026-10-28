@@ -1,8 +1,8 @@
 import NewsCard from "./NewsCard";
-import type { News } from "../../types/News";
 import { getNews } from "../../services/newsApi";
 import { useQuery } from "@tanstack/react-query";
 import type { TargetAudience } from "../../types/TargetAudience";
+import styles from "./News.module.css";
 
 type NewsListProps = {
     audience: TargetAudience;
@@ -13,23 +13,35 @@ const NewsList = ({ audience }: NewsListProps) => {
         data: news,
         isPending,
         isError,
-        error,
     } = useQuery({
         queryKey: ["news", audience],
         queryFn: () => getNews(audience),
     });
 
     if (isPending) {
-        return <p>Laddar nyheter...</p>;
+        return <div className={styles.state}>Laddar nyheter...</div>;
     }
 
     if (isError) {
-        return <p>{error.message}</p>;
+        return (
+            <div className={styles.errorState} role="alert">
+                Det gick inte att ladda nyheterna.
+            </div>
+        );
+    }
+
+    if (news.length === 0) {
+        return (
+            <div className={styles.emptyState}>
+                <h3>Inga nyheter att visa</h3>
+                <p>Det finns inga publicerade nyheter just nu.</p>
+            </div>
+        );
     }
 
     return (
-        <ul>
-            {news.map((item: News) => (
+        <ul className={styles.newsList}>
+            {news.map((item) => (
                 <NewsCard key={item.id} news={item} />
             ))}
         </ul>

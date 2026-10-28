@@ -8,23 +8,28 @@ const NewsPage = () => {
     const [audience, setAudience] = useState<TargetAudience>(
         TargetAudience.ALL,
     );
-    return (
-        <div>
-            <h1>News</h1>
-            <p>This is the news page.</p>
-            <Link to="/news/create" className={styles.createButton}>
-                Skapa nyhet
-            </Link>
 
+    return (
+        <main className={styles.newsSection}>
+            <header className={styles.header}>
+                <h1>Nyheter</h1>
+
+                <Link to="/news/create" className={styles.createButton}>
+                    + Skapa nyhet
+                </Link>
+            </header>
+
+            {/* Tillfälligt filter tills inloggning är implementerad */}
             <select
                 value={audience}
-                onChange={e => setAudience(e.target.value as TargetAudience)}
+                onChange={(e) => setAudience(e.target.value as TargetAudience)}
             >
-                <option value="STUDENT">Student</option>
-                <option value="TEACHER">Lärare</option>
+                <option value={TargetAudience.STUDENT}>Student</option>
+                <option value={TargetAudience.TEACHER}>Lärare</option>
             </select>
+
             <NewsList audience={audience} />
-        </div>
+        </main>
     );
 };
 
