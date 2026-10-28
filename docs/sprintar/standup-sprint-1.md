@@ -18,14 +18,14 @@
 |                       |         |                |                                |                                                                         |
 |                       |         |                |                                |                                                                         |
 
-## Onsdag ÅÅÅÅ-MM-DD
+## Onsdag 2026-10-28
 
-| Namn | Närvaro | Igår | Idag | Hinder |
-| ---- | ------- | ---- | ---- | ------ |
-|      |         |      |      |        |
-|      |         |      |      |        |
-|      |         |      |      |        |
-|      |         |      |      |        |
+| Namn                  | Närvaro | Igår                    | Idag     | Hinder/Anteckningar                                          |
+| --------------------- | ------- | ----------------------- | -------- | ------------------------------------------------------------ |
+| Mette, Josefine       | Ja      | #19, #17, #18           | #22, #21 | Man borde kunna lägga till bilder i nyheter                  |
+| Inna, Caroline, Sofie | Ja      | #19, #17, #18, #22, #20 | #21      | Man ska kunna skapa en nyhet utan att publicera den (utkast) |
+|                       |         |                         |          |                                                              |
+|                       |         |                         |          |                                                              |
 
 ## Torsdag ÅÅÅÅ-MM-DD
 
