@@ -7,13 +7,13 @@ import { useAudience } from "../hooks/useAudience";
 const NewsDetailsPage = () => {
     // useParams returns the :id from the URL, always as a string (or undefined)
     const { id } = useParams();
-    const audience = useAudience();
+    const { audience } = useAudience();
 
     // Converted to a number so it can be compared with user.id (a number).
     // Something like /users/abc becomes NaN, which matches no user and is handled below
     const newsId = Number(id);
 
-    const { data: news, isPending, isError } = useNews(audience);
+    const { data: news, isPending, isError } = useNews({ audience });
 
     if (isPending) return <p className={styles.state}>Laddar nyhet...</p>;
 

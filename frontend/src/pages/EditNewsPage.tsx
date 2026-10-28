@@ -3,11 +3,13 @@ import BackLink from "../components/common/BackLink";
 import styles from "../components/CreateNews/CreateNews.module.css";
 import EditNewsForm from "../components/CreateNews/EditNewsForm";
 import { useNewsById } from "../hooks/useNewsById";
+import { useAudience } from "../hooks/useAudience";
 
 const EditNewsPage = () => {
     // Hämtar nyhetens ID från URL:en, exempelvis /news/5/edit
     const { id } = useParams();
     const newsId = Number(id);
+    const { audience } = useAudience();
 
     // Hämtar nyheten som ska redigeras
     const { data: news, isLoading, isError } = useNewsById(newsId, audience);

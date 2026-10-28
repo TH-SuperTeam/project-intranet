@@ -2,12 +2,10 @@ import { Link } from "react-router-dom";
 import styles from "../components/News/News.module.css";
 import NewsList from "../components/News/NewsList";
 import { TargetAudience } from "../types/TargetAudience";
-import { useState } from "react";
+import { useAudience } from "../hooks/useAudience";
 
 const NewsPage = () => {
-    const [audience, setAudience] = useState<TargetAudience>(
-        TargetAudience.ALL,
-    );
+    const { audience, setAudience } = useAudience();
 
     return (
         <main className={styles.newsSection}>
@@ -22,7 +20,7 @@ const NewsPage = () => {
             {/* Tillfälligt filter tills inloggning är implementerad */}
             <select
                 value={audience}
-                onChange={(e) => setAudience(e.target.value as TargetAudience)}
+                onChange={e => setAudience(e.target.value as TargetAudience)}
             >
                 <option value={TargetAudience.STUDENT}>Student</option>
                 <option value={TargetAudience.TEACHER}>Lärare</option>

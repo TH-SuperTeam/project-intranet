@@ -105,14 +105,6 @@ const NewsForm = ({
             >
                 {mutation.isPending ? pendingLabel : submitLabel}
             </button>
-
-            <button
-                className={styles.submitButton}
-                type="submit"
-                disabled={mutation.isPending}
-            >
-                {mutation.isPending ? pendingLabel : submitLabel}
-            </button>
         </form>
     );
 };
