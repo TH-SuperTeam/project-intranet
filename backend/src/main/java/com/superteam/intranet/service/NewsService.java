@@ -142,6 +142,18 @@ public class NewsService {
         return newsMapper.toResponse(updatedNews);
     }
 
+    @Transactional
+    public void deleteNews(Long id) {
+
+        News news = newsRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND,
+                        "News not found."
+                ));
+
+        newsRepository.delete(news);
+    }
+
 
 
 

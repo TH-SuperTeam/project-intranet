@@ -62,14 +62,11 @@ public class NewsController {
         return newsService.updatePublishedNews(id, request);
     }
 
-    @GetMapping("/{id}")
-    public NewsResponse getPublishedNewsById(
-            @PathVariable Long id,
-            @RequestParam TargetAudience targetAudience) {
-
-        return newsService.getPublishedNewsById(
-                id,
-                targetAudience
-        );
+    // Endpoint för att ta bort en nyhet
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteNews(@PathVariable Long id) {
+        newsService.deleteNews(id);
     }
+
 }
