@@ -28,3 +28,13 @@ export const getNews = async (audience: TargetAudience): Promise<News[]> => {
 
     return res.json();
 };
+
+export const deleteNews = async (id: number): Promise<void> => {
+    const res = await fetch(`http://localhost:8080/api/news/${id}`, {
+        method: "DELETE",
+    });
+
+    if (!res.ok) {
+        throw new Error("Kunde inte ta bort nyheten.");
+    }
+};

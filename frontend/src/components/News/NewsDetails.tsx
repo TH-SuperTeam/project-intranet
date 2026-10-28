@@ -3,6 +3,7 @@ import type { News } from "../../types/News";
 import BackLink from "../common/BackLink";
 import styles from "./News.module.css";
 import { Pencil, Trash2 } from "lucide-react";
+import { useDeleteNews } from "../../hooks/useDeleteNews";
 
 interface NewsDetailsProps {
     news: News;
@@ -14,6 +15,17 @@ const NewsDetails = ({ news }: NewsDetailsProps) => {
         month: "long",
         year: "numeric",
     });
+
+    const mutation = useDeleteNews();
+
+    // Hanterar klick på Ta bort-knappen och ber användaren bekräfta borttagningen.
+    const handleDelete = () => {
+        if (!window.confirm("Är du säker på att du vill ta bort nyheten?")) {
+            return;
+        }
+
+        mutation.mutate(news.id);
+    };
 
     return (
         <>
@@ -47,6 +59,7 @@ const NewsDetails = ({ news }: NewsDetailsProps) => {
                 </Link>
                 <button
                     type="button"
+                    onClick={handleDelete}
                     className="inline-flex items-center gap-2 rounded-lg bg-(--color-error-light) px-3 py-2 text-sm font-medium text-(--color-error) transition-colors hover:opacity-80"
                 >
                     <Trash2 size={16} />
