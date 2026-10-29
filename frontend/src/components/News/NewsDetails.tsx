@@ -3,14 +3,18 @@ import BackLink from "../common/BackLink";
 import styles from "./News.module.css";
 import { useDeleteNews } from "../../hooks/useDeleteNews";
 import { useCanManageNews } from "../../hooks/useCanManageNews";
+import ConfirmDialog from "../common/ConfirmDialog";
 
 import DeleteButton from "../common/DeleteButton";
 import EditButton from "../common/EditButton";
+import { useState } from "react";
 interface NewsDetailsProps {
     news: News;
 }
 
 const NewsDetails = ({ news }: NewsDetailsProps) => {
+    const [showConfirm, setShowConfirm] = useState(false);
+
     const formattedDate = new Date(news.createdAt).toLocaleDateString("sv-SE", {
         day: "numeric",
         month: "long",
@@ -20,12 +24,13 @@ const NewsDetails = ({ news }: NewsDetailsProps) => {
 
     const mutation = useDeleteNews();
 
-    // Hanterar klick på Ta bort-knappen och ber användaren bekräfta borttagningen.
+    // Hanterar visningen av bekräftelsedialogen för att radera nyheten
     const handleDelete = () => {
-        if (!window.confirm("Är du säker på att du vill ta bort nyheten?")) {
-            return;
-        }
+        setShowConfirm(true);
+    };
 
+    const confirmDelete = () => {
+        setShowConfirm(false);
         mutation.mutate(news.id);
     };
 
@@ -62,6 +67,14 @@ const NewsDetails = ({ news }: NewsDetailsProps) => {
                         <DeleteButton
                             onClick={handleDelete}
                             isPending={mutation.isPending}
+                        />
+                    )}
+
+                    {showConfirm && (
+                        <ConfirmDialog
+                            message="Är du säker på att du vill ta bort nyheten?"
+                            onConfirm={confirmDelete}
+                            onCancel={() => setShowConfirm(false)}
                         />
                     )}
                 </div>
