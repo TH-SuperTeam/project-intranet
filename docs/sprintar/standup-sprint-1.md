@@ -27,14 +27,14 @@
 |                       |         |                         |          |                                                              |
 |                       |         |                         |          |                                                              |
 
-## Torsdag ÅÅÅÅ-MM-DD
+## Torsdag 2026-10-29
 
-| Namn | Närvaro | Igår | Idag | Hinder |
-| ---- | ------- | ---- | ---- | ------ |
-|      |         |      |      |        |
-|      |         |      |      |        |
-|      |         |      |      |        |
-|      |         |      |      |        |
+| Namn                  | Närvaro | Igår          | Idag     | Hinder |
+| --------------------- | ------- | ------------- | -------- | ------ |
+| Mette, Josefine       | Ja      | #22, #21, #20 | #21, #20 |        |
+| Sofie, Inna, Caroline | Nej     | #21           | N/A      |        |
+|                       |         |               |          |        |
+|                       |         |               |          |        |
 
 ## Fredag ÅÅÅÅ-MM-DD
 
