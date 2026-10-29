@@ -56,7 +56,7 @@ const EditNewsForm = ({ news }: { news: News }) => {
             handleSubmit={handleSubmit}
             submitLabel="Spara ändringar"
             pendingLabel="Sparar..."
-            errorMessage="Gick inte att redigera nyhet."
+            errorMessage="Redigering av nyheten misslyckades. Försök igen."
             successMessage="Nyheten är uppdaterad!"
         />
     );

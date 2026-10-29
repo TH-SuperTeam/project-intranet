@@ -1,11 +1,11 @@
-import { Link } from "react-router-dom";
 import type { News } from "../../types/News";
 import BackLink from "../common/BackLink";
 import styles from "./News.module.css";
-import { Pencil, Trash2 } from "lucide-react";
 import { useDeleteNews } from "../../hooks/useDeleteNews";
 import { useCanManageNews } from "../../hooks/useCanManageNews";
 
+import DeleteButton from "../common/DeleteButton";
+import EditButton from "../common/EditButton";
 interface NewsDetailsProps {
     news: News;
 }
@@ -49,26 +49,20 @@ const NewsDetails = ({ news }: NewsDetailsProps) => {
 
                     <p className={styles.detailsContent}>{news.content}</p>
                 </div>
-
+                {mutation.isError && (
+                    <p role="alert" className="text-right text-(--color-error)">
+                        {mutation.error.message}
+                    </p>
+                )}
                 <div className="flex items-center justify-end gap-2">
                     {canManageNews && (
-                        <Link
-                            to={`/news/${news.id}/edit`}
-                            className="inline-flex items-center gap-2 rounded-lg bg-(--color-primary-soft) px-3 py-2 text-sm font-medium text-(--color-primary) transition-colors hover:bg-(--color-surface-hover)"
-                        >
-                            <Pencil size={16} />
-                            Redigera
-                        </Link>
+                        <EditButton to={`/news/${news.id}/edit`} />
                     )}
                     {canManageNews && (
-                        <button
-                            type="button"
+                        <DeleteButton
                             onClick={handleDelete}
-                            className="inline-flex items-center gap-2 rounded-lg bg-(--color-error-light) px-3 py-2 text-sm font-medium text-(--color-error) transition-colors hover:opacity-80"
-                        >
-                            <Trash2 size={16} />
-                            Ta bort
-                        </button>
+                            isPending={mutation.isPending}
+                        />
                     )}
                 </div>
             </article>
