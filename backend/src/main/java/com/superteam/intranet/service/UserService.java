@@ -10,6 +10,7 @@ import com.superteam.intranet.repository.UserRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import com.superteam.intranet.exception.DuplicateEmailException;
 
 @Service
 public class UserService {
@@ -32,7 +33,7 @@ public class UserService {
         String email = request.email().trim().toLowerCase();
 
         if (userRepository.existsByEmailIgnoreCase(email)) {
-            throw new IllegalArgumentException("Email already exists");
+            throw new DuplicateEmailException("Email already exists");
         }
 
         if (request.userType() == UserType.STUDENT
