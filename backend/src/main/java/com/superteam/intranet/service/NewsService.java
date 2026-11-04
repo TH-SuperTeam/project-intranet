@@ -1,3 +1,4 @@
+
 package com.superteam.intranet.service;
 
 import com.superteam.intranet.dto.CreateNewsRequest;
@@ -5,12 +6,15 @@ import com.superteam.intranet.dto.NewsResponse;
 import com.superteam.intranet.dto.UpdateNewsRequest;
 import com.superteam.intranet.mapper.NewsMapper;
 import com.superteam.intranet.model.News;
+
+import com.superteam.intranet.model.TargetAudience;
+import com.superteam.intranet.model.UserType;
 import com.superteam.intranet.repository.NewsRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import com.superteam.intranet.model.TargetAudience;
 import org.springframework.web.server.ResponseStatusException;
+import com.superteam.intranet.model.AccessRole;
 
 import java.util.List;
 
@@ -27,6 +31,7 @@ public class NewsService {
         this.newsMapper = newsMapper;
     }
 
+    // Publicera en nyhet.
     @Transactional
     public NewsResponse publishNews(
             CreateNewsRequest request,
@@ -42,19 +47,15 @@ public class NewsService {
         return newsMapper.toResponse(savedNews);
     }
 
-    //Vad händer här?
-    //1. Om målgruppen är STUDENT hämtas både ALL och STUDENT.
-    //2. Om målgruppen är TEACHER hämtas både ALL och TEACHER.
-    //3. Om målgruppen är ALL hämtas alla publicerade nyheter.
-    //4. Mappern omvandlar varje News-entitet till NewsResponse.
-    //5. Resultatet returneras som en lista.
-    //@Transactional(readOnly = true) markerar att metoden bara läser data från databasen.
+    // Hämta publicerade nyheter utifrån användarens användartyp.
     @Transactional(readOnly = true)
-    public List<NewsResponse> getPublishedNews(TargetAudience audience) {
+    public List<NewsResponse> getPublishedNews(
+            UserType userType,
+            AccessRole accessRole) {
 
         List<TargetAudience> audiences;
 
-        if (audience == TargetAudience.ALL) {
+        if (accessRole == AccessRole.ADMIN) {
             audiences = List.of(
                     TargetAudience.ALL,
                     TargetAudience.STUDENT,
@@ -63,39 +64,40 @@ public class NewsService {
         } else {
             audiences = List.of(
                     TargetAudience.ALL,
-                    audience
+                    TargetAudience.valueOf(userType.name())
             );
         }
 
         return newsRepository
-                .findByIsPublishedTrueAndTargetAudienceInOrderByCreatedAtDesc(audiences)
+                .findByIsPublishedTrueAndTargetAudienceInOrderByCreatedAtDesc(
+                        audiences
+                )
                 .stream()
                 .map(newsMapper::toResponse)
                 .toList();
     }
-//Vad gör metoden?
-//1. Den kontrollerar att målgruppen är STUDENT eller TEACHER.
-//2. Den tillåter nyheter riktade till ALL samt den aktuella målgruppen.
-//3. Den söker efter rätt ID och filtrerar samtidigt bort opublicerade nyheter.
-//4. Om ingen tillåten nyhet hittas returneras ett 404 Not Found.
-//5. Om nyheten hittas omvandlas den till NewsResponse med hjälp av er befintliga mapper.
+
+    // Hämta en specifik publicerad nyhet utifrån användarens användartyp.
     @Transactional(readOnly = true)
     public NewsResponse getPublishedNewsById(
             Long id,
-            TargetAudience audience) {
+            UserType userType,
+            AccessRole accessRole) {
 
-        if (audience != TargetAudience.STUDENT
-                && audience != TargetAudience.TEACHER) {
-            throw new ResponseStatusException(
-                    HttpStatus.BAD_REQUEST,
-                    "Invalid target audience."
+        List<TargetAudience> audiences;
+
+        if (accessRole == AccessRole.ADMIN) {
+            audiences = List.of(
+                    TargetAudience.ALL,
+                    TargetAudience.STUDENT,
+                    TargetAudience.TEACHER
+            );
+        } else {
+            audiences = List.of(
+                    TargetAudience.ALL,
+                    TargetAudience.valueOf(userType.name())
             );
         }
-
-        List<TargetAudience> audiences = List.of(
-                TargetAudience.ALL,
-                audience
-        );
 
         News news = newsRepository
                 .findByIdAndIsPublishedTrueAndTargetAudienceIn(
@@ -110,20 +112,18 @@ public class NewsService {
         return newsMapper.toResponse(news);
     }
 
-
+    // Ändra en publicerad nyhet.
     @Transactional
     public NewsResponse updatePublishedNews(
             Long id,
             UpdateNewsRequest request) {
 
-        // Hämta nyheten från databasen.
         News news = newsRepository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(
                         HttpStatus.NOT_FOUND,
                         "News not found."
                 ));
 
-        // Redigering gäller endast publicerade nyheter.
         if (!news.isPublished()) {
             throw new ResponseStatusException(
                     HttpStatus.BAD_REQUEST,
@@ -131,17 +131,16 @@ public class NewsService {
             );
         }
 
-        // Uppdatera endast fälten som får ändras.
         news.setTitle(request.title().trim());
         news.setContent(request.content().trim());
         news.setTargetAudience(request.targetAudience());
 
-        // Spara ändringarna i databasen.
         News updatedNews = newsRepository.save(news);
 
         return newsMapper.toResponse(updatedNews);
     }
 
+    // Ta bort en nyhet.
     @Transactional
     public void deleteNews(Long id) {
 
@@ -153,9 +152,4 @@ public class NewsService {
 
         newsRepository.delete(news);
     }
-
-
-
-
-
 }

@@ -7,10 +7,12 @@ import com.superteam.intranet.model.AccessRole;
 import com.superteam.intranet.model.User;
 import com.superteam.intranet.model.UserType;
 import com.superteam.intranet.repository.UserRepository;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import com.superteam.intranet.exception.DuplicateEmailException;
+import org.springframework.web.server.ResponseStatusException;
 
 @Service
 public class UserService {
@@ -56,5 +58,16 @@ public class UserService {
         User savedUser = userRepository.save(user);
 
         return userMapper.toResponse(savedUser);
+    }
+
+    public UserResponse getUserById(Long userId) {
+
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND,
+                        "User not found"
+                ));
+
+        return userMapper.toResponse(user);
     }
 }
