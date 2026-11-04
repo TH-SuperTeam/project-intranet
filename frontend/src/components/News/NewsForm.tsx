@@ -1,6 +1,7 @@
 import type { FormEvent, Dispatch, SetStateAction } from "react";
 import { TargetAudience } from "../../types/TargetAudience";
 import styles from "./NewsForm.module.css";
+import SubmitButton from "../common/SubmitButton";
 
 // Dispatch<SetStateAction<T>> är Reacts typ för en state-setter från useState.
 // Den kan uppdatera state med ett nytt värde eller en funktion som utgår från föregående värde.
@@ -98,13 +99,11 @@ const NewsForm = ({
 
             {mutation.isSuccess && <p role="status">{successMessage}</p>}
 
-            <button
-                className={styles.submitButton}
-                type="submit"
-                disabled={mutation.isPending}
-            >
-                {mutation.isPending ? pendingLabel : submitLabel}
-            </button>
+            <SubmitButton
+                isPending={mutation.isPending}
+                submitLabel={submitLabel}
+                pendingLabel={pendingLabel}
+            />
         </form>
     );
 };

@@ -1,10 +1,11 @@
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import styles from "../components/News/News.module.css";
 import NewsList from "../components/News/NewsList";
 import { TargetAudience } from "../types/TargetAudience";
 import { useAudience } from "../hooks/useAudience";
 import type { MockRole } from "../contexts/AudienceContext";
 import { useEffect, useState } from "react";
+import CreateButton from "../components/common/CreateButton";
 
 const NewsPage = () => {
     const location = useLocation();
@@ -43,9 +44,7 @@ const NewsPage = () => {
                 <h1>Nyheter</h1>
 
                 {canManageNews && (
-                    <Link to="/news/create" className={styles.createButton}>
-                        + Skapa nyhet
-                    </Link>
+                    <CreateButton to="/news/create">+ Skapa nyhet</CreateButton>
                 )}
             </header>
 
@@ -56,7 +55,9 @@ const NewsPage = () => {
                 <select
                     id="role"
                     value={role}
-                    onChange={e => handleRoleChange(e.target.value as MockRole)}
+                    onChange={(e) =>
+                        handleRoleChange(e.target.value as MockRole)
+                    }
                 >
                     <option value="STUDENT">Student</option>
                     <option value="TEACHER">Lärare</option>
