@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
-import { deleteNews } from "../services/newsApi";
+import { deleteNews } from "../../services/newsApi";
 
 const useDeleteNews = () => {
     const queryClient = useQueryClient();

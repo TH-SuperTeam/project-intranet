@@ -1,7 +1,7 @@
 import NewsCard from "./NewsCard";
 import type { TargetAudience } from "../../types/TargetAudience";
 import styles from "./News.module.css";
-import { useNews } from "../../hooks/useNews";
+import { useNews } from "../../hooks/NewsHooks/useNews";
 
 type NewsListProps = {
     audience: TargetAudience;
@@ -33,7 +33,7 @@ const NewsList = ({ audience }: NewsListProps) => {
 
     return (
         <ul className={styles.newsList}>
-            {news.map(news => (
+            {news.map((news) => (
                 <NewsCard key={news.id} news={news} />
             ))}
         </ul>

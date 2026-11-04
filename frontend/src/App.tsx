@@ -2,7 +2,6 @@ import { Routes, Route } from "react-router-dom";
 import "./App.css";
 import NewsPage from "./pages/NewsPage";
 import NewsDetailsPage from "./pages/NewsDetailsPage";
-import { TargetAudience } from "./types/TargetAudience";
 import CreateNewsPage from "./pages/CreateNewsPage";
 import EditNewsPage from "./pages/EditNewsPage";
 import { AudienceProvider } from "./contexts/AudienceProvider";

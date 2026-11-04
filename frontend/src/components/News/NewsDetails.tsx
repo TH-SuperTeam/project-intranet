@@ -1,13 +1,14 @@
 import type { News } from "../../types/News";
 import BackLink from "../common/BackLink";
 import styles from "./News.module.css";
-import { useDeleteNews } from "../../hooks/useDeleteNews";
-import { useCanManageNews } from "../../hooks/useCanManageNews";
+import { useDeleteNews } from "../../hooks/NewsHooks/useDeleteNews";
 import ConfirmDialog from "../common/ConfirmDialog";
 
 import DeleteButton from "../common/DeleteButton";
 import EditButton from "../common/EditButton";
 import { useState } from "react";
+import { useCanManageNews } from "../../hooks/NewsHooks/useCanManageNews";
+
 interface NewsDetailsProps {
     news: News;
 }

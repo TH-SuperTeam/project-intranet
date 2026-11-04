@@ -2,7 +2,7 @@ import { useParams } from "react-router-dom";
 import BackLink from "../components/common/BackLink";
 import styles from "../components/News/NewsForm.module.css";
 import EditNewsForm from "../components/News/EditNewsForm";
-import { useNewsById } from "../hooks/useNewsById";
+import { useNewsById } from "../hooks/NewsHooks/useNewsById";
 import { useAudience } from "../hooks/useAudience";
 
 const EditNewsPage = () => {
