@@ -46,14 +46,28 @@
         transform 0.2s ease;
 }
 
+.createButton {
+    background-color: var(--color-secondary);
+    color: var(--color-text-white);
+    border: none;
+    border-radius: 8px;
+    padding: 0.75rem 1.5rem;
+    font: inherit;
+    font-weight: 600;
+    cursor: pointer;
+    text-decoration: none;
+    transition:
+        background-color 0.2s ease,
+        color 0.2s ease;
+}
+
 .createButton:hover {
     background-color: var(--color-secondary-hover);
-    color: var(--color-text-primary);
-    transform: translateY(-2px);
+    color: var(--color-secondary-dark);
 }
 
 .createButton:focus-visible {
-    outline: 2px solid var(--color-primary);
+    outline: 2px solid var(--color-secondary-dark);
     outline-offset: 3px;
 }
 

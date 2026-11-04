@@ -1,30 +1,32 @@
 :root {
-    /* ===== PRIMARY - PETROL GREEN ===== */
-    --color-primary: #003b36;
-    --color-primary-light: #00564f;
-    --color-primary-hover: #006b61;
-    --color-primary-soft: #d9f0ea;
+    /* ===== PRIMARY - GREEN ===== */
+    --color-primary: #00302e;
+    --color-primary-light: #004f46;
+    --color-primary-hover: #006057;
+    --color-primary-soft: #deeae8;
 
-    /* ===== SECONDARY - MAGENTA ===== */
-    --color-secondary: #c45acb;
-    --color-secondary-hover: #e3a5e7;
-    --color-secondary-light: #f7e8f8;
+    /* ===== SECONDARY - LILAC ===== */
+    --color-secondary: #bd38bf;
+    --color-secondary-hover: #d46bd5;
+    --color-secondary-light: #f5e2f6;
+    --color-secondary-dark: #520963;
 
     /* ===== BACKGROUNDS ===== */
     --color-background: #f5f8f8;
     --color-surface: #ffffff;
-    --color-surface-hover: #edf4f2;
-    --color-sidebar: #003b36;
+    --color-surface-hover: #deeae8;
+    --color-sidebar: #00302e;
 
     /* ===== TEXT ===== */
-    --color-text-primary: #003b36;
-    --color-text-secondary: #64748b;
-    --color-text-muted: #94a3b8;
+    --color-text-primary: #00302e;
+    --color-text-secondary: #004f46;
+    --color-text-muted: #64748b;
     --color-text-white: #ffffff;
+    --color-text-accent: #520963;
 
     /* ===== BORDERS ===== */
-    --color-border: #e2e8f0;
-    --color-border-hover: #cbd5e1;
+    --color-border: #deeae8;
+    --color-border-hover: #004f46;
 
     /* ===== STATUS ===== */
     --color-success: #16a34a;
