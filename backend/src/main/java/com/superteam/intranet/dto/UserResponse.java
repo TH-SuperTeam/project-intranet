@@ -1,5 +1,6 @@
 package com.superteam.intranet.dto;
 
+import com.superteam.intranet.model.UserStatus;
 import com.superteam.intranet.model.UserType;
 import com.superteam.intranet.model.AccessRole;
 import java.time.LocalDateTime;
@@ -11,6 +12,6 @@ public record UserResponse(
         String email,
         UserType userType,
         AccessRole accessRole,
-        boolean isActive,
+        UserStatus status,
         LocalDateTime createdAt
 ) {}
