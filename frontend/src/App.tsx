@@ -13,6 +13,8 @@ function App() {
         <>
             <AudienceProvider>
                 <Routes>
+                    <Route path="/login" element={<LoginPage />} />
+
                     <Route path="/news" element={<NewsPage />} />
                     <Route path="/news/create" element={<CreateNewsPage />} />
                     <Route path="/news/:id" element={<NewsDetailsPage />} />
