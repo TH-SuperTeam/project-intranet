@@ -1,6 +1,6 @@
 import { useState, type ReactNode } from "react";
-import { TargetAudience } from "../types/TargetAudience";
 import { AudienceContext, type MockRole } from "./AudienceContext";
+import { TargetAudience } from "../types/TargetAudience";
 
 // Providern är en vanlig komponent som "äger" värdet.
 // "children" är allt som ligger inuti den, i vårt fall hela appen (Routes).

@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
-import { getNews } from "../services/newsApi";
-import type { TargetAudience } from "../types/TargetAudience";
+import { getNews } from "../../services/newsApi";
+import type { TargetAudience } from "../../types/TargetAudience";
 
 type NewsProps = {
     audience: TargetAudience;

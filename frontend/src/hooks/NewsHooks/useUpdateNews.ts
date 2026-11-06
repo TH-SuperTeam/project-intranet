@@ -1,7 +1,7 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
-import { updateNews } from "../services/newsApi";
-import type { CreateNewsRequest } from "../types/CreateNewsRequest";
+import type { CreateNewsRequest } from "../../types/CreateNewsRequest";
+import { updateNews } from "../../services/newsApi";
 
 const useUpdateNews = () => {
     const queryClient = useQueryClient();

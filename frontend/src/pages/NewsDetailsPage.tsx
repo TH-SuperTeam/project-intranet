@@ -1,8 +1,8 @@
 import { useParams } from "react-router-dom";
-import { useNews } from "../hooks/useNews";
 import styles from "../components/News/News.module.css";
 import NewsDetails from "../components/News/NewsDetails";
 import { useAudience } from "../hooks/useAudience";
+import { useNews } from "../hooks/NewsHooks/useNews";
 
 const NewsDetailsPage = () => {
     // useParams returns the :id from the URL, always as a string (or undefined)
@@ -25,7 +25,7 @@ const NewsDetailsPage = () => {
         );
 
     // find returns undefined if no news has that id (e.g. /news/999)
-    const findNews = news.find(n => n.id === newsId);
+    const findNews = news.find((n) => n.id === newsId);
     if (!findNews)
         return (
             <div>

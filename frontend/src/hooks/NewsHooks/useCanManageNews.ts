@@ -1,4 +1,4 @@
-import { useAudience } from "./useAudience";
+import { useAudience } from "../useAudience";
 
 const useCanManageNews = () => {
     const { role } = useAudience();
