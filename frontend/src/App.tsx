@@ -7,6 +7,8 @@ import EditNewsPage from "./pages/EditNewsPage";
 import { AudienceProvider } from "./contexts/AudienceProvider";
 import UsersPage from "./pages/UsersPage";
 import CreateUsersPage from "./pages/CreateUsersPage";
+import LoginPage from "./pages/LoginPage";
+import DashboardPage from "./pages/DashboardPage";
 
 function App() {
     return (
@@ -14,6 +16,8 @@ function App() {
             <AudienceProvider>
                 <Routes>
                     <Route path="/login" element={<LoginPage />} />
+
+                    <Route path="/dashboard" element={<DashboardPage />} />
 
                     <Route path="/news" element={<NewsPage />} />
                     <Route path="/news/create" element={<CreateNewsPage />} />
