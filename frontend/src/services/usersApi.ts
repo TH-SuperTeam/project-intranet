@@ -1,7 +1,9 @@
+
 import type { CreateUserRequest } from "../types/CreateUserRequest";
+import { apiFetch } from "./api";
 
 export const createUser = async (user: CreateUserRequest) => {
-    const res = await fetch("http://localhost:8080/api/users", {
+    const res = await apiFetch("/api/users", {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
@@ -11,6 +13,10 @@ export const createUser = async (user: CreateUserRequest) => {
 
     if (res.status === 409) {
         throw new Error("E-postadressen används redan av ett annat konto.");
+    }
+
+    if (res.status === 403) {
+        throw new Error("Du saknar behörighet att skapa användare.");
     }
 
     if (!res.ok) {
