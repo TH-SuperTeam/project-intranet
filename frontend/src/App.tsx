@@ -11,6 +11,7 @@ import CreateUsersPage from "./pages/CreateUsersPage"
 import LoginPage from "./pages/LoginPage"
 import DashboardPage from "./pages/DashboardPage"
 import ProtectedRoute from "./components/auth/ProtectedRoute"
+import AdminRoute from "./components/auth/AdminRoute"
 
 function App() {
 	return (
@@ -21,31 +22,35 @@ function App() {
 						<Route path="/login" element={<LoginPage />} />
 
 						<Route element={<ProtectedRoute />}>
+							{/* All authenticated users */}
 							<Route
 								path="/dashboard"
 								element={<DashboardPage />}
 							/>
-
 							<Route path="/news" element={<NewsPage />} />
-							<Route
-								path="/news/create"
-								element={<CreateNewsPage />}
-							/>
 							<Route
 								path="/news/:id"
 								element={<NewsDetailsPage />}
 							/>
-							<Route
-								path="/news/:id/edit"
-								element={<EditNewsPage />}
-							/>
 
-							<Route path="/users" element={<UsersPage />} />
-							<Route
-								path="/users/create"
-								element={<CreateUsersPage />}
-							/>
+							{/* Admin only */}
+							<Route element={<AdminRoute />}>
+								<Route
+									path="/news/create"
+									element={<CreateNewsPage />}
+								/>
+								<Route
+									path="/news/:id/edit"
+									element={<EditNewsPage />}
+								/>
+								<Route path="/users" element={<UsersPage />} />
+								<Route
+									path="/users/create"
+									element={<CreateUsersPage />}
+								/>
+							</Route>
 						</Route>
+
 						<Route
 							path="/"
 							element={<Navigate to="/dashboard" replace />}

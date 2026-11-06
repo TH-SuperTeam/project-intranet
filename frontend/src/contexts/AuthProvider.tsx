@@ -1,93 +1,100 @@
+import { useEffect, useState, type ReactNode } from "react"
+import { AuthContext } from "./AuthContext"
+import { login, getCurrentUser } from "../services/authApi"
+import type { AuthUser } from "../types/AuthUser"
+import type { LoginRequest } from "../types/LoginRequest"
+import { TOKEN_KEY } from "../services/api"
 
-import { useEffect, useState, type ReactNode } from "react";
-import { AuthContext } from "./AuthContext";
-import { login, getCurrentUser } from "../services/authApi";
-import type { AuthUser } from "../types/AuthUser";
-import type { LoginRequest } from "../types/LoginRequest";
+export const AuthProvider = ({ children }: { children: ReactNode }) => {
+	const [user, setUser] = useState<AuthUser | null>(null)
+	const [isLoading, setIsLoading] = useState(true)
 
-const TOKEN_KEY = "intranet_token";
+	useEffect(() => {
+		let cancelled = false
 
-export const AuthProvider = ({
-    children,
-}: {
-    children: ReactNode;
-}) => {
-    const [user, setUser] = useState<AuthUser | null>(null);
-    const [isLoading, setIsLoading] = useState(true);
+		const restoreSession = async () => {
+			const token = sessionStorage.getItem(TOKEN_KEY)
 
-    useEffect(() => {
-        let cancelled = false;
+			if (!token) {
+				if (!cancelled) setIsLoading(false)
+				return
+			}
 
-        const restoreSession = async () => {
-            const token = sessionStorage.getItem(TOKEN_KEY);
+			try {
+				const currentUser = await getCurrentUser(token)
 
-            if (!token) {
-                if (!cancelled) setIsLoading(false);
-                return;
-            }
+				if (!cancelled) {
+					if (currentUser.status !== "ACTIVE") {
+						sessionStorage.removeItem(TOKEN_KEY)
+					} else {
+						setUser(currentUser)
+					}
+				}
+			} catch {
+				if (!cancelled) {
+					sessionStorage.removeItem(TOKEN_KEY)
+					setUser(null)
+				}
+			} finally {
+				if (!cancelled) setIsLoading(false)
+			}
+		}
 
-            try {
-                const currentUser = await getCurrentUser(token);
+		void restoreSession()
 
-                if (!cancelled) {
-                    if (currentUser.status !== "ACTIVE") {
-                        sessionStorage.removeItem(TOKEN_KEY);
-                    } else {
-                        setUser(currentUser);
-                    }
-                }
-            } catch {
-                if (!cancelled) {
-                    sessionStorage.removeItem(TOKEN_KEY);
-                    setUser(null);
-                }
-            } finally {
-                if (!cancelled) setIsLoading(false);
-            }
-        };
+		return () => {
+			cancelled = true
+		}
+	}, [])
 
-        void restoreSession();
+	useEffect(() => {
+		const handleUnauthorized = () => {
+			sessionStorage.removeItem(TOKEN_KEY)
+			setUser(null)
+		}
 
-        return () => {
-            cancelled = true;
-        };
-    }, []);
+		window.addEventListener("auth:unauthorized", handleUnauthorized)
 
-    const loginUser = async (credentials: LoginRequest) => {
-        const response = await login(credentials);
+		return () => {
+			window.removeEventListener("auth:unauthorized", handleUnauthorized)
+		}
+	}, [])
 
-        try {
-            const currentUser = await getCurrentUser(response.token);
+	const loginUser = async (credentials: LoginRequest) => {
+		const response = await login(credentials)
 
-            if (currentUser.status !== "ACTIVE") {
-                throw new Error("Kontot är inte aktivt.");
-            }
+		try {
+			const currentUser = await getCurrentUser(response.token)
 
-            sessionStorage.setItem(TOKEN_KEY, response.token);
-            setUser(currentUser);
-        } catch {
-            sessionStorage.removeItem(TOKEN_KEY);
-            setUser(null);
-            throw new Error("Kunde inte verifiera inloggningen.");
-        }
-    };
+			if (currentUser.status !== "ACTIVE") {
+				throw new Error("Kontot är inte aktivt.")
+			}
 
-    const logout = () => {
-        sessionStorage.removeItem(TOKEN_KEY);
-        setUser(null);
-    };
+			sessionStorage.setItem(TOKEN_KEY, response.token)
+			setUser(currentUser)
+		} catch {
+			sessionStorage.removeItem(TOKEN_KEY)
+			setUser(null)
+			throw new Error("Kunde inte verifiera inloggningen.")
+		}
+	}
 
-    return (
-        <AuthContext
-            value={{
-                user,
-                isAuthenticated: user !== null,
-                isLoading,
-                loginUser,
-                logout,
-            }}
-        >
-            {children}
-        </AuthContext>
-    );
-};
+	const logout = () => {
+		sessionStorage.removeItem(TOKEN_KEY)
+		setUser(null)
+	}
+
+	return (
+		<AuthContext
+			value={{
+				user,
+				isAuthenticated: user !== null,
+				isLoading,
+				loginUser,
+				logout,
+			}}
+		>
+			{children}
+		</AuthContext>
+	)
+}
