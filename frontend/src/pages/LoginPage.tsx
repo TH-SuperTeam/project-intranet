@@ -1,6 +1,6 @@
 import { useState, type FormEvent } from "react";
 import { useMutation } from "@tanstack/react-query";
-import { login } from "../services/authApi";
+import { useAuth } from "../hooks/useAuth";
 import { useNavigate } from "react-router-dom";
 import SubmitButton from "../components/common/SubmitButton";
 
@@ -9,11 +9,14 @@ const LoginPage = () => {
     const [password, setPassword] = useState("");
     const [validationError, setValidationError] = useState("");
 
+    const { loginUser } = useAuth();
+
     const navigate = useNavigate();
 
     const mutation = useMutation({
-        mutationFn: login,
+        mutationFn: loginUser,
         onSuccess: () => {
+            setPassword("");
             navigate("/dashboard", { replace: true });
         },
     });

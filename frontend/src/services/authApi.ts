@@ -1,3 +1,4 @@
+import type { AuthUser } from "../types/AuthUser";
 import type { LoginRequest } from "../types/LoginRequest";
 import type { LoginResponse } from "../types/LoginResponse";
 import { API_URL } from "./api";
@@ -19,6 +20,24 @@ export const login = async (
 
     if (!res.ok) {
         throw new Error("Kunde inte logga in. Försök igen.");
+    }
+
+    return res.json();
+
+    
+};
+
+export const getCurrentUser = async (
+    token: string,
+): Promise<AuthUser> => {
+    const res = await fetch(`${API_URL}/api/users/me`, {
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+    });
+
+    if (!res.ok) {
+        throw new Error("Kunde inte verifiera inloggningen.");
     }
 
     return res.json();
