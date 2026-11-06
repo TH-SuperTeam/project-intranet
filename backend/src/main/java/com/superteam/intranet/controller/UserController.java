@@ -1,6 +1,7 @@
 package com.superteam.intranet.controller;
 
 import com.superteam.intranet.dto.CreateUserRequest;
+import com.superteam.intranet.dto.UpdateUserStatusRequest;
 import com.superteam.intranet.dto.UserResponse;
 import com.superteam.intranet.service.UserService;
 import jakarta.validation.Valid;
@@ -11,6 +12,7 @@ import org.springframework.security.core.Authentication;
 
 @RestController
 @RequestMapping("/api/users")
+@CrossOrigin(origins="http://localhost:5173")
 public class UserController {
 
     private final UserService userService;
@@ -39,5 +41,15 @@ public class UserController {
         UserResponse response = userService.getUserById(userId);
 
         return ResponseEntity.ok(response);
+    }
+
+    @PatchMapping("/{id}/status")
+    public ResponseEntity<UserResponse> updateUserStatus(
+            @PathVariable Long id,
+            @Valid @RequestBody UpdateUserStatusRequest request) {
+
+        UserResponse updatedUser = userService.updateUserStatus(id, request);
+
+        return ResponseEntity.ok(updatedUser);
     }
 }
