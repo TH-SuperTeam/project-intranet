@@ -1,22 +1,20 @@
-import { useState, type ReactNode } from "react";
-import { AudienceContext, type MockRole } from "./AudienceContext";
+
+import type { ReactNode } from "react";
+import { AudienceContext } from "./AudienceContext";
 import { TargetAudience } from "../types/TargetAudience";
+import { UserType } from "../types/UserType";
+import { useAuth } from "../hooks/useAuth";
 
-// Providern är en vanlig komponent som "äger" värdet.
-// "children" är allt som ligger inuti den, i vårt fall hela appen (Routes).
 export const AudienceProvider = ({ children }: { children: ReactNode }) => {
-    // Här bor det faktiska värdet. Det är vanlig useState,
-    // men nu kan alla komponenter inuti Providern läsa det.
-    const [audience, setAudience] = useState<TargetAudience>(
-        TargetAudience.STUDENT,
-    );
+    const { user } = useAuth();
 
-    const [role, setRole] = useState<MockRole>("STUDENT");
+    const audience =
+        user?.userType === UserType.TEACHER
+            ? TargetAudience.TEACHER
+            : TargetAudience.STUDENT;
 
-    // value är det som delas ut. Alla som läser contexten får detta objekt.
-    // Ändras audience renderas alla som läser det om automatiskt.
     return (
-        <AudienceContext value={{ audience, setAudience, role, setRole }}>
+        <AudienceContext value={{ audience }}>
             {children}
         </AudienceContext>
     );
