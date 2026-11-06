@@ -4,10 +4,12 @@ import { login, getCurrentUser } from "../services/authApi"
 import type { AuthUser } from "../types/AuthUser"
 import type { LoginRequest } from "../types/LoginRequest"
 import { TOKEN_KEY } from "../services/api"
+import { useQueryClient } from "@tanstack/react-query"
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
 	const [user, setUser] = useState<AuthUser | null>(null)
 	const [isLoading, setIsLoading] = useState(true)
+	const queryClient = useQueryClient()
 
 	useEffect(() => {
 		let cancelled = false
@@ -26,6 +28,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 				if (!cancelled) {
 					if (currentUser.status !== "ACTIVE") {
 						sessionStorage.removeItem(TOKEN_KEY)
+						queryClient.clear()
+						setUser(null)
 					} else {
 						setUser(currentUser)
 					}
@@ -34,9 +38,12 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 				if (!cancelled) {
 					sessionStorage.removeItem(TOKEN_KEY)
 					setUser(null)
+					queryClient.clear()
 				}
 			} finally {
-				if (!cancelled) setIsLoading(false)
+				if (!cancelled) {
+					setIsLoading(false)
+				}
 			}
 		}
 
@@ -45,12 +52,13 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 		return () => {
 			cancelled = true
 		}
-	}, [])
+	}, [queryClient])
 
 	useEffect(() => {
 		const handleUnauthorized = () => {
 			sessionStorage.removeItem(TOKEN_KEY)
 			setUser(null)
+			queryClient.clear()
 		}
 
 		window.addEventListener("auth:unauthorized", handleUnauthorized)
@@ -58,7 +66,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 		return () => {
 			window.removeEventListener("auth:unauthorized", handleUnauthorized)
 		}
-	}, [])
+	}, [queryClient])
 
 	const loginUser = async (credentials: LoginRequest) => {
 		const response = await login(credentials)

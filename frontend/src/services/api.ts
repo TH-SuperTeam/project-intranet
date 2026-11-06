@@ -1,47 +1,51 @@
+export const API_URL = "http://localhost:8080"
 
-export const API_URL = "http://localhost:8080";
-
-export const TOKEN_KEY = "intranet_token";
+export const TOKEN_KEY = "intranet_token"
 
 export class UnauthorizedError extends Error {
-    constructor() {
-        super("Din inloggning är inte längre giltig.");
-        this.name = "UnauthorizedError";
-    }
+	constructor() {
+		super("Din inloggning är inte längre giltig.")
+		this.name = "UnauthorizedError"
+	}
 }
 
 export const apiFetch = async (
-    path: string,
-    options: RequestInit = {},
+	path: string,
+	options: RequestInit = {},
 ): Promise<Response> => {
-    const token = sessionStorage.getItem(TOKEN_KEY);
+	const token = sessionStorage.getItem(TOKEN_KEY)
 
-    const headers = new Headers(options.headers);
+	const headers = new Headers(options.headers)
 
-    if (token) {
-        headers.set("Authorization", `Bearer ${token}`);
-    }
+	if (token) {
+		headers.set("Authorization", `Bearer ${token}`)
+	}
 
-    const response = await fetch(`${API_URL}${path}`, {
-        ...options,
-        headers,
-    });
+	const response = await fetch(`${API_URL}${path}`, {
+		...options,
+		headers,
+	})
 
-    if (response.status === 401) {
-        sessionStorage.removeItem(TOKEN_KEY);
-        window.dispatchEvent(new Event("auth:unauthorized"));
-        throw new UnauthorizedError();
-    }
+	if (response.status === 401) {
+		const currentToken = sessionStorage.getItem(TOKEN_KEY)
 
-    return response;
-};
+		if (token && currentToken === token) {
+			sessionStorage.removeItem(TOKEN_KEY)
+			window.dispatchEvent(new Event("auth:unauthorized"))
+		}
+
+		throw new UnauthorizedError()
+	}
+
+	return response
+}
 
 export async function testConnection(): Promise<string> {
-    const response = await fetch(`${API_URL}/api/test`);
+	const response = await fetch(`${API_URL}/api/test`)
 
-    if (!response.ok) {
-        throw new Error(`Backend svarade med status ${response.status}`);
-    }
+	if (!response.ok) {
+		throw new Error(`Backend svarade med status ${response.status}`)
+	}
 
-    return response.text();
+	return response.text()
 }
