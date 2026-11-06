@@ -2,6 +2,7 @@ package com.superteam.intranet.service;
 
 import com.superteam.intranet.dto.CreateUserRequest;
 import com.superteam.intranet.dto.UpdateUserStatusRequest;
+import com.superteam.intranet.dto.UserListResponse;
 import com.superteam.intranet.dto.UserResponse;
 import com.superteam.intranet.mapper.UserMapper;
 import com.superteam.intranet.model.AccessRole;
@@ -15,6 +16,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import com.superteam.intranet.exception.DuplicateEmailException;
 import org.springframework.web.server.ResponseStatusException;
+
+import java.util.List;
 
 @Service
 public class UserService {
@@ -89,5 +92,14 @@ public class UserService {
         User updatedUser = userRepository.save(user);
 
         return userMapper.toResponse(updatedUser);
+    }
+
+    public List<UserListResponse> getUsers(String search) {
+
+        String term = (search == null) ? "" : search.trim();
+
+        return userRepository.searchUsers(term).stream()
+                .map(userMapper::toListResponse)
+                .toList();
     }
 }
