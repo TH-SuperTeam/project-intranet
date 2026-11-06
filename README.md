@@ -87,6 +87,24 @@ Kopiera den genererade nyckeln. Den behövs i nästa steg.
 
 Varje utvecklare ska generera sin egen nyckel. Det är inte nödvändigt att dela JWT-nycklar med övriga gruppmedlemmar.
 
+**Alternativ för Windows (PowerShell)**
+
+Om OpenSSL inte är installerat på din dator kan du istället generera en JWT-nyckel direkt via PowerShell.
+
+Öppna PowerShell och kör:
+
+```powershell
+$bytes = New-Object byte[] 32
+$rng = [System.Security.Cryptography.RandomNumberGenerator]::Create()
+$rng.GetBytes($bytes)
+[Convert]::ToBase64String($bytes)
+$rng.Dispose()
+```
+
+Kommandot genererar en slumpmässig nyckel på 32 bytes, kodad i Base64.
+
+Kopiera resultatet och använd det i nästa steg på samma sätt som med OpenSSL.
+
 #### 2. Konfigurera JWT-nyckeln lokalt
 
 JWT-konfigurationen finns i backendens:
@@ -106,7 +124,7 @@ jwt.expiration=3600000
 
 Standardinställningen är `3600000`, vilket motsvarar **1 timme**.
 
-I din fil `backend/src/main/resources/application-local.properties` lägger du till ```JWT_SECRET=DIN_JWT_NYCKEL_123456``
+I din fil `backend/src/main/resources/application-local.properties` lägger du till ```JWT_SECRET=DIN_JWT_NYCKEL_123456```
 
 
 
