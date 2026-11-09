@@ -27,6 +27,7 @@
 - Vi kommer överens om vilka "Att göra" vi ansvarar för.
 - Den som kört fast i mer än en timme ber om hjälp.
 - Den som blir klar hjälper till med granskning innan den tar en ny story.
+- Det är ok att lägga in nya issues/user stories i backlogen individuellt, men de ska inte sättas som To-Do innan en sprint planning. På sprint planning går vi igenom de tillsammans, rangordnar och accepterar.
 
 ## Beslut
 
@@ -39,6 +40,7 @@
 - Pull requests granskas inom 24 timmar på vardagar.
 - Man mergar sin egen pull request efter godkänd review.
 - Commits sker löpande under kodning. När något fungerar committar man.
+- Man ska mergea in dev innan man pushar sin branch.
 - Vi namnger branches på engelska och med prefix:
 
 | Prefix | Beskrivning |
@@ -62,16 +64,17 @@
 
 **Vi har läst kontraktet och är överens om det.**
 
-| Namn | Datum |
-|------|-------|
-| Sofie Törnqvist | 2026-10-13 |
-| Josefine Asplund | 2026-10-13 |
-| Mette Karlsson | 2026-10-13 |
-| Inna Kuljanac | 2026-10-13 |
-| Caroline Enggren | 2026-10-13 |
+| Namn | Datum | Rev. datum
+|------|-------|------|
+| Sofie Törnqvist | 2026-10-13 | 2026-11-03 |
+| Josefine Asplund | 2026-10-13 | 2026-11-03 |
+| Mette Karlsson | 2026-10-13 | 2026-11-03 |
+| Inna Kuljanac | 2026-10-13 | 2026-11-03 |
+| Caroline Enggren | 2026-10-13 | 2026-11-03 |
 
 ## Ändringar
 
 | Datum | Ändring | Anledning |
 |-------|---------|-----------|
 | 2026-10-22 | Ändrade merge-punkten under Kod och kvalitet och la till daily standup. | Förberedelser inför första sprinten. |
+| 2026-11-03 | La till merge med dev under Kod och kvalitet samt individuella issues under Arbetsfördelning | Resultat av första retron. |

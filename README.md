@@ -55,6 +55,79 @@ spring.datasource.password=YOUR_PASSWORD
 
 **Viktigt:** `application.properties` innehåller lokala inloggningsuppgifter och ska inte pushas till GitHub. Kontrollera att filen finns i `.gitignore`.
 
+### 3. Konfigurera JWT (JSON Web Token)
+
+Backend använder JWT (JSON Web Token) för att hantera autentisering och säkerställa att endast inloggade användare kan komma åt skyddade endpoints.
+
+JWT-nyckeln används för att signera och verifiera tokens. Av säkerhetsskäl ska nyckeln aldrig sparas direkt i källkoden eller pushas till GitHub.
+
+Varje utvecklare behöver därför skapa en egen lokal JWT-nyckel innan backend startas.
+
+#### 1. Generera en JWT-nyckel
+
+För att skapa en säker JWT-nyckel används OpenSSL.
+
+Öppna terminalen och kör:
+
+```bash
+openssl rand -base64 32
+```
+
+Kommandot genererar en slumpmässig nyckel på 32 bytes, kodad i Base64.
+
+Exempel på resultat:
+
+```text
+aB3xYz9KpQ7mN2vL5wR8sT1uE4fG6hJ0kM3nP5qS7vA=
+```
+
+**Viktigt:** Exemplet ovan är endast illustrativt. Använd alltid din egen genererade nyckel.
+
+Kopiera den genererade nyckeln. Den behövs i nästa steg.
+
+Varje utvecklare ska generera sin egen nyckel. Det är inte nödvändigt att dela JWT-nycklar med övriga gruppmedlemmar.
+
+**Alternativ för Windows (PowerShell)**
+
+Om OpenSSL inte är installerat på din dator kan du istället generera en JWT-nyckel direkt via PowerShell.
+
+Öppna PowerShell och kör:
+
+```powershell
+$bytes = New-Object byte[] 32
+$rng = [System.Security.Cryptography.RandomNumberGenerator]::Create()
+$rng.GetBytes($bytes)
+[Convert]::ToBase64String($bytes)
+$rng.Dispose()
+```
+
+Kommandot genererar en slumpmässig nyckel på 32 bytes, kodad i Base64.
+
+Kopiera resultatet och använd det i nästa steg på samma sätt som med OpenSSL.
+
+#### 2. Konfigurera JWT-nyckeln lokalt
+
+JWT-konfigurationen finns i backendens:
+
+`backend/src/main/resources/application.properties`
+
+Där finns följande inställningar:
+
+```properties
+# JWT configuration
+jwt.secret=${JWT_SECRET}
+jwt.expiration=3600000
+```
+
+- `jwt.secret` hämtar JWT-nyckeln från en lokal miljövariabel som heter `JWT_SECRET`.
+- `jwt.expiration` anger hur länge en JWT-token är giltig, i millisekunder.
+
+Standardinställningen är `3600000`, vilket motsvarar **1 timme**.
+
+I din fil `backend/src/main/resources/application-local.properties` lägger du till ```JWT_SECRET=DIN_JWT_NYCKEL_123456```
+
+
+
 ### 3. Starta backend
 
 Öppna terminalen i projektets rotmapp:

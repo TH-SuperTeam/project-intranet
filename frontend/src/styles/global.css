@@ -1,0 +1,44 @@
+:root {
+    /* ===== PRIMARY - GREEN ===== */
+    --color-primary: #00302e;
+    --color-primary-light: #004f46;
+    --color-primary-hover: #006057;
+    --color-primary-soft: #deeae8;
+
+    /* ===== SECONDARY - LILAC ===== */
+    --color-secondary: #bd38bf;
+    --color-secondary-hover: #520963;
+    --color-secondary-light: #eb6dff;
+    --color-secondary-soft: #f5e2f6;
+    --color-secondary-dark: #520963;
+
+    /* ===== BACKGROUNDS ===== */
+    --color-background: #f5f8f8;
+    --color-surface: #ffffff;
+    --color-surface-hover: #deeae8;
+    --color-sidebar: #00302e;
+
+    /* ===== TEXT ===== */
+    --color-text-primary: #00302e;
+    --color-text-secondary: #004f46;
+    --color-text-muted: #64748b;
+    --color-text-white: #ffffff;
+    --color-text-accent: #520963;
+
+    /* ===== BORDERS ===== */
+    --color-border: #deeae8;
+    --color-border-hover: #004f46;
+
+    /* ===== STATUS ===== */
+    --color-success: #16a34a;
+    --color-success-light: #dcfce7;
+
+    --color-warning: #d97706;
+    --color-warning-light: #fef3c7;
+
+    --color-error: #dc2626;
+    --color-error-light: #fee2e2;
+
+    --color-info: #0284c7;
+    --color-info-light: #e0f2fe;
+}

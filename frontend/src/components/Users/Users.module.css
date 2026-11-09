@@ -1,0 +1,141 @@
+/* ===== USERS PAGE ===== */
+
+.usersSection {
+    width: 100%;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 1.5rem 1rem;
+    box-sizing: border-box;
+}
+
+/* ===== PAGE HEADER ===== */
+
+.header {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    max-width: 600px;
+    margin: 0 auto 1.5rem;
+}
+
+.header h1 {
+    margin: 0;
+    color: var(--color-text-primary);
+    font-size: 1.6rem;
+    font-weight: 700;
+}
+
+/* ===== USERS FORM ===== */
+
+.form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    width: 100%;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+/* ===== FORM FIELDS ===== */
+
+.formGroup {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.label {
+    color: var(--color-text-primary);
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+.input,
+.select {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border: 1px solid var(--color-border);
+    border-radius: 8px;
+    background-color: var(--color-surface);
+    color: var(--color-text-primary);
+    font: inherit;
+    box-sizing: border-box;
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+/* ===== HOVER ===== */
+
+.input:hover,
+.select:hover {
+    border-color: var(--color-border-hover);
+}
+
+/* ===== FOCUS ===== */
+
+.input:focus,
+.select:focus {
+    outline: none;
+    border-color: var(--color-primary-hover);
+    box-shadow: 0 0 0 3px var(--color-primary-soft);
+}
+
+/* ===== SELECT ===== */
+
+.select {
+    cursor: pointer;
+}
+
+/* ===== VALIDATION ===== */
+
+.errorMessage {
+    padding: 0.75rem 1rem;
+    border-radius: 8px;
+    background-color: var(--color-error-light);
+    color: var(--color-error);
+    font-size: 0.875rem;
+}
+
+.successMessage {
+    padding: 0.75rem 1rem;
+    border-radius: 8px;
+    background-color: var(--color-success-light);
+    color: var(--color-success);
+    font-size: 0.875rem;
+}
+
+/* ===== RESPONSIVE ===== */
+
+/* Medium: 640px+ */
+
+@media (min-width: 640px) {
+    .usersSection {
+        padding: 2rem 1.5rem;
+    }
+}
+
+/* Large: 1024px+ */
+
+@media (min-width: 1024px) {
+    .usersSection {
+        padding: 2.5rem 2rem;
+    }
+}
+
+/* Small Mobile */
+
+@media (max-width: 600px) {
+    .form {
+        max-width: 100%;
+        gap: 1.25rem;
+    }
+
+    .header {
+        max-width: 100%;
+    }
+
+    .header h1 {
+        font-size: 1.4rem;
+    }
+}
