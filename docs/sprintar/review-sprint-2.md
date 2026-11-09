@@ -1,21 +1,8 @@
-# Sprint review: sprint N
-
-<!--
-  INSTRUKTION
-  Del 1 fylls i INNAN reviewn, senast söndag kväll. Det är ert manus.
-  Del 2 fylls i UNDER eller DIREKT EFTER reviewn.
-
-  Reviewn med läraren är ungefär 20 minuter:
-  - Sprintmål och vad som blev klart (2 min)
-  - Demo av fungerande mjukvara (10 min)
-  - Feedback och frågor (8 min)
-
-  Visa bara stories som uppfyller Definition of Done. Halvfärdigt redovisas under "Blev inte klart".
-  Demot ska köras på riktigt, inte med skärmdumpar. Testa det innan.
--->
+# Sprint review: sprint 2
 
 **Datum:**
 2026-11-06
+
 **Deltagare:**
 Josefine, Caroline, Mette, Inna (Sofie sjuk)
 
@@ -27,6 +14,8 @@ Josefine, Caroline, Mette, Inna (Sofie sjuk)
 
 **Uppnåddes sprintmålet?**
 Delvis, backend färdig men ej frontend.
+
+Dessutom hade vi ett mål som vi ej hade planerat i vår sprint, dvs "se en lista över användare" ska komma i nästa sprint.
 
 ### Blev klart
 
@@ -56,11 +45,7 @@ Delvis, backend färdig men ej frontend.
 ## Del 2: Efter reviewn
 
 ### Feedback
--
--
+- Nils tycker att vi borde göra intranätet för både th och vh tillsammans.
 
 ### Ändringar i backloggen
-
-> **Exempel:** Ny story #15 "Turordning per vecka" som Must. "Tilldela en syssla" (#5) sänks till Should.
-
--
+- Ny story i backlogg #90 Som användare vill jag att intranätets färgtema anpassas efter vilken institution jag tillhör
