@@ -1,4 +1,3 @@
-import { Link } from "react-router-dom";
 import styles from "./Users.module.css";
 import type { User } from "../../types/User";
 

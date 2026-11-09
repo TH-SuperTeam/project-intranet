@@ -2,8 +2,12 @@ import { useUsers } from "../../hooks/UsersHooks/useUsers";
 import UserCard from "./UserCard";
 import styles from "./Users.module.css";
 
-const UsersList = () => {
-    const { data: users, isPending, isError } = useUsers();
+interface UserListProps {
+    search: string;
+}
+
+const UsersList = ({ search }: UserListProps) => {
+    const { data: users, isPending, isError } = useUsers(search);
 
     if (isPending) {
         return <div className={styles.state}>Laddar användare...</div>;
@@ -16,12 +20,21 @@ const UsersList = () => {
             </div>
         );
     }
-
     if (users.length === 0) {
+        const hasSearch = search.trim().length > 0;
+
         return (
             <div className={styles.emptyState}>
-                <h3>Inga användare att visa</h3>
-                <p>Det finns inga registrerade användare.</p>
+                <h3>
+                    {hasSearch
+                        ? "Inga matchande användare"
+                        : "Inga användare att visa"}
+                </h3>
+                <p>
+                    {hasSearch
+                        ? "Det finns inga användare som matchar din sökning."
+                        : "Det finns inga användare att visa just nu."}
+                </p>
             </div>
         );
     }
