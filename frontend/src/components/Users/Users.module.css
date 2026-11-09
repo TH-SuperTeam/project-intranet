@@ -2,7 +2,7 @@
 
 .usersSection {
     width: 100%;
-    max-width: 900px;
+    max-width: 1100px;
     margin: 0 auto;
     padding: 1.5rem 1rem;
     box-sizing: border-box;
@@ -10,19 +10,173 @@
 
 /* ===== PAGE HEADER ===== */
 
-.header {
+.pageHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.pageHeader h1 {
+    margin: 0 0 0.4rem;
+    color: var(--color-text-primary);
+    font-size: 1.8rem;
+    font-weight: 700;
+}
+
+.pageHeader p {
+    margin: 0;
+    color: var(--color-text-muted);
+    font-size: 0.9rem;
+}
+
+/* ===== LIST CONTAINER ===== */
+
+.listContainer {
+    padding: 1.5rem;
+    border: 1px solid var(--color-border);
+    border-radius: 12px;
+    background-color: var(--color-surface);
+}
+
+.listHeader {
     display: flex;
     flex-direction: column;
     gap: 1rem;
-    max-width: 600px;
-    margin: 0 auto 1.5rem;
+    margin-bottom: 1.5rem;
 }
 
-.header h1 {
+.listHeader h2 {
     margin: 0;
     color: var(--color-text-primary);
-    font-size: 1.6rem;
+    font-size: 1.15rem;
+    font-weight: 600;
+}
+
+/* ===== USERS LIST ===== */
+
+.usersList {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+/* ===== USER CARD ===== */
+
+.userCard {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem 1.25rem;
+    border: 1px solid var(--color-border);
+    border-radius: 10px;
+    background-color: var(--color-surface);
+    transition:
+        border-color 0.2s ease,
+        background-color 0.2s ease;
+}
+
+.userCard:hover {
+    border-color: var(--color-border-hover);
+    background-color: var(--color-background);
+}
+
+/* ===== AVATAR ===== */
+
+.avatar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background-color: var(--color-primary-soft);
+    color: var(--color-primary);
+    font-size: 0.9rem;
     font-weight: 700;
+}
+
+/* ===== USER INFO ===== */
+
+.userInfo {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    gap: 0.25rem;
+    min-width: 0;
+}
+
+.userName {
+    margin: 0;
+    color: var(--color-text-primary);
+    font-size: 0.95rem;
+    font-weight: 600;
+}
+
+.userEmail {
+    margin: 0;
+    color: var(--color-text-muted);
+    font-size: 0.85rem;
+    overflow-wrap: anywhere;
+}
+
+.userType {
+    color: var(--color-text-secondary);
+    font-size: 0.8rem;
+}
+
+/* ===== USER STATUS ===== */
+
+.statusBadge {
+    flex-shrink: 0;
+    padding: 0.3rem 0.75rem;
+    border-radius: 999px;
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+
+.statusActive {
+    background-color: var(--color-success-light);
+    color: var(--color-success);
+}
+
+.statusInactive {
+    background-color: var(--color-error-light);
+    color: var(--color-error);
+}
+
+/* ===== LOADING / EMPTY / ERROR ===== */
+
+.state,
+.emptyState,
+.errorState {
+    padding: 3rem 1.5rem;
+    border-radius: 10px;
+    text-align: center;
+    color: var(--color-text-muted);
+}
+
+.emptyState h3 {
+    margin: 0 0 0.5rem;
+    color: var(--color-text-primary);
+    font-size: 1rem;
+    font-weight: 600;
+}
+
+.emptyState p {
+    margin: 0;
+    font-size: 0.9rem;
+}
+
+.errorState {
+    background-color: var(--color-error-light);
+    color: var(--color-error);
 }
 
 /* ===== USERS FORM ===== */
@@ -126,6 +280,28 @@
 /* Small Mobile */
 
 @media (max-width: 600px) {
+    .pageHeader {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .pageHeader h1 {
+        font-size: 1.5rem;
+    }
+
+    .listContainer {
+        padding: 1rem;
+    }
+
+    .userCard {
+        flex-wrap: wrap;
+        padding: 1rem;
+    }
+
+    .statusBadge {
+        margin-left: auto;
+    }
+
     .form {
         max-width: 100%;
         gap: 1.25rem;

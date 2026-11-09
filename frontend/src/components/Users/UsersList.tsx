@@ -40,7 +40,7 @@ const UsersList = ({ search }: UserListProps) => {
     }
 
     return (
-        <ul className={styles.newsList}>
+        <ul className={styles.usersList}>
             {users.map(users => (
                 <UserCard key={users.id} user={users} />
             ))}
