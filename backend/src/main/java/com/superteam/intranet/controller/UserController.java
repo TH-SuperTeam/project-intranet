@@ -58,8 +58,10 @@ public class UserController {
 
     @GetMapping
     public ResponseEntity<List<UserListResponse>> getUsers(
-            @RequestParam(required = false) String search) {
+            @RequestParam(required = false) String search, Authentication authentication) {
 
-        return ResponseEntity.ok(userService.getUsers(search));
+        Long userId = (Long) authentication.getPrincipal();
+
+        return ResponseEntity.ok(userService.getUsers(search, userId));
     }
 }

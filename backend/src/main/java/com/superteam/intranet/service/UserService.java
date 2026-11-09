@@ -94,11 +94,17 @@ public class UserService {
         return userMapper.toResponse(updatedUser);
     }
 
-    public List<UserListResponse> getUsers(String search) {
-
+    public List<UserListResponse> getUsers(String search, Long userId) {
         String term = (search == null) ? "" : search.trim();
 
-        return userRepository.searchUsers(term).stream()
+        User currentUser = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("Användaren hittades inte."));
+
+        List<User> users = currentUser.getAccessRole() == AccessRole.ADMIN
+                ? userRepository.searchUsers(term)
+                : userRepository.searchActiveUsers(term);
+
+        return users.stream()
                 .map(userMapper::toListResponse)
                 .toList();
     }
