@@ -1,9 +1,11 @@
-import { useAudience } from "../useAudience";
+
+import { useAuth } from "../useAuth";
+import { AccessRole } from "../../types/AccessRole";
 
 const useCanManageNews = () => {
-    const { role } = useAudience();
+    const { user } = useAuth();
 
-    return role === "ADMIN";
+    return user?.accessRole === AccessRole.ADMIN;
 };
 
 export { useCanManageNews };
