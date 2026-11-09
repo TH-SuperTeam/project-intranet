@@ -1,3 +1,5 @@
+import LogoutButton from "../components/common/LogoutButton";
+
 const DashboardPage = () => {
     return (
         <main>
@@ -8,6 +10,8 @@ const DashboardPage = () => {
                 Vi behöver skapa vår sidebar så att vi kan få hit lite
                 nav-länkar!
             </p>
+
+            <LogoutButton />
         </main>
     );
 };
