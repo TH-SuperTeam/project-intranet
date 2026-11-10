@@ -1,0 +1,9 @@
+.appLayout {
+    display: flex;
+    min-height: 100vh;
+}
+
+.mainContent {
+    flex: 1;
+    min-width: 0;
+}
