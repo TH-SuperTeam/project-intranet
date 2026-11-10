@@ -1,13 +1,39 @@
+import { useState } from "react";
 import CreateButton from "../components/common/CreateButton";
+import SearchInput from "../components/common/SearchInput";
+import UsersList from "../components/Users/UsersList";
+import styles from "../components/Users/Users.module.css";
 
 const UsersPage = () => {
-    return (
-        <div>
-            <h1>Users Page</h1>
-            <p>This is a placeholder for the Users Page.</p>
+    const [search, setSearch] = useState("");
 
-            <CreateButton to="/users/create">+ Skapa ny användare</CreateButton>
-        </div>
+    return (
+        <section className={styles.usersSection}>
+            <div className={styles.pageHeader}>
+                <div>
+                    <h1>Användare</h1>
+                    <p>Hitta och hantera användare i skolportalen.</p>
+                </div>
+
+                <CreateButton to="/users/create">
+                    + Skapa användare
+                </CreateButton>
+            </div>
+
+            <div className={styles.listContainer}>
+                <div className={styles.listHeader}>
+                    <h2>Användarlista</h2>
+
+                    <SearchInput
+                        value={search}
+                        onChange={setSearch}
+                        placeholder="Sök namn eller e-post..."
+                    />
+                </div>
+
+                <UsersList search={search} />
+            </div>
+        </section>
     );
 };
 

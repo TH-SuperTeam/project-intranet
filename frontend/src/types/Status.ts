@@ -1,0 +1,9 @@
+export enum Status {
+    ACTIVE = "ACTIVE",
+    SUSPENDED = "SUSPENDED",
+    GRADUATED = "GRADUATED",
+    WITHDRAWN = "WITHDRAWN",
+    TERMINATED = "TERMINATED",
+    ON_LEAVE = "ON LEAVE",
+    PAUSED = "PAUSED",
+}

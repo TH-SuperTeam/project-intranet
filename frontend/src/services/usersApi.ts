@@ -1,5 +1,5 @@
-
 import type { CreateUserRequest } from "../types/CreateUserRequest";
+import type { User } from "../types/User";
 import { apiFetch } from "./api";
 
 export const createUser = async (user: CreateUserRequest) => {
@@ -21,6 +21,18 @@ export const createUser = async (user: CreateUserRequest) => {
 
     if (!res.ok) {
         throw new Error("Kunde inte skapa användare.");
+    }
+
+    return res.json();
+};
+
+export const getUsers = async (search: string): Promise<User[]> => {
+    const params = new URLSearchParams({ search });
+
+    const res = await apiFetch(`/api/users?${params.toString()}`);
+
+    if (!res.ok) {
+        throw new Error(`Kunde inte hämta användare (${res.status}).`);
     }
 
     return res.json();
