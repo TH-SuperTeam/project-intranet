@@ -24,22 +24,31 @@
     .mainContent {
         width: 100%;
         min-width: 0;
+        padding-top: 50px;
+        box-sizing: border-box;
     }
 
-    .menuButton {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        margin: 16px;
-        padding: 8px;
-        background: var(--color-primary);
-        color: var(--color-text-white);
-        border: none;
-        border-radius: 8px;
-        cursor: pointer;
-        width: 44px;
-        height: 44px;
-        flex: 0 0 44px;
+    @media (max-width: 768px) {
+        .menuButton {
+            position: absolute;
+            top: 16px;
+            left: 16px;
+            z-index: 10;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            width: 44px;
+            height: 44px;
+            padding: 8px;
+
+            background: var(--color-primary);
+            color: var(--color-text-white);
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+        }
     }
     .backdrop {
         display: block;
