@@ -10,6 +10,14 @@
     color: var(--color-text-white);
 }
 
+.sidebarLogo {
+    display: block;
+    width: 7rem;
+    height: auto;
+    margin: 0 auto;
+    color: var(--color-text-white);
+}
+
 .sidebarNav {
     display: flex;
     flex-direction: column;
