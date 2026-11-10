@@ -1,154 +1,154 @@
 /* ===== USERS PAGE ===== */
 
 .usersSection {
-    width: 100%;
-    max-width: 1100px;
-    margin: 0 auto;
-    padding: 1.5rem 1rem;
-    box-sizing: border-box;
+	width: 100%;
+	max-width: 1100px;
+	margin: 0 auto;
+	padding: 1.5rem 1rem;
+	box-sizing: border-box;
 }
 
 /* ===== PAGE HEADER ===== */
 
 .pageHeader {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 1.5rem;
-    margin-bottom: 2rem;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	flex-wrap: wrap;
+	gap: 1.5rem;
+	margin-bottom: 2rem;
 }
 
 .pageHeader h1 {
-    margin: 0 0 0.4rem;
-    color: var(--color-text-primary);
-    font-size: 1.8rem;
-    font-weight: 700;
+	margin: 0 0 0.4rem;
+	color: var(--color-text-primary);
+	font-size: 1.8rem;
+	font-weight: 700;
 }
 
 .pageHeader p {
-    margin: 0;
-    color: var(--color-text-muted);
-    font-size: 0.9rem;
+	margin: 0;
+	color: var(--color-text-muted);
+	font-size: 0.9rem;
 }
 
 /* ===== LIST CONTAINER ===== */
 
 .listContainer {
-    padding: 1.5rem;
-    border: 1px solid var(--color-border);
-    border-radius: 12px;
-    background-color: var(--color-surface);
+	padding: 1.5rem;
+	border: 1px solid var(--color-border);
+	border-radius: 12px;
+	background-color: var(--color-surface);
 }
 
 .listHeader {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-    margin-bottom: 1.5rem;
+	display: flex;
+	flex-direction: column;
+	gap: 1rem;
+	margin-bottom: 1.5rem;
 }
 
 .listHeader h2 {
-    margin: 0;
-    color: var(--color-text-primary);
-    font-size: 1.15rem;
-    font-weight: 600;
+	margin: 0;
+	color: var(--color-text-primary);
+	font-size: 1.15rem;
+	font-weight: 600;
 }
 
 /* ===== USERS LIST ===== */
 
 .usersList {
-    display: flex;
-    flex-direction: column;
-    gap: 0.75rem;
-    margin: 0;
-    padding: 0;
-    list-style: none;
+	display: flex;
+	flex-direction: column;
+	gap: 0.75rem;
+	margin: 0;
+	padding: 0;
+	list-style: none;
 }
 
 /* ===== USER CARD ===== */
 
 .userCard {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    padding: 1rem 1.25rem;
-    border: 1px solid var(--color-border);
-    border-radius: 10px;
-    background-color: var(--color-surface);
-    transition:
-        border-color 0.2s ease,
-        background-color 0.2s ease;
+	display: flex;
+	align-items: center;
+	gap: 1rem;
+	padding: 1rem 1.25rem;
+	border: 1px solid var(--color-border);
+	border-radius: 10px;
+	background-color: var(--color-surface);
+	transition:
+		border-color 0.2s ease,
+		background-color 0.2s ease;
 }
 
 .userCard:hover {
-    border-color: var(--color-border-hover);
-    background-color: var(--color-background);
+	border-color: var(--color-border-hover);
+	background-color: var(--color-background);
 }
 
 /* ===== AVATAR ===== */
 
 .avatar {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-    width: 44px;
-    height: 44px;
-    border-radius: 50%;
-    background-color: var(--color-primary-soft);
-    color: var(--color-primary);
-    font-size: 0.9rem;
-    font-weight: 700;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-shrink: 0;
+	width: 44px;
+	height: 44px;
+	border-radius: 50%;
+	background-color: var(--color-primary-soft);
+	color: var(--color-primary);
+	font-size: 0.9rem;
+	font-weight: 700;
 }
 
 /* ===== USER INFO ===== */
 
 .userInfo {
-    display: flex;
-    flex: 1;
-    flex-direction: column;
-    gap: 0.25rem;
-    min-width: 0;
+	display: flex;
+	flex: 1;
+	flex-direction: column;
+	gap: 0.25rem;
+	min-width: 0;
 }
 
 .userName {
-    margin: 0;
-    color: var(--color-text-primary);
-    font-size: 0.95rem;
-    font-weight: 600;
+	margin: 0;
+	color: var(--color-text-primary);
+	font-size: 0.95rem;
+	font-weight: 600;
 }
 
 .userEmail {
-    margin: 0;
-    color: var(--color-text-muted);
-    font-size: 0.85rem;
-    overflow-wrap: anywhere;
+	margin: 0;
+	color: var(--color-text-muted);
+	font-size: 0.85rem;
+	overflow-wrap: anywhere;
 }
 
 .userType {
-    color: var(--color-text-secondary);
-    font-size: 0.8rem;
+	color: var(--color-text-secondary);
+	font-size: 0.8rem;
 }
 
 /* ===== USER STATUS ===== */
 
 .statusBadge {
-    flex-shrink: 0;
-    padding: 0.3rem 0.75rem;
-    border-radius: 999px;
-    font-size: 0.75rem;
-    font-weight: 600;
+	flex-shrink: 0;
+	padding: 0.3rem 0.75rem;
+	border-radius: 999px;
+	font-size: 0.75rem;
+	font-weight: 600;
 }
 
 .statusActive {
-    background-color: var(--color-success-light);
-    color: var(--color-success);
+	background-color: var(--color-success-light);
+	color: var(--color-success);
 }
 
 .statusInactive {
-    background-color: var(--color-error-light);
-    color: var(--color-error);
+	background-color: var(--color-error-light);
+	color: var(--color-error);
 }
 
 /* ===== LOADING / EMPTY / ERROR ===== */
@@ -156,162 +156,181 @@
 .state,
 .emptyState,
 .errorState {
-    padding: 3rem 1.5rem;
-    border-radius: 10px;
-    text-align: center;
-    color: var(--color-text-muted);
+	padding: 3rem 1.5rem;
+	border-radius: 10px;
+	text-align: center;
+	color: var(--color-text-muted);
 }
 
 .emptyState h3 {
-    margin: 0 0 0.5rem;
-    color: var(--color-text-primary);
-    font-size: 1rem;
-    font-weight: 600;
+	margin: 0 0 0.5rem;
+	color: var(--color-text-primary);
+	font-size: 1rem;
+	font-weight: 600;
 }
 
 .emptyState p {
-    margin: 0;
-    font-size: 0.9rem;
+	margin: 0;
+	font-size: 0.9rem;
 }
 
 .errorState {
-    background-color: var(--color-error-light);
-    color: var(--color-error);
+	background-color: var(--color-error-light);
+	color: var(--color-error);
 }
 
 /* ===== USERS FORM ===== */
 
 .form {
-    display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
-    width: 100%;
-    max-width: 600px;
-    margin: 0 auto;
+	display: flex;
+	flex-direction: column;
+	gap: 1.5rem;
+	width: 100%;
+	max-width: 600px;
+	margin: 0 auto;
 }
 
 /* ===== FORM FIELDS ===== */
 
 .formGroup {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
+	display: flex;
+	flex-direction: column;
+	gap: 0.5rem;
 }
 
 .label {
-    color: var(--color-text-primary);
-    font-size: 0.9rem;
-    font-weight: 500;
+	color: var(--color-text-primary);
+	font-size: 0.9rem;
+	font-weight: 500;
 }
 
 .input,
 .select {
-    width: 100%;
-    padding: 0.75rem 1rem;
-    border: 1px solid var(--color-border);
-    border-radius: 8px;
-    background-color: var(--color-surface);
-    color: var(--color-text-primary);
-    font: inherit;
-    box-sizing: border-box;
-    transition:
-        border-color 0.2s ease,
-        box-shadow 0.2s ease;
+	width: 100%;
+	padding: 0.75rem 1rem;
+	border: 1px solid var(--color-border);
+	border-radius: 8px;
+	background-color: var(--color-surface);
+	color: var(--color-text-primary);
+	font: inherit;
+	box-sizing: border-box;
+	transition:
+		border-color 0.2s ease,
+		box-shadow 0.2s ease;
 }
 
 /* ===== HOVER ===== */
 
 .input:hover,
 .select:hover {
-    border-color: var(--color-border-hover);
+	border-color: var(--color-border-hover);
 }
 
 /* ===== FOCUS ===== */
 
 .input:focus,
 .select:focus {
-    outline: none;
-    border-color: var(--color-primary-hover);
-    box-shadow: 0 0 0 3px var(--color-primary-soft);
+	outline: none;
+	border-color: var(--color-primary-hover);
+	box-shadow: 0 0 0 3px var(--color-primary-soft);
 }
 
 /* ===== SELECT ===== */
 
 .select {
-    cursor: pointer;
+	cursor: pointer;
 }
 
 /* ===== VALIDATION ===== */
 
 .errorMessage {
-    padding: 0.75rem 1rem;
-    border-radius: 8px;
-    background-color: var(--color-error-light);
-    color: var(--color-error);
-    font-size: 0.875rem;
+	padding: 0.75rem 1rem;
+	border-radius: 8px;
+	background-color: var(--color-error-light);
+	color: var(--color-error);
+	font-size: 0.875rem;
 }
 
 .successMessage {
-    padding: 0.75rem 1rem;
-    border-radius: 8px;
-    background-color: var(--color-success-light);
-    color: var(--color-success);
-    font-size: 0.875rem;
+	padding: 0.75rem 1rem;
+	border-radius: 8px;
+	background-color: var(--color-success-light);
+	color: var(--color-success);
+	font-size: 0.875rem;
 }
-
+.statusControl {
+	flex-shrink: 0;
+}
 /* ===== RESPONSIVE ===== */
 
 /* Medium: 640px+ */
 
 @media (min-width: 640px) {
-    .usersSection {
-        padding: 2rem 1.5rem;
-    }
+	.usersSection {
+		padding: 2rem 1.5rem;
+	}
 }
 
 /* Large: 1024px+ */
 
 @media (min-width: 1024px) {
-    .usersSection {
-        padding: 2.5rem 2rem;
-    }
+	.usersSection {
+		padding: 2.5rem 2rem;
+	}
 }
 
 /* Small Mobile */
 
 @media (max-width: 600px) {
-    .pageHeader {
-        align-items: flex-start;
-        flex-direction: column;
-    }
+	.pageHeader {
+		align-items: flex-start;
+		flex-direction: column;
+	}
 
-    .pageHeader h1 {
-        font-size: 1.5rem;
-    }
+	.pageHeader h1 {
+		font-size: 1.5rem;
+	}
 
-    .listContainer {
-        padding: 1rem;
-    }
+	.listContainer {
+		padding: 1rem;
+	}
 
-    .userCard {
-        flex-wrap: wrap;
-        padding: 1rem;
-    }
+	.userCard {
+		display: grid;
+		grid-template-columns: 44px minmax(0, 1fr);
+		align-items: center;
+		gap: 0.75rem;
+		padding: 1rem;
+	}
 
-    .statusBadge {
-        margin-left: auto;
-    }
+	.userInfo {
+		min-width: 0;
+	}
 
-    .form {
-        max-width: 100%;
-        gap: 1.25rem;
-    }
+	.statusControl {
+		grid-column: 1 / -1;
+		justify-self: end;
+		width: 130px;
+	}
 
-    .header {
-        max-width: 100%;
-    }
+	.statusControl > div {
+		width: 100%;
+	}
 
-    .header h1 {
-        font-size: 1.4rem;
-    }
+	.statusBadge {
+		margin-left: auto;
+	}
+
+	.form {
+		max-width: 100%;
+		gap: 1.25rem;
+	}
+
+	.header {
+		max-width: 100%;
+	}
+
+	.header h1 {
+		font-size: 1.4rem;
+	}
 }

@@ -86,11 +86,13 @@ const UserCard = ({ user, onStatusFeedback }: UserCardProps) => {
 				</span>
 			</div>
 
-			<UserStatusSelect
-				value={selectedStatus}
-				onChange={handleStatusChange}
-				disabled={updateStatusMutation.isPending}
-			/>
+			<div className={styles.statusControl}>
+				<UserStatusSelect
+					value={selectedStatus}
+					onChange={handleStatusChange}
+					disabled={updateStatusMutation.isPending}
+				/>
+			</div>
 
 			{showConfirmDialog && (
 				<StatusConfirmDialog
