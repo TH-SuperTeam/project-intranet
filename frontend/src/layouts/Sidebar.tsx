@@ -57,6 +57,7 @@ const Sidebar = ({ isOpen, onNavigate }: SidebarProps) => {
                     <LogoutButton />
                 </div>
             </nav>
+            <div className={styles.sidebarDecoration} aria-hidden="true" />
         </aside>
     );
 };

@@ -71,6 +71,51 @@
     display: none;
 }
 
+.sidebar {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+}
+
+.sidebarDecoration {
+    position: absolute;
+    bottom: 9rem;
+    left: 3rem;
+
+    width: 12px;
+    height: 12px;
+
+    background-color: var(--color-primary-light);
+
+    box-shadow:
+        /* Övre armar */
+        -48px -48px 0 var(--color-primary-light),
+        48px -48px 0 var(--color-primary-light),
+        -36px -36px 0 var(--color-primary-light),
+        36px -36px 0 var(--color-primary-light),
+        -24px -24px 0 var(--color-primary-light),
+        24px -24px 0 var(--color-primary-light),
+        /* Horisontella armar */ -48px 0 0 var(--color-primary-light),
+        -36px 0 0 var(--color-primary-light),
+        -24px 0 0 var(--color-primary-light),
+        -12px 0 0 var(--color-primary-light),
+        12px 0 0 var(--color-primary-light),
+        24px 0 0 var(--color-primary-light),
+        36px 0 0 var(--color-primary-light),
+        48px 0 0 var(--color-primary-light),
+        /* Nedre armar */ -24px 24px 0 var(--color-primary-light),
+        24px 24px 0 var(--color-primary-light),
+        -36px 36px 0 var(--color-primary-light),
+        36px 36px 0 var(--color-primary-light),
+        -48px 48px 0 var(--color-primary-light),
+        48px 48px 0 var(--color-primary-light);
+
+    transform: rotate(-15deg) scale(1.5);
+    opacity: 0.5;
+    pointer-events: none;
+    z-index: 0;
+}
+
 /* Mobil: göm sidebaren utanför skärmen */
 @media (max-width: 768px) {
     .sidebar {
