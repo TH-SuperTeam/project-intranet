@@ -27,7 +27,7 @@ const Sidebar = ({ isOpen, onNavigate }: SidebarProps) => {
             >
                 <X />
             </button>
-            <Logo />
+            <Logo variant="stacked" className={styles.sidebarLogo} />
             <nav className={styles.sidebarNav}>
                 <NavLink
                     to="/dashboard"
@@ -57,6 +57,7 @@ const Sidebar = ({ isOpen, onNavigate }: SidebarProps) => {
                     <LogoutButton />
                 </div>
             </nav>
+            <div className={styles.sidebarDecoration} aria-hidden="true" />
         </aside>
     );
 };
