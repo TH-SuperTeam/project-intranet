@@ -1,0 +1,212 @@
+/* ===== DASHBOARD LAYOUT ===== */
+
+.dashboard {
+    width: 100%;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 2rem;
+    box-sizing: border-box;
+}
+
+.dashboardHeader {
+    margin-bottom: 2rem;
+}
+
+.widgetGrid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
+    gap: 1.5rem;
+}
+
+.widgetMain,
+.widgetColumn {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    min-width: 0;
+}
+
+/* ===== WELCOME HEADER ===== */
+
+.welcomeHeader {
+    position: relative;
+    isolation: isolate;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 2rem;
+    min-height: 180px;
+    padding: 2rem;
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+/* Background illustration */
+
+.welcomeHeader::before {
+    content: "";
+    position: absolute;
+    inset: 0 0 0 auto;
+    width: 65%;
+    z-index: -1;
+    pointer-events: none;
+
+    background-image: url("../../assets/school-building.png");
+    background-repeat: no-repeat;
+    background-size: auto 130%;
+    background-position: right center;
+
+    -webkit-mask-image:
+        radial-gradient(
+            ellipse 65% 85% at bottom left,
+            transparent 0%,
+            black 100%
+        ),
+        radial-gradient(
+            ellipse 65% 85% at bottom right,
+            transparent 0%,
+            black 100%
+        );
+
+    mask-image:
+        radial-gradient(
+            ellipse 65% 85% at bottom left,
+            transparent 0%,
+            black 100%
+        ),
+        radial-gradient(
+            ellipse 65% 85% at bottom right,
+            transparent 0%,
+            black 100%
+        );
+
+    -webkit-mask-composite: source-in;
+    mask-composite: intersect;
+}
+
+/* ===== GREETING ===== */
+
+.welcomeLeft {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.welcomeAvatar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: 64px;
+    height: 64px;
+    border-radius: 16px;
+    background-color: var(--color-secondary-soft);
+    color: var(--color-secondary-dark);
+}
+
+.welcomeLeft h1 {
+    margin: 0 0 0.5rem;
+    color: var(--color-text-primary);
+    font-size: clamp(1.4rem, 2.5vw, 2rem);
+    font-weight: 700;
+}
+
+.welcomeLeft p {
+    margin: 0;
+    color: var(--color-text-secondary);
+    font-size: 0.95rem;
+}
+
+/* ===== DATE & TIME ===== */
+
+.dateTime {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+    margin-right: 7rem;
+    color: var(--color-text-secondary);
+    font-size: 0.875rem;
+    font-weight: 600;
+}
+
+.dateTimeItem {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.dateTimeItem svg {
+    flex-shrink: 0;
+}
+
+/* ===== TABLET ===== */
+
+@media (max-width: 900px) {
+    .widgetGrid {
+        grid-template-columns: 1fr;
+    }
+
+    .welcomeHeader {
+        flex-direction: column;
+        gap: 1.5rem;
+    }
+
+    .welcomeHeader::before {
+        background-size: auto 80%;
+        background-position: right bottom;
+    }
+
+    .dateTime {
+        margin-right: 0;
+    }
+}
+
+/* ===== MOBILE ===== */
+
+@media (max-width: 640px) {
+    .dashboard {
+        padding: 1rem;
+    }
+
+    .widgetGrid,
+    .widgetMain,
+    .widgetColumn {
+        gap: 1rem;
+    }
+
+    .welcomeHeader {
+        padding: 1.5rem;
+    }
+
+    .welcomeHeader::before {
+        width: 100%;
+        background-size: cover;
+        background-position: right bottom;
+        opacity: 0.4;
+    }
+
+    .dateTime {
+        order: -1;
+        width: 100%;
+        gap: 1rem;
+    }
+
+    .welcomeLeft {
+        order: 1;
+    }
+
+    .welcomeAvatar {
+        width: 48px;
+        height: 48px;
+    }
+
+    .welcomeAvatar svg {
+        width: 28px;
+        height: 28px;
+    }
+}
