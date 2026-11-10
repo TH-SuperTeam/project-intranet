@@ -1,3 +1,5 @@
+
+import { useEffect, useState } from "react";
 import { useUsers } from "../../hooks/UsersHooks/useUsers";
 import UserCard from "./UserCard";
 import styles from "./Users.module.css";
@@ -8,6 +10,28 @@ interface UserListProps {
 
 const UsersList = ({ search }: UserListProps) => {
     const { data: users, isPending, isError } = useUsers(search);
+
+    const [feedback, setFeedback] = useState<{
+        message: string;
+        type: "success" | "error";
+    } | null>(null);
+
+    useEffect(() => {
+        if (!feedback) return;
+
+        const timer = setTimeout(() => {
+            setFeedback(null);
+        }, 4000);
+
+        return () => clearTimeout(timer);
+    }, [feedback]);
+
+    const handleStatusFeedback = (
+        message: string,
+        type: "success" | "error",
+    ) => {
+        setFeedback({ message, type });
+    };
 
     if (isPending) {
         return <div className={styles.state}>Laddar användare...</div>;
@@ -20,6 +44,7 @@ const UsersList = ({ search }: UserListProps) => {
             </div>
         );
     }
+
     if (users.length === 0) {
         const hasSearch = search.trim().length > 0;
 
@@ -40,11 +65,30 @@ const UsersList = ({ search }: UserListProps) => {
     }
 
     return (
-        <ul className={styles.usersList}>
-            {users.map(users => (
-                <UserCard key={users.id} user={users} />
-            ))}
-        </ul>
+        <>
+            {feedback && (
+                <div
+                    role={feedback.type === "error" ? "alert" : "status"}
+                    className={`mb-4 rounded-lg border px-4 py-3 text-sm ${
+                        feedback.type === "success"
+                            ? "border-green-200 bg-green-50 text-green-800"
+                            : "border-red-200 bg-red-50 text-red-800"
+                    }`}
+                >
+                    {feedback.message}
+                </div>
+            )}
+
+            <ul className={styles.usersList}>
+                {users.map(user => (
+                    <UserCard
+                        key={user.id}
+                        user={user}
+                        onStatusFeedback={handleStatusFeedback}
+                    />
+                ))}
+            </ul>
+        </>
     );
 };
 
