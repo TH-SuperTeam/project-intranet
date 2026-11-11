@@ -1,19 +1,11 @@
-import { useEffect, useState } from "react";
 import Logo from "../common/Logo";
+import Greeting from "./Greeting";
 import DateTime from "./DateTime";
 import styles from "./Dashboard.module.css";
-import Greeting from "./Greeting";
+import { useCurrentTime } from "../../hooks/useCurrentTime";
 
 const PublicDashboardHeader = () => {
-    const [currentTime, setCurrentTime] = useState(() => new Date());
-
-    useEffect(() => {
-        const interval = setInterval(() => {
-            setCurrentTime(new Date());
-        }, 60_000);
-
-        return () => clearInterval(interval);
-    }, []);
+    const currentTime = useCurrentTime();
 
     return (
         <header className={styles.welcomeHeader}>
@@ -22,6 +14,7 @@ const PublicDashboardHeader = () => {
                     variant="horizontal"
                     className={styles.publicHeaderLogo}
                 />
+
                 <div className={styles.publicWelcomeText}>
                     <Greeting currentTime={currentTime} isPublic />
                 </div>
