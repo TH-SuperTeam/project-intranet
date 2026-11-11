@@ -1,9 +1,6 @@
 package com.superteam.intranet.controller;
 
-import com.superteam.intranet.dto.CreateUserRequest;
-import com.superteam.intranet.dto.UpdateUserStatusRequest;
-import com.superteam.intranet.dto.UserListResponse;
-import com.superteam.intranet.dto.UserResponse;
+import com.superteam.intranet.dto.*;
 import com.superteam.intranet.service.UserService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
@@ -44,6 +41,15 @@ public class UserController {
         UserResponse response = userService.getUserById(userId);
 
         return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<UserProfileResponse> getUserProfile(
+            @PathVariable Long id) {
+
+        UserProfileResponse profile = userService.getUserProfileById(id);
+
+        return ResponseEntity.ok(profile);
     }
 
     @PatchMapping("/{id}/status")

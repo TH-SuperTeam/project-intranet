@@ -2,6 +2,7 @@ package com.superteam.intranet.mapper;
 
 import com.superteam.intranet.dto.PublicUserResponse;
 import com.superteam.intranet.dto.UserListResponse;
+import com.superteam.intranet.dto.UserProfileResponse;
 import com.superteam.intranet.dto.UserResponse;
 import com.superteam.intranet.model.User;
 import org.springframework.stereotype.Component;
@@ -31,6 +32,18 @@ public class UserMapper {
                 user.getUserType(),
                 user.getAccessRole(),
                 user.getStatus()
+        );
+    }
+
+    public UserProfileResponse toProfileResponse(User user) {
+        return new UserProfileResponse(
+                user.getId(),
+                user.getFirstName(),
+                user.getLastName(),
+                user.getProfileImageUrl(),
+                user.getEmail(),
+                user.getUserType(),
+                user.getBio()
         );
     }
 
