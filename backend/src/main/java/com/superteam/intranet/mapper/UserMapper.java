@@ -1,5 +1,6 @@
 package com.superteam.intranet.mapper;
 
+import com.superteam.intranet.dto.PublicUserResponse;
 import com.superteam.intranet.dto.UserListResponse;
 import com.superteam.intranet.dto.UserProfileResponse;
 import com.superteam.intranet.dto.UserResponse;
@@ -43,6 +44,17 @@ public class UserMapper {
                 user.getEmail(),
                 user.getUserType(),
                 user.getBio()
+        );
+    }
+
+    public PublicUserResponse toPublicUserResponse(User user) {
+        return new PublicUserResponse(
+                user.getId(),
+                user.getFirstName(),
+                user.getLastName(),
+                user.getEmail(),
+                user.getProfileImageUrl(),
+                user.getUserType()
         );
     }
 }
