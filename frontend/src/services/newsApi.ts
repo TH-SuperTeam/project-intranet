@@ -19,9 +19,26 @@ export const publishNews = async (news: CreateNewsRequest) => {
 	return res.json()
 }
 
-export const getNews = async (audience: TargetAudience): Promise<News[]> => {
+export interface PaginatedNews {
+	content: News[]
+	totalElements: number
+	totalPages: number
+	number: number
+	size: number
+	first: boolean
+	last: boolean
+}
+
+export const getNews = async (
+	audience: TargetAudience,
+	page: number = 0,
+	size: number = 10,
+): Promise<PaginatedNews> => {
+	
 	const params = new URLSearchParams({
 		targetAudience: audience,
+		page: String(page),
+		size: String(size),
 	})
 
 	const res = await apiFetch(`/api/news?${params}`)
