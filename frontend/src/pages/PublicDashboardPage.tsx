@@ -12,9 +12,9 @@ const PublicDashboardPage = () => {
             <DashboardLayout
                 header={<PublicDashboardHeader />}
                 mainWidget={
-                    <div className={styles.publicWidgetGrid}>
-                        <ClassroomScheduleWidget />
+                    <div className={styles.publicWidgetColumn}>
                         <PublicNewsWidget />
+                        <ClassroomScheduleWidget />
                     </div>
                 }
                 sideWidgets={

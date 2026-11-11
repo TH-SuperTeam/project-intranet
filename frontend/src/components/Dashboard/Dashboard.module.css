@@ -144,17 +144,30 @@
     flex-shrink: 0;
 }
 
-/*  ===== Public Dashboard =====  */
+/* ===== PUBLIC DASHBOARD ===== */
 
 .publicDashboard {
     min-height: 100dvh;
     background-color: var(--color-background);
 }
 
-.publicWidgetGrid {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+/* Widget layout */
+
+.publicWidgetColumn {
+    display: flex;
+    flex-direction: column;
     gap: 1.5rem;
+    min-width: 0;
+}
+
+/* ===== PUBLIC DASHBOARD HEADER ===== */
+
+.publicHeaderLeft {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1.5rem;
+    min-width: 0;
 }
 
 .publicHeaderLogo {
@@ -165,26 +178,50 @@
     color: var(--color-primary-light);
 }
 
-/* ===== TABLET ===== */
+.publicWelcomeText h1 {
+    margin: 0;
+    font-size: clamp(1.5rem, 2.5vw, 2.5rem);
+    font-weight: 700;
+    color: var(--color-text-primary);
+}
 
-@media (max-width: 900px) {
-    .widgetGrid {
-        grid-template-columns: 1fr;
-    }
+.publicWelcomeText p {
+    margin: 0.5rem 0 0;
+    font-size: 1rem;
+    color: var(--color-text-secondary);
+}
 
-    .welcomeHeader {
-        flex-direction: column;
-        gap: 1.5rem;
-    }
+/* Date and time */
 
-    .welcomeHeader::before {
-        background-size: auto 80%;
-        background-position: right bottom;
-    }
+.publicDateTime {
+    flex-shrink: 0;
+}
 
-    .dateTime {
-        margin-right: 0;
-    }
+.publicDateTime .dateTime {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 0.75rem;
+}
+
+.publicDateTime .dateTimeItem {
+    font-size: 1.25rem;
+    font-weight: 600;
+}
+
+.publicDateTime .dateTimeItem:last-child {
+    font-size: 2rem;
+    font-weight: 700;
+}
+
+.publicDateTime .dateTimeItem svg {
+    width: 24px;
+    height: 24px;
+}
+
+.publicDateTime .dateTimeItem:last-child svg {
+    width: 30px;
+    height: 30px;
 }
 
 /* ===== MOBILE ===== */
@@ -198,9 +235,6 @@
     .widgetMain,
     .widgetColumn {
         gap: 1rem;
-    }
-    .publicWidgetGrid {
-        grid-template-columns: 1fr;
     }
 
     .welcomeHeader {

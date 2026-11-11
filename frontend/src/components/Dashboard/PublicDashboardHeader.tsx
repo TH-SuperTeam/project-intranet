@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import Logo from "../common/Logo";
 import DateTime from "./DateTime";
 import styles from "./Dashboard.module.css";
+import Greeting from "./Greeting";
 
 const PublicDashboardHeader = () => {
     const [currentTime, setCurrentTime] = useState(() => new Date());
@@ -16,14 +17,19 @@ const PublicDashboardHeader = () => {
 
     return (
         <header className={styles.welcomeHeader}>
-            <div className={styles.welcomeLeft}>
+            <div className={styles.publicHeaderLeft}>
                 <Logo
                     variant="horizontal"
                     className={styles.publicHeaderLogo}
                 />
+                <div className={styles.publicWelcomeText}>
+                    <Greeting currentTime={currentTime} isPublic />
+                </div>
             </div>
 
-            <DateTime currentTime={currentTime} />
+            <div className={styles.publicDateTime}>
+                <DateTime currentTime={currentTime} />
+            </div>
         </header>
     );
 };
