@@ -39,6 +39,7 @@ function App() {
                                     path="/news/:id"
                                     element={<NewsDetailsPage />}
                                 />
+                                <Route path="/users" element={<UsersPage />} />
 
                                 {/* Admin only */}
                                 <Route element={<AdminRoute />}>
@@ -49,10 +50,6 @@ function App() {
                                     <Route
                                         path="/news/:id/edit"
                                         element={<EditNewsPage />}
-                                    />
-                                    <Route
-                                        path="/users"
-                                        element={<UsersPage />}
                                     />
                                     <Route
                                         path="/users/create"
