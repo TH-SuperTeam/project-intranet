@@ -5,13 +5,25 @@ interface UserAvatarProps {
     profileImageUrl?: string | null;
 }
 
-const UserAvatar = ({ size = 48 }: UserAvatarProps) => {
+const UserAvatar = ({ size = 48, profileImageUrl }: UserAvatarProps) => {
     return (
         <div
-            className="flex shrink-0 items-center justify-center rounded-full bg-(--color-primary-light)] text-white"
+            className="flex shrink-0 items-center justify-center overflow-hidden rounded-full border-2 border-[var(--color-primary-light)] bg-[var(--color-secondary-soft)] text-[var(--color-primary)]"
             style={{ width: size, height: size }}
         >
-            <UserRound size={size * 0.6} strokeWidth={1.5} aria-hidden="true" />
+            {profileImageUrl ? (
+                <img
+                    src={profileImageUrl}
+                    alt=""
+                    className="h-full w-full object-cover"
+                />
+            ) : (
+                <UserRound
+                    size={size * 0.65}
+                    strokeWidth={2}
+                    aria-hidden="true"
+                />
+            )}
         </div>
     );
 };
