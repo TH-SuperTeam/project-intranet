@@ -157,6 +157,14 @@
     gap: 1.5rem;
 }
 
+.publicHeaderLogo {
+    display: block;
+    width: 280px;
+    max-width: 100%;
+    height: auto;
+    color: var(--color-primary-light);
+}
+
 /* ===== TABLET ===== */
 
 @media (max-width: 900px) {
