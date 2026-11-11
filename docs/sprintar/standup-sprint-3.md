@@ -19,14 +19,15 @@
 |   Caroline   |     ja    |   Frontend - #12 #15   |   #16   |   nej     |
 |   Sofie   |    nej     |  sjuk    |  sjuk    |        |
 
-## Onsdag ÅÅÅÅ-MM-DD
+## Onsdag 2026-11-11
 
 | Namn | Närvaro | Igår | Idag | Hinder |
 | ---- | ------- | ---- | ---- | ------ |
-|      |         |      |      |        |
-|      |         |      |      |        |
-|      |         |      |      |        |
-|      |         |      |      |        |
+|   Mette   |    ja     |  #58    |   #65 #66   |    nej    |
+|   Inna   |     ja    |   standup   |   #68   |    installera ny dator    |
+|    Josefine  |    ja     |   #64   |  #61 #97    |    nej    |
+|   Caroline   |     ja    |   #16   |   #70 #56   |   nej     |
+|   Sofie   |    ja     |  sjuk    |   #67   |    nej    |
 
 ## Torsdag ÅÅÅÅ-MM-DD
 
