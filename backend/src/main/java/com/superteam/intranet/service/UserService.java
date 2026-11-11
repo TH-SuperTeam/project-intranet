@@ -102,7 +102,7 @@ public class UserService {
         return userMapper.toResponse(updatedUser);
     }
 
-    public List<UserListResponse> getUsers(String search, Long userId) {
+    public List<?> getUsers(String search, Long userId) {
         String term = (search == null) ? "" : search.trim();
 
         User currentUser = userRepository.findById(userId)
@@ -112,8 +112,14 @@ public class UserService {
                 ? userRepository.searchUsers(term)
                 : userRepository.searchActiveUsers(term);
 
-        return users.stream()
-                .map(userMapper::toListResponse)
-                .toList();
+        if (currentUser.getAccessRole() == AccessRole.ADMIN) {
+            return users.stream()
+                    .map(userMapper::toListResponse)
+                    .toList();
+        } else {
+            return users.stream()
+                    .map(userMapper::toPublicUserResponse)
+                    .toList();
+        }
     }
 }
