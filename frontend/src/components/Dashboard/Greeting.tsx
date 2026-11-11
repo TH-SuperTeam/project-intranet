@@ -1,9 +1,14 @@
 interface GreetingProps {
-    firstName: string;
+    firstName?: string;
     currentTime: Date;
+    isPublic?: boolean;
 }
 
-const Greeting = ({ firstName, currentTime }: GreetingProps) => {
+const Greeting = ({
+    firstName,
+    currentTime,
+    isPublic = false,
+}: GreetingProps) => {
     const hour = currentTime.getHours();
 
     let greeting: string;
@@ -21,9 +26,16 @@ const Greeting = ({ firstName, currentTime }: GreetingProps) => {
     return (
         <div>
             <h1>
-                {greeting}, {firstName}!
+                {isPublic
+                    ? `${greeting}, välkommen!`
+                    : `${greeting}, ${firstName}!`}
             </h1>
-            <p>Här är din överblick för idag.</p>
+
+            <p>
+                {isPublic
+                    ? "Här hittar du aktuell information om skolan."
+                    : "Här är din överblick för idag."}
+            </p>
         </div>
     );
 };

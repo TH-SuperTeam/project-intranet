@@ -3,6 +3,8 @@ package com.superteam.intranet.repository;
 import com.superteam.intranet.model.News;
 import com.superteam.intranet.model.TargetAudience;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.util.Collection;
 import java.util.List;
@@ -14,9 +16,10 @@ public interface NewsRepository extends JpaRepository<News, Long> {
     //- endast hämtar nyheter där isPublished är true,
     //- filtrerar på de målgrupper vi skickar in,
     //- sorterar nyheterna med senaste publicering först.
-    List<News> findByIsPublishedTrueAndTargetAudienceInOrderByCreatedAtDesc(
-            Collection<TargetAudience> targetAudiences
-    );
+    Page<News> findByIsPublishedTrueAndTargetAudienceIn(
+        Collection<TargetAudience> targetAudiences,
+        Pageable pageable
+);
 
     //Metoden innebär att databasen bara returnerar en nyhet om:
     //- ID:t matchar.
