@@ -51,7 +51,9 @@ class UserServiceTest {
                 null,
                 "My bio",
                 null,
+                null,
                 null
+
         );
 
         when(userRepository.findById(1L))
