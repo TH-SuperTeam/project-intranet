@@ -144,6 +144,19 @@
     flex-shrink: 0;
 }
 
+/*  ===== Public Dashboard =====  */
+
+.publicDashboard {
+    min-height: 100dvh;
+    background-color: var(--color-background);
+}
+
+.publicWidgetGrid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1.5rem;
+}
+
 /* ===== TABLET ===== */
 
 @media (max-width: 900px) {
@@ -177,6 +190,9 @@
     .widgetMain,
     .widgetColumn {
         gap: 1rem;
+    }
+    .publicWidgetGrid {
+        grid-template-columns: 1fr;
     }
 
     .welcomeHeader {
