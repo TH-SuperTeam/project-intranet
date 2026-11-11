@@ -13,6 +13,7 @@ import DashboardPage from "./pages/DashboardPage";
 import ProtectedRoute from "./components/auth/ProtectedRoute";
 import AdminRoute from "./components/auth/AdminRoute";
 import MainLayout from "./layouts/MainLayout";
+import PublicDashboardPage from "./pages/PublicDashboardPage";
 
 function App() {
     return (
@@ -21,6 +22,10 @@ function App() {
                 <AudienceProvider>
                     <Routes>
                         <Route path="/login" element={<LoginPage />} />
+                        <Route
+                            path="/public"
+                            element={<PublicDashboardPage />}
+                        />
 
                         <Route element={<ProtectedRoute />}>
                             {/* All authenticated users */}
@@ -34,6 +39,7 @@ function App() {
                                     path="/news/:id"
                                     element={<NewsDetailsPage />}
                                 />
+                                <Route path="/users" element={<UsersPage />} />
 
                                 {/* Admin only */}
                                 <Route element={<AdminRoute />}>
@@ -44,10 +50,6 @@ function App() {
                                     <Route
                                         path="/news/:id/edit"
                                         element={<EditNewsPage />}
-                                    />
-                                    <Route
-                                        path="/users"
-                                        element={<UsersPage />}
                                     />
                                     <Route
                                         path="/users/create"

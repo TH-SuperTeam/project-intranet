@@ -1,23 +1,15 @@
-import { useEffect, useState } from "react";
 import { UserRound } from "lucide-react";
 import Greeting from "./Greeting";
 import DateTime from "./DateTime";
 import styles from "./Dashboard.module.css";
+import { useCurrentTime } from "../../hooks/useCurrentTime";
 
 interface DashboardHeaderProps {
     firstName: string;
 }
 
 const DashboardHeader = ({ firstName }: DashboardHeaderProps) => {
-    const [currentTime, setCurrentTime] = useState(() => new Date());
-
-    useEffect(() => {
-        const interval = setInterval(() => {
-            setCurrentTime(new Date());
-        }, 60_000);
-
-        return () => clearInterval(interval);
-    }, []);
+    const currentTime = useCurrentTime();
 
     return (
         <div className={styles.welcomeHeader}>

@@ -144,26 +144,84 @@
     flex-shrink: 0;
 }
 
-/* ===== TABLET ===== */
+/* ===== PUBLIC DASHBOARD ===== */
 
-@media (max-width: 900px) {
-    .widgetGrid {
-        grid-template-columns: 1fr;
-    }
+.publicDashboard {
+    min-height: 100dvh;
+    background-color: var(--color-background);
+}
 
-    .welcomeHeader {
-        flex-direction: column;
-        gap: 1.5rem;
-    }
+/* Widget layout */
 
-    .welcomeHeader::before {
-        background-size: auto 80%;
-        background-position: right bottom;
-    }
+.publicWidgetColumn {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    min-width: 0;
+}
 
-    .dateTime {
-        margin-right: 0;
-    }
+/* ===== PUBLIC DASHBOARD HEADER ===== */
+
+.publicHeaderLeft {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1.5rem;
+    min-width: 0;
+}
+
+.publicHeaderLogo {
+    display: block;
+    width: 280px;
+    max-width: 100%;
+    height: auto;
+    color: var(--color-primary-light);
+}
+
+.publicWelcomeText h1 {
+    margin: 0;
+    font-size: clamp(1.5rem, 2.5vw, 2.5rem);
+    font-weight: 700;
+    color: var(--color-text-primary);
+}
+
+.publicWelcomeText p {
+    margin: 0.5rem 0 0;
+    font-size: 1rem;
+    color: var(--color-text-secondary);
+}
+
+/* Date and time */
+
+.publicDateTime {
+    flex-shrink: 0;
+}
+
+.publicDateTime .dateTime {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 0.75rem;
+}
+
+.publicDateTime .dateTimeItem {
+    font-size: 1.25rem;
+    font-weight: 600;
+}
+
+.publicDateTime .dateTimeItem:last-child {
+    font-size: 2rem;
+    font-weight: 700;
+}
+
+.publicDateTime .dateTimeItem svg {
+    width: 24px;
+    height: 24px;
+}
+
+.publicDateTime .dateTimeItem:last-child svg {
+    width: 30px;
+    height: 30px;
 }
 
 /* ===== MOBILE ===== */

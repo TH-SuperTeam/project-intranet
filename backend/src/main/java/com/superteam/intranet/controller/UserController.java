@@ -57,7 +57,7 @@ public class UserController {
     }
 
     @GetMapping
-    public ResponseEntity<List<UserListResponse>> getUsers(
+    public ResponseEntity<List<?>> getUsers(
             @RequestParam(required = false) String search, Authentication authentication) {
 
         Long userId = (Long) authentication.getPrincipal();
