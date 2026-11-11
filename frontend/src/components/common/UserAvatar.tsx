@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { UserRound } from "lucide-react";
 
 interface UserAvatarProps {
@@ -6,16 +7,21 @@ interface UserAvatarProps {
 }
 
 const UserAvatar = ({ size = 48, profileImageUrl }: UserAvatarProps) => {
+    const [failedImageUrl, setFailedImageUrl] = useState<string | null>(null);
+
+    const showImage = !!profileImageUrl && failedImageUrl !== profileImageUrl;
+
     return (
         <div
-            className="flex shrink-0 items-center justify-center overflow-hidden rounded-full border-2 border-[var(--color-primary-light)] bg-[var(--color-secondary-soft)] text-[var(--color-primary)]"
+            className="flex shrink-0 items-center justify-center overflow-hidden rounded-full border-2 border-(--color-primary-light)] bg-(--color-secondary-soft)] text-(--color-primary)]"
             style={{ width: size, height: size }}
         >
-            {profileImageUrl ? (
+            {showImage ? (
                 <img
                     src={profileImageUrl}
                     alt=""
                     className="h-full w-full object-cover"
+                    onError={() => setFailedImageUrl(profileImageUrl)}
                 />
             ) : (
                 <UserRound
