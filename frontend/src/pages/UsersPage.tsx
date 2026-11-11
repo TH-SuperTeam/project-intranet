@@ -3,9 +3,12 @@ import CreateButton from "../components/common/CreateButton";
 import SearchInput from "../components/common/SearchInput";
 import UsersList from "../components/Users/UsersList";
 import styles from "../components/Users/Users.module.css";
+import { useAuth } from "../hooks/useAuth";
 
 const UsersPage = () => {
     const [search, setSearch] = useState("");
+    const { user: currentUser } = useAuth();
+    const isAdmin = currentUser?.accessRole === "ADMIN";
 
     return (
         <section className={styles.usersSection}>
@@ -15,9 +18,11 @@ const UsersPage = () => {
                     <p>Hitta och hantera användare i skolportalen.</p>
                 </div>
 
-                <CreateButton to="/users/create">
-                    + Skapa användare
-                </CreateButton>
+                {isAdmin && (
+                    <CreateButton to="/users/create">
+                        + Skapa användare
+                    </CreateButton>
+                )}
             </div>
 
             <div className={styles.listContainer}>
