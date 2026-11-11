@@ -1,4 +1,4 @@
-import { UserRound, Pencil, Mail, CalendarDays, ShieldCheck } from "lucide-react"
+import { UserRound, Mail, CalendarDays, ShieldCheck } from "lucide-react"
 import { useMyProfile } from "../hooks/useMyProfile"
 import { UserType } from "../types/UserType"
 import { AccessRole } from "../types/AccessRole"

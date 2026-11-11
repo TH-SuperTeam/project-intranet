@@ -43,6 +43,15 @@ public class UserController {
         return ResponseEntity.ok(response);
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<UserProfileResponse> getUserProfile(
+            @PathVariable Long id) {
+
+        UserProfileResponse profile = userService.getUserProfileById(id);
+
+        return ResponseEntity.ok(profile);
+    }
+
     @PatchMapping("/{id}/status")
     public ResponseEntity<UserResponse> updateUserStatus(
             @PathVariable Long id,

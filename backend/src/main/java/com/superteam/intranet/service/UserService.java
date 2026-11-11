@@ -1,3 +1,4 @@
+
 package com.superteam.intranet.service;
 
 import com.superteam.intranet.dto.*;
@@ -7,11 +8,11 @@ import com.superteam.intranet.model.User;
 import com.superteam.intranet.model.UserStatus;
 import com.superteam.intranet.model.UserType;
 import com.superteam.intranet.repository.UserRepository;
+import com.superteam.intranet.exception.DuplicateEmailException;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import com.superteam.intranet.exception.DuplicateEmailException;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
@@ -73,6 +74,7 @@ public class UserService {
         return userMapper.toResponse(user);
     }
 
+    // Get current user's own profile
     public MyProfileResponse getMyProfile(Long userId) {
 
         User user = userRepository.findById(userId)
@@ -82,6 +84,18 @@ public class UserService {
                 ));
 
         return userMapper.toMyProfileResponse(user);
+    }
+
+    // Get another user's profile
+    public UserProfileResponse getUserProfileById(Long userId) {
+
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND,
+                        "User not found"
+                ));
+
+        return userMapper.toProfileResponse(user);
     }
 
     @Transactional
@@ -106,7 +120,9 @@ public class UserService {
         String term = (search == null) ? "" : search.trim();
 
         User currentUser = userRepository.findById(userId)
-                .orElseThrow(() -> new RuntimeException("Användaren hittades inte."));
+                .orElseThrow(() -> new RuntimeException(
+                        "Användaren hittades inte."
+                ));
 
         List<User> users = currentUser.getAccessRole() == AccessRole.ADMIN
                 ? userRepository.searchUsers(term)
