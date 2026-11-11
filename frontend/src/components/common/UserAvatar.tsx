@@ -13,7 +13,7 @@ const UserAvatar = ({ size = 48, profileImageUrl }: UserAvatarProps) => {
 
     return (
         <div
-            className="flex shrink-0 items-center justify-center overflow-hidden rounded-full border-2 border-(--color-primary-light)] bg-(--color-secondary-soft)] text-(--color-primary)]"
+            className="flex shrink-0 items-center justify-center overflow-hidden rounded-full border-2 border-(--color-primary-light) bg-(--color-secondary-soft) text-(--color-primary)"
             style={{ width: size, height: size }}
         >
             {showImage ? (
