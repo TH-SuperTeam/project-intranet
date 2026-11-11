@@ -231,13 +231,20 @@
         padding: 1rem;
     }
 
-    .widgetGrid,
+    .widgetGrid {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 1rem;
+    }
+
     .widgetMain,
     .widgetColumn {
         gap: 1rem;
     }
 
     .welcomeHeader {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 1.5rem;
         padding: 1.5rem;
     }
 
@@ -251,20 +258,16 @@
     .dateTime {
         order: -1;
         width: 100%;
+        margin-right: 0;
         gap: 1rem;
     }
 
     .welcomeLeft {
         order: 1;
+        min-width: 0;
     }
 
-    .welcomeAvatar {
-        width: 48px;
-        height: 48px;
-    }
-
-    .welcomeAvatar svg {
-        width: 28px;
-        height: 28px;
+    .welcomeLeft h1 {
+        overflow-wrap: anywhere;
     }
 }

@@ -8,6 +8,7 @@ import StatusConfirmDialog from "./UserStatus/StatusConfirmDialog";
 import useUpdateUserStatus from "../../hooks/UsersHooks/useUpdateUserStatus";
 import type { PublicUser } from "../../types/PublicUser";
 import { useAuth } from "../../hooks/useAuth";
+import UserAvatar from "../common/UserAvatar";
 
 interface UserCardProps {
     user: User | PublicUser;
@@ -29,9 +30,6 @@ const UserCard = ({ user, onStatusFeedback }: UserCardProps) => {
     const [showConfirmDialog, setShowConfirmDialog] = useState(false);
 
     const updateStatusMutation = useUpdateUserStatus();
-
-    const initials =
-        `${user.firstName.charAt(0)}${user.lastName.charAt(0)}`.toUpperCase();
 
     const handleStatusChange = (status: Status) => {
         if (!isAdmin || status === userStatus) {
@@ -64,7 +62,7 @@ const UserCard = ({ user, onStatusFeedback }: UserCardProps) => {
                         "success",
                     );
                 },
-                onError: error => {
+                onError: (error) => {
                     if (userStatus) {
                         setSelectedStatus(userStatus);
                     }
@@ -83,7 +81,7 @@ const UserCard = ({ user, onStatusFeedback }: UserCardProps) => {
 
     return (
         <li className={styles.userCard}>
-            <div className={styles.avatar}>{initials}</div>
+            <UserAvatar size={48} />
 
             <div className={styles.userInfo}>
                 <h3 className={styles.userName}>
