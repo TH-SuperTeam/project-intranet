@@ -8,10 +8,11 @@ import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import com.superteam.intranet.model.TargetAudience;
-import java.util.List;
 import com.superteam.intranet.dto.UserResponse;
 import com.superteam.intranet.service.UserService;
 import org.springframework.security.core.Authentication;
+import org.springframework.data.domain.Page;
+import org.springframework.web.server.ResponseStatusException;
 
 @RestController
 @RequestMapping("/api/news")
@@ -29,9 +30,26 @@ public class NewsController {
         this.userService = userService;
     }
     //Endpoint för att hämta alla nyheter
+ // Endpoint för att hämta publicerade nyheter med paginering.
     @GetMapping
-    public List<NewsResponse> getPublishedNews(
+    public Page<NewsResponse> getPublishedNews(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
             Authentication authentication) {
+
+        if (page < 0) {
+            throw new ResponseStatusException(
+                    HttpStatus.BAD_REQUEST,
+                    "Page must be 0 or greater."
+            );
+        }
+
+        if (size < 1 || size > 10) {
+            throw new ResponseStatusException(
+                    HttpStatus.BAD_REQUEST,
+                    "Size must be between 1 and 10."
+            );
+        }
 
         Long userId = (Long) authentication.getPrincipal();
 
@@ -39,7 +57,9 @@ public class NewsController {
 
         return newsService.getPublishedNews(
                 user.userType(),
-                user.accessRole()
+                user.accessRole(),
+                page,
+                size
         );
     }
 

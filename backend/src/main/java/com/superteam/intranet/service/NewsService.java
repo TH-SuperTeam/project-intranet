@@ -16,6 +16,11 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 import com.superteam.intranet.model.AccessRole;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
+
 import java.util.List;
 
 @Service
@@ -47,35 +52,43 @@ public class NewsService {
         return newsMapper.toResponse(savedNews);
     }
 
-    // Hämta publicerade nyheter utifrån användarens användartyp.
-    @Transactional(readOnly = true)
-    public List<NewsResponse> getPublishedNews(
-            UserType userType,
-            AccessRole accessRole) {
+    // Hämta publicerade nyheter utifrån användarens roll med paginering.
+        @Transactional(readOnly = true)
+        public Page<NewsResponse> getPublishedNews(
+                UserType userType,
+                AccessRole accessRole,
+                int page,
+                int size) {
 
         List<TargetAudience> audiences;
 
         if (accessRole == AccessRole.ADMIN) {
-            audiences = List.of(
-                    TargetAudience.ALL,
-                    TargetAudience.STUDENT,
-                    TargetAudience.TEACHER
-            );
+                audiences = List.of(
+                        TargetAudience.ALL,
+                        TargetAudience.STUDENT,
+                        TargetAudience.TEACHER
+                );
         } else {
-            audiences = List.of(
-                    TargetAudience.ALL,
-                    TargetAudience.valueOf(userType.name())
-            );
+                audiences = List.of(
+                        TargetAudience.ALL,
+                        TargetAudience.valueOf(userType.name())
+                );
         }
 
+        Pageable pageable = PageRequest.of(
+                page,
+                size,
+                Sort.by(Sort.Direction.DESC, "createdAt")
+        );
+
         return newsRepository
-                .findByIsPublishedTrueAndTargetAudienceInOrderByCreatedAtDesc(
-                        audiences
+                .findByIsPublishedTrueAndTargetAudienceIn(
+                        audiences,
+                        pageable
                 )
-                .stream()
-                .map(newsMapper::toResponse)
-                .toList();
-    }
+                .map(newsMapper::toResponse);
+        }
+ 
 
     // Hämta en specifik publicerad nyhet utifrån användarens användartyp.
     @Transactional(readOnly = true)
