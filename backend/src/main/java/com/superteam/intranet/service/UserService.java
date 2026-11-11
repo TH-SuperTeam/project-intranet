@@ -1,9 +1,6 @@
 package com.superteam.intranet.service;
 
-import com.superteam.intranet.dto.CreateUserRequest;
-import com.superteam.intranet.dto.UpdateUserStatusRequest;
-import com.superteam.intranet.dto.UserListResponse;
-import com.superteam.intranet.dto.UserResponse;
+import com.superteam.intranet.dto.*;
 import com.superteam.intranet.mapper.UserMapper;
 import com.superteam.intranet.model.AccessRole;
 import com.superteam.intranet.model.User;
@@ -74,6 +71,17 @@ public class UserService {
                 ));
 
         return userMapper.toResponse(user);
+    }
+
+    public UserProfileResponse getUserProfileById(Long userId) {
+
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND,
+                        "User not found"
+                ));
+
+        return userMapper.toProfileResponse(user);
     }
 
     @Transactional
