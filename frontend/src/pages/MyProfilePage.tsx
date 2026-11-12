@@ -1,5 +1,10 @@
-import { UserRound, Mail, CalendarDays, ShieldCheck } from "lucide-react"
+import { useState } from "react"
+import type { ChangeEvent, FormEvent } from "react"
+import { UserRound, Mail, CalendarDays, ShieldCheck, Pencil } from "lucide-react"
+
 import { useMyProfile } from "../hooks/useMyProfile"
+import useUpdateMyProfile from "../hooks/UsersHooks/useUpdateMyProfile"
+import type { UpdateProfileRequest } from "../types/UpdateProfileRequest"
 import { UserType } from "../types/UserType"
 import { AccessRole } from "../types/AccessRole"
 import styles from "./MyProfilePage.module.css"
@@ -11,6 +16,60 @@ const userTypeLabels: Record<UserType, string> = {
 
 const MyProfilePage = () => {
   const { data: profile, isLoading, isError } = useMyProfile()
+  const updateProfile = useUpdateMyProfile()
+
+  const [isEditing, setIsEditing] = useState(false)
+
+  const [formData, setFormData] = useState<UpdateProfileRequest>({
+    firstName: "",
+    lastName: "",
+    email: "",
+    bio: "",
+  })
+
+  const handleEdit = () => {
+    if (!profile) return
+
+    setFormData({
+      firstName: profile.firstName,
+      lastName: profile.lastName,
+      email: profile.email,
+      bio: profile.bio,
+    })
+
+    updateProfile.reset()
+    setIsEditing(true)
+  }
+
+  const handleChange = (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value } = event.target
+
+    setFormData((previous) => ({
+      ...previous,
+      [name]: value,
+    }))
+  }
+
+  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault()
+
+    updateProfile.mutate(
+      {
+        ...formData,
+        bio: formData.bio?.trim() || null,
+      },
+      {
+        onSuccess: () => {
+          setIsEditing(false)
+        },
+      },
+    )
+  }
+
+  const handleCancel = () => {
+    setIsEditing(false)
+    updateProfile.reset()
+  }
 
   if (isLoading) {
     return <p>Laddar din profil...</p>
@@ -58,50 +117,98 @@ const MyProfilePage = () => {
 
           <span className={styles.userType}>{userTypeLabels[profile.userType]}</span>
         </div>
+
+        {!isEditing && (
+          <button type="button" className={styles.editButton} onClick={handleEdit}>
+            <Pencil size={17} />
+            Redigera profil
+          </button>
+        )}
       </div>
 
-      {/* Profile content */}
-      <div className={styles.profileContent}>
-        {/* About me */}
+      {isEditing ? (
+        /* Edit profile */
         <div className={styles.profileCard}>
-          <h3>Om mig</h3>
+          <h3>Redigera profiluppgifter</h3>
 
-          <p className={styles.bio}>{profile.bio || "Berätta lite om dig själv."}</p>
+          <form className={styles.editForm} onSubmit={handleSubmit}>
+            <label className={styles.formField}>
+              Förnamn
+              <input type="text" name="firstName" value={formData.firstName} onChange={handleChange} required />
+            </label>
+
+            <label className={styles.formField}>
+              Efternamn
+              <input type="text" name="lastName" value={formData.lastName} onChange={handleChange} required />
+            </label>
+
+            <label className={styles.formField}>
+              E-postadress
+              <input type="email" name="email" value={formData.email} onChange={handleChange} required />
+            </label>
+
+            <label className={styles.formField}>
+              Biografi
+              <textarea name="bio" value={formData.bio ?? ""} onChange={handleChange} maxLength={500} rows={5} />
+            </label>
+
+            {updateProfile.isError && <div className={styles.errorMessage}>{updateProfile.error.message}</div>}
+
+            <div className={styles.formActions}>
+              <button type="submit" className={styles.saveButton} disabled={updateProfile.isPending}>
+                {updateProfile.isPending ? "Sparar..." : "Spara ändringar"}
+              </button>
+
+              <button type="button" className={styles.cancelButton} onClick={handleCancel}>
+                Avbryt
+              </button>
+            </div>
+          </form>
         </div>
+      ) : (
+        /* Profile content */
+        <div className={styles.profileContent}>
+          {/* About me */}
+          <div className={styles.profileCard}>
+            <h3>Om mig</h3>
 
-        {/* Account information */}
-        <div className={styles.profileCard}>
-          <h3>Kontouppgifter</h3>
+            <p className={styles.bio}>{profile.bio || "Berätta lite om dig själv."}</p>
+          </div>
 
-          <div className={styles.accountInfo}>
-            <div className={styles.accountInfoItem}>
-              <Mail size={19} />
-              <div>
-                <span>E-postadress</span>
-                <p>{profile.email}</p>
-              </div>
-            </div>
+          {/* Account information */}
+          <div className={styles.profileCard}>
+            <h3>Kontouppgifter</h3>
 
-            <div className={styles.accountInfoItem}>
-              <CalendarDays size={19} />
-              <div>
-                <span>Kontot skapades</span>
-                <p>{createdAt}</p>
-              </div>
-            </div>
-
-            {profile.accessRole === AccessRole.ADMIN && (
+            <div className={styles.accountInfo}>
               <div className={styles.accountInfoItem}>
-                <ShieldCheck size={19} />
+                <Mail size={19} />
                 <div>
-                  <span>Behörighetsroll</span>
-                  <p>Administratör</p>
+                  <span>E-postadress</span>
+                  <p>{profile.email}</p>
                 </div>
               </div>
-            )}
+
+              <div className={styles.accountInfoItem}>
+                <CalendarDays size={19} />
+                <div>
+                  <span>Kontot skapades</span>
+                  <p>{createdAt}</p>
+                </div>
+              </div>
+
+              {profile.accessRole === AccessRole.ADMIN && (
+                <div className={styles.accountInfoItem}>
+                  <ShieldCheck size={19} />
+                  <div>
+                    <span>Behörighetsroll</span>
+                    <p>Administratör</p>
+                  </div>
+                </div>
+              )}
+            </div>
           </div>
         </div>
-      </div>
+      )}
     </section>
   )
 }

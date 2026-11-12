@@ -4,6 +4,7 @@ import { apiFetch } from "./api"
 import type { Status } from "../types/Status"
 import type { PublicUser } from "../types/PublicUser"
 import type { MyProfile } from "../types/MyProfile"
+import type { UpdateProfileRequest } from "../types/UpdateProfileRequest"
 import type { UserProfile } from "../types/UserProfile"
 
 export const createUser = async (user: CreateUserRequest) => {
@@ -71,6 +72,30 @@ export const getMyProfile = async (): Promise<MyProfile> => {
 
   if (!res.ok) {
     throw new Error("Kunde inte hämta din profil.")
+  }
+
+  return res.json()
+}
+
+export const updateMyProfile = async (profile: UpdateProfileRequest): Promise<MyProfile> => {
+  const res = await apiFetch("/api/users/me", {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(profile),
+  })
+
+  if (res.status === 409) {
+    throw new Error("E-postadressen används redan av ett annat konto.")
+  }
+
+  if (res.status === 400) {
+    throw new Error("Kontrollera att alla uppgifter är korrekt ifyllda.")
+  }
+
+  if (!res.ok) {
+    throw new Error("Kunde inte uppdatera din profil.")
   }
 
   return res.json()
