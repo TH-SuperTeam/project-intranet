@@ -104,34 +104,36 @@ const NewsForm = ({
 
             <fieldset className={styles.formGroup}>
                 <legend className={styles.label}>Målgrupp:</legend>
-
-                {[
-                    { value: TargetAudience.STUDENT, label: "Studenter" },
-                    { value: TargetAudience.TEACHER, label: "Lärare" },
-                    {
-                        value: TargetAudience.PUBLIC_DASHBOARD,
-                        label: "Informationsskärm",
-                    },
-                ].map(({ value, label }) => (
-                    <label key={value} className={styles.checkboxLabel}>
-                        <input
-                            type="checkbox"
-                            name="targetAudience"
-                            value={value}
-                            checked={targetAudience.includes(value)}
-                            onChange={(e) => {
-                                setTargetAudience((prev) =>
-                                    e.target.checked
-                                        ? [...prev, value]
-                                        : prev.filter(
-                                              (audience) => audience !== value,
-                                          ),
-                                );
-                            }}
-                        />
-                        {label}
-                    </label>
-                ))}
+                <div className={styles.audienceGrid}>
+                    {[
+                        { value: TargetAudience.STUDENT, label: "Studenter" },
+                        { value: TargetAudience.TEACHER, label: "Lärare" },
+                        {
+                            value: TargetAudience.PUBLIC_DASHBOARD,
+                            label: "Informationsskärm",
+                        },
+                    ].map(({ value, label }) => (
+                        <label key={value} className={styles.checkboxLabel}>
+                            <input
+                                type="checkbox"
+                                name="targetAudience"
+                                value={value}
+                                checked={targetAudience.includes(value)}
+                                onChange={(e) => {
+                                    setTargetAudience((prev) =>
+                                        e.target.checked
+                                            ? [...prev, value]
+                                            : prev.filter(
+                                                  (audience) =>
+                                                      audience !== value,
+                                              ),
+                                    );
+                                }}
+                            />
+                            {label}
+                        </label>
+                    ))}
+                </div>
 
                 {targetAudience.includes(TargetAudience.PUBLIC_DASHBOARD) && (
                     <p className={styles.publicInfo}>

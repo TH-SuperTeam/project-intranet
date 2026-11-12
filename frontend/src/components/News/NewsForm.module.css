@@ -106,6 +106,12 @@ fieldset.formGroup {
     min-width: 0;
 }
 
+.audienceGrid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0.75rem;
+}
+
 .checkboxLabel {
     display: flex;
     align-items: center;
@@ -157,5 +163,10 @@ fieldset.formGroup {
 
     .submitButton {
         width: 100%;
+    }
+    .audienceGrid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 0.75rem;
     }
 }
