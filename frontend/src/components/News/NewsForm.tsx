@@ -80,7 +80,7 @@ const NewsForm = ({
                     { value: TargetAudience.TEACHER, label: "Lärare" },
                     {
                         value: TargetAudience.PUBLIC_DASHBOARD,
-                        label: "Informationsskärmar",
+                        label: "Informationsskärm",
                     },
                 ].map(({ value, label }) => (
                     <label key={value} className={styles.checkboxLabel}>

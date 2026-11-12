@@ -2,7 +2,6 @@
     max-width: 700px;
     margin: 0 auto;
     padding: 2rem;
-    background-color: var(--color-surface);
     border-radius: 12px;
 }
 
@@ -82,54 +81,57 @@ fieldset.formGroup {
     resize: vertical;
 }
 
-.submitButton {
-    align-self: flex-start;
-    padding: 0.75rem 1.75rem;
+/* Målgrupper */
+
+fieldset.formGroup {
     border: none;
+    padding: 0;
+    margin: 0;
+    min-width: 0;
+}
+
+.checkboxLabel {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.75rem 1rem;
+    border: 1px solid var(--color-border);
     border-radius: 8px;
-    background-color: var(--color-secondary);
-    color: var(--color-text-white);
-    font: inherit;
-    font-weight: 600;
+    background-color: var(--color-surface);
+    color: var(--color-text-primary);
     cursor: pointer;
     transition:
-        background-color 0.2s ease,
-        color 0.2s ease;
+        border-color 0.2s ease,
+        background-color 0.2s ease;
 }
 
-.submitButton:hover {
-    background-color: var(--color-secondary-hover);
-    color: var(--color-secondary-dark);
+.checkboxLabel:hover {
+    border-color: var(--color-primary-light);
 }
 
-.submitButton:focus-visible {
-    outline: 2px solid var(--color-secondary-dark);
-    outline-offset: 3px;
+.checkboxLabel:has(input:checked) {
+    border-color: var(--color-primary-light);
+    background-color: var(--color-primary-soft);
 }
 
-.backLink {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    color: var(--color-text-primary);
-    text-decoration: none;
-    font-size: 0.9rem;
-    font-weight: 500;
-    margin-bottom: 1.5rem;
-    transition: color 0.2s ease;
+.checkboxLabel input {
+    width: 18px;
+    height: 18px;
+    margin: 0;
+    accent-color: var(--color-primary);
+    cursor: pointer;
 }
 
-.backLink:hover {
-    color: var(--color-primary-hover);
+.checkboxLabel:has(input:focus-visible) {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
 }
 
-.backLink span {
-    font-size: 1.25rem;
-    transition: transform 0.2s ease;
-}
-
-.backLink:hover span {
-    transform: translateX(-4px);
+.publicInfo {
+    margin: 0.5rem 0 0;
+    color: var(--color-text-secondary);
+    font-size: 0.875rem;
+    line-height: 1.5;
 }
 
 @media (max-width: 600px) {
