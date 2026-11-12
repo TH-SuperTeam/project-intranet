@@ -60,38 +60,33 @@ public class NewsService {
                 int page,
                 int size) {
 
-        List<TargetAudience> audiences;
+            List<TargetAudience> audiences;
 
-        if (accessRole == AccessRole.ADMIN) {
+            if (accessRole == AccessRole.ADMIN) {
                 audiences = List.of(
-                        TargetAudience.ALL,
                         TargetAudience.STUDENT,
-                        TargetAudience.TEACHER
+                        TargetAudience.TEACHER,
+                        TargetAudience.PUBLIC_DASHBOARD
                 );
-        } else {
+            } else {
                 audiences = List.of(
-                        TargetAudience.ALL,
                         TargetAudience.valueOf(userType.name())
                 );
-        }
+            }
 
-        Pageable pageable = PageRequest.of(
-                page,
-                size,
-                Sort.by(Sort.Direction.DESC, "createdAt")
-        );
+            Pageable pageable = PageRequest.of(
+                    page,
+                    size,
+                    Sort.by(Sort.Direction.DESC, "createdAt")
+            );
 
-        return newsRepository
-                .findByIsPublishedTrueAndTargetAudienceIn(
-                        audiences,
-                        pageable
-                )
-                .map(newsMapper::toResponse);
+            return newsRepository
+                    .findPublishedNewsByAudiences(audiences, pageable)
+                    .map(newsMapper::toResponse);
         }
  
 
     // Hämta en specifik publicerad nyhet utifrån användarens användartyp.
-    @Transactional(readOnly = true)
     public NewsResponse getPublishedNewsById(
             Long id,
             UserType userType,
@@ -101,22 +96,18 @@ public class NewsService {
 
         if (accessRole == AccessRole.ADMIN) {
             audiences = List.of(
-                    TargetAudience.ALL,
                     TargetAudience.STUDENT,
-                    TargetAudience.TEACHER
+                    TargetAudience.TEACHER,
+                    TargetAudience.PUBLIC_DASHBOARD
             );
         } else {
             audiences = List.of(
-                    TargetAudience.ALL,
                     TargetAudience.valueOf(userType.name())
             );
         }
 
         News news = newsRepository
-                .findByIdAndIsPublishedTrueAndTargetAudienceIn(
-                        id,
-                        audiences
-                )
+                .findPublishedNewsByIdAndAudiences(id, audiences)
                 .orElseThrow(() -> new ResponseStatusException(
                         HttpStatus.NOT_FOUND,
                         "News not found."

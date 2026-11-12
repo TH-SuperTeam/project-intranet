@@ -2,6 +2,7 @@ package com.superteam.intranet.dto;
 
 import com.superteam.intranet.model.TargetAudience;
 import java.time.LocalDateTime;
+import java.util.Set;
 
 //En record genererar automatiskt:
 //- En konstruktor som tar emot alla fält.
@@ -15,6 +16,6 @@ public record NewsResponse(
         String content,
         Long userId,
         boolean isPublished,
-        TargetAudience targetAudience,
+        Set<TargetAudience> targetAudience,
         LocalDateTime createdAt
 ) {}
