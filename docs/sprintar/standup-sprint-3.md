@@ -33,10 +33,11 @@
 
 | Namn | Närvaro | Igår | Idag | Hinder |
 | ---- | ------- | ---- | ---- | ------ |
-|      |         |      |      |        |
-|      |         |      |      |        |
-|      |         |      |      |        |
-|      |         |      |      |        |
+|   Mette   |    ja     |  #65 #66    |   #63   |    nej    |
+|   Inna   |     ja    |   #68   |   #69   |    nej    |
+|    Josefine  |    ja     |   #61 #97   |   #104 #111   |    nej    |
+|   Caroline   |     ja    |    #56   |   #62   |   nej     |
+|   Sofie   |    ja     |  #67 backend    |   #67 frontend  |    nej    |
 
 ## Fredag ÅÅÅÅ-MM-DD
 
