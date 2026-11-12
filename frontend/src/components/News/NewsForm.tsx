@@ -25,6 +25,8 @@ type NewsFormProps = {
     successMessage: string;
 };
 
+const PUBLIC_CONTENT_MAX_LENGTH = 300;
+
 const NewsForm = ({
     title,
     setTitle,
@@ -40,6 +42,12 @@ const NewsForm = ({
     errorMessage,
     successMessage,
 }: NewsFormProps) => {
+    const isPublicNews = targetAudience.includes(
+        TargetAudience.PUBLIC_DASHBOARD,
+    );
+
+    const isContentTooLong =
+        isPublicNews && content.length > PUBLIC_CONTENT_MAX_LENGTH;
     return (
         <form className={styles.form} onSubmit={handleSubmit} noValidate>
             <div className={styles.formGroup}>
@@ -70,6 +78,27 @@ const NewsForm = ({
                     onChange={(e) => setContent(e.target.value)}
                     required
                 />
+                {isPublicNews && (
+                    <div>
+                        <span
+                            className={
+                                isContentTooLong
+                                    ? styles.characterCountError
+                                    : styles.characterCount
+                            }
+                        >
+                            {content.length} / {PUBLIC_CONTENT_MAX_LENGTH}{" "}
+                            tecken
+                        </span>
+
+                        {isContentTooLong && (
+                            <p className={styles.validationError} role="alert">
+                                Nyheter för informationsskärmen får innehålla
+                                max 300 tecken.
+                            </p>
+                        )}
+                    </div>
+                )}
             </div>
 
             <fieldset className={styles.formGroup}>

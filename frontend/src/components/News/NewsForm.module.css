@@ -81,6 +81,22 @@ fieldset.formGroup {
     resize: vertical;
 }
 
+.characterCount {
+    color: var(--color-text-muted);
+    font-size: 0.875rem;
+}
+
+.characterCountError {
+    color: var(--color-error);
+    font-size: 0.875rem;
+    font-weight: 600;
+}
+
+.validationError {
+    color: var(--color-error);
+    font-size: 0.875rem;
+}
+
 /* Målgrupper */
 
 fieldset.formGroup {
