@@ -1,0 +1,267 @@
+/* ===== PROFILE PAGE ===== */
+
+.profilePage {
+  width: 100%;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 1.5rem 1rem 2.5rem;
+  box-sizing: border-box;
+}
+
+/* ===== PAGE HEADER ===== */
+
+.pageHeader {
+  margin-bottom: 1.75rem;
+}
+
+.pageHeader h1 {
+  margin: 0 0 0.4rem;
+  color: var(--color-text-primary);
+  font-size: 1.8rem;
+  font-weight: 700;
+}
+
+.pageHeader p {
+  margin: 0;
+  color: var(--color-text-muted);
+  font-size: 0.9rem;
+}
+
+/* ===== PROFILE HEADER ===== */
+
+.profileHeader {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  padding: 2rem;
+  margin-bottom: 1.25rem;
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+  background-color: var(--color-surface);
+}
+
+.profileImage,
+.profileImagePlaceholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 130px;
+  height: 130px;
+  border-radius: 50%;
+}
+
+.profileImage {
+  object-fit: cover;
+}
+
+.profileImagePlaceholder {
+  background-color: var(--color-primary-soft);
+  color: var(--color-primary);
+}
+
+.profileInfo {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.6rem;
+  min-width: 0;
+}
+
+.profileInfo h2 {
+  margin: 0;
+  color: var(--color-text-primary);
+  font-size: 1.5rem;
+  font-weight: 700;
+  overflow-wrap: anywhere;
+}
+
+.userType {
+  padding: 0.35rem 0.85rem;
+  border-radius: 999px;
+  background-color: var(--color-primary-soft);
+  color: var(--color-primary);
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+/* ===== EDIT BUTTON ===== */
+
+.editButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  flex-shrink: 0;
+  margin-left: auto;
+  padding: 0.8rem 1.2rem;
+  border: 1px solid var(--color-primary);
+  border-radius: 8px;
+  background-color: transparent;
+  color: var(--color-primary);
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease;
+}
+
+.editButton:hover {
+  background-color: var(--color-primary);
+  color: white;
+}
+
+.editButton:focus-visible {
+  outline: 3px solid var(--color-primary-soft);
+  outline-offset: 3px;
+}
+
+/* ===== PROFILE CONTENT ===== */
+
+.profileContent {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap: 1.25rem;
+  align-items: stretch;
+}
+
+/* ===== PROFILE CARDS ===== */
+
+.profileCard {
+  padding: 1.5rem;
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+  background-color: var(--color-surface);
+}
+
+.profileCard h3 {
+  margin: 0 0 1.25rem;
+  color: var(--color-text-primary);
+  font-size: 1.15rem;
+  font-weight: 700;
+}
+
+/* ===== BIO ===== */
+
+.bio {
+  margin: 0;
+  color: var(--color-text-muted);
+  font-size: 0.95rem;
+  line-height: 1.7;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+/* ===== ACCOUNT INFORMATION ===== */
+
+.accountInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.accountInfoItem {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.85rem;
+  color: var(--color-text-muted);
+}
+
+.accountInfoItem > svg {
+  flex-shrink: 0;
+  margin-top: 0.1rem;
+  color: var(--color-primary);
+}
+
+.accountInfoItem span {
+  display: block;
+  margin-bottom: 0.3rem;
+  color: var(--color-text-muted);
+  font-size: 0.8rem;
+}
+
+.accountInfoItem p {
+  margin: 0;
+  color: var(--color-text-primary);
+  font-size: 0.95rem;
+  overflow-wrap: anywhere;
+}
+
+/* ===== ERROR MESSAGE ===== */
+
+.errorMessage {
+  padding: 1rem 1.25rem;
+  border-radius: 8px;
+  background-color: var(--color-error-light);
+  color: var(--color-error);
+  font-size: 0.9rem;
+}
+
+/* ===== TABLET ===== */
+
+@media (max-width: 800px) {
+  .profileContent {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .profileHeader {
+    padding: 1.5rem;
+  }
+
+  .profileImage,
+  .profileImagePlaceholder {
+    width: 100px;
+    height: 100px;
+  }
+
+  .profileInfo h2 {
+    font-size: 1.3rem;
+  }
+
+  .editButton {
+    padding: 0.7rem 0.9rem;
+  }
+}
+
+/* ===== MOBILE ===== */
+
+@media (max-width: 600px) {
+  .profilePage {
+    padding: 1.25rem 0.75rem 2rem;
+  }
+
+  .pageHeader h1 {
+    font-size: 1.5rem;
+  }
+
+  .profileHeader {
+    flex-wrap: wrap;
+    gap: 1rem;
+    padding: 1.25rem;
+  }
+
+  .profileImage,
+  .profileImagePlaceholder {
+    width: 80px;
+    height: 80px;
+  }
+
+  .profileInfo h2 {
+    font-size: 1.15rem;
+  }
+
+  .editButton {
+    width: 100%;
+    margin: 0.5rem 0 0;
+  }
+
+  .profileContent {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .profileCard {
+    padding: 1.25rem;
+  }
+}

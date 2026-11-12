@@ -33,12 +33,12 @@ public class UserController {
     }
 
     @GetMapping("/me")
-    public ResponseEntity<UserResponse> getCurrentUser(
+    public ResponseEntity<MyProfileResponse> getCurrentUser(
             Authentication authentication) {
 
         Long userId = (Long) authentication.getPrincipal();
 
-        UserResponse response = userService.getUserById(userId);
+        MyProfileResponse response = userService.getMyProfile(userId);
 
         return ResponseEntity.ok(response);
     }
