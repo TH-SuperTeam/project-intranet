@@ -6,6 +6,9 @@ import com.superteam.intranet.model.trafiklab.TrafikLabDeparture;
 import com.superteam.intranet.model.trafiklab.TrafikLabDepartureList;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.server.ResponseStatusException;
+import org.springframework.web.client.RestClientException;
 
 import org.springframework.beans.factory.annotation.Value;
 
@@ -32,20 +35,42 @@ public class TransportService {
 
     public List<DepartureResponse> getDepartures(
             ) {
-        TrafikLabDepartureList response = restClient.get()
-                .uri(uriBuilder -> uriBuilder
-                        .path("/departures/{stopId}")
-                        .queryParam("key", apiKey)
-                        .build(stopId))
-                .retrieve()
-                .body(TrafikLabDepartureList.class);
+        TrafikLabDepartureList response;
+
+        try {
+            response = restClient.get()
+                    .uri(uriBuilder -> uriBuilder
+                            .path("/departures/{stopId}")
+                            .queryParam("key", apiKey)
+                            .build(stopId))
+                    .retrieve()
+                    .body(TrafikLabDepartureList.class);
+
+        } catch (RestClientException exception) {
+            throw new ResponseStatusException(
+                    HttpStatus.SERVICE_UNAVAILABLE,
+                    "Kunde inte hämta avgångar från Trafiklab just nu.",
+                    exception
+            );
+        }
+
+        if (response == null || response.getDepartures() == null) {
+            throw new ResponseStatusException(
+                    HttpStatus.BAD_GATEWAY,
+                    "Trafiklab returnerade ett ogiltigt svar."
+            );
+        }
 
         List<TrafikLabDeparture> departures = response.getDepartures();
 
         return departures.stream()
                 .filter(departure -> !departure.isCanceled())
+                .filter(departure -> departure.getRoute() != null)
+                .filter(departure -> departure.getRoute().getDestination() != null)
+                .filter(departure -> departure.getRealtime() != null)
                 .filter(departure -> departure.getRealtime().isAfter(LocalDateTime.now()))
                 .sorted(Comparator.comparing(TrafikLabDeparture::getRealtime))
+                .limit(15)
                 .map(transportMapper::toDepartureResponse)
                 .toList();
         }
