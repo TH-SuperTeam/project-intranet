@@ -67,6 +67,8 @@ public class SecurityConfig {
 
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
 
+                        .requestMatchers(HttpMethod.GET, "/api/transport/departures").permitAll()
+
                         .requestMatchers(HttpMethod.POST, "/api/auth/logout")
                         .authenticated()
 
