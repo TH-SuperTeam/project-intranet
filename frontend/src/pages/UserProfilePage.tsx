@@ -26,7 +26,7 @@ const UserProfilePage = () => {
                 <p className={styles.errorMessage}>
                     Ogiltigt användar-ID.
                 </p>
-                <Link to="/users">Tillbaka till användarkatalogen</Link>
+                <Link to="/users">Tillbaka till användare</Link>
             </section>
         );
     }
@@ -53,7 +53,7 @@ const UserProfilePage = () => {
                 </p>
 
                 <Link to="/users">
-                    Tillbaka till användarkatalogen
+                    Tillbaka till användare
                 </Link>
             </section>
         );
@@ -62,7 +62,7 @@ const UserProfilePage = () => {
     return (
         <section className={styles.profilePage}>
             <Link to="/users" className={styles.backLink}>
-                ← Tillbaka till användarkatalogen
+                ← Tillbaka till användare
             </Link>
 
             <h1>Användarprofil</h1>

@@ -16,7 +16,8 @@ const userTypeLabels: Record<UserType, string> = {
 
 const UserProfileCard = ({ profile }: UserProfileCardProps) => {
     return (
-        <section className={styles.profileCard}>
+        <>
+            {/* Profile header */}
             <div className={styles.profileHeader}>
                 <UserAvatar
                     size={130}
@@ -34,27 +35,36 @@ const UserProfileCard = ({ profile }: UserProfileCardProps) => {
                 </div>
             </div>
 
+            {/* Profile content */}
             <div className={styles.profileContent}>
-                {profile.bio && (
-                    <div className={styles.infoSection}>
-                        <h3>Om mig</h3>
-                        <p>{profile.bio}</p>
-                    </div>
-                )}
+                {/* Biography */}
+                <div className={styles.profileCard}>
+                    <h3>Om mig</h3>
 
-                <div className={styles.infoSection}>
+                    <p className={styles.bio}>
+                        {profile.bio || "Ingen biografi tillgänglig."}
+                    </p>
+                </div>
+
+                {/* Contact information */}
+                <div className={styles.profileCard}>
                     <h3>Kontaktuppgifter</h3>
 
-                    <div className={styles.email}>
-                        <Mail size={19} />
+                    <div className={styles.accountInfo}>
+                        <div className={styles.accountInfoItem}>
+                            <Mail size={19} />
 
-                        <a href={`mailto:${profile.email}`}>
-                            {profile.email}
-                        </a>
+                            <div>
+                                <span>E-postadress</span>
+                                <a href={`mailto:${profile.email}`}>
+                                    {profile.email}
+                                </a>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
-        </section>
+        </>
     );
 };
 
