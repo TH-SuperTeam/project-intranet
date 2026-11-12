@@ -1,4 +1,4 @@
-package com.superteam.intranet.model.TrafikLab;
+package com.superteam.intranet.model.trafiklab;
 
 public class TrafikLabDestination {
     private String name;

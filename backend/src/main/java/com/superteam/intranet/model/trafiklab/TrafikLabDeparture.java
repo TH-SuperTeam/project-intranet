@@ -1,4 +1,4 @@
-package com.superteam.intranet.model.TrafikLab;
+package com.superteam.intranet.model.trafiklab;
 
 import java.time.LocalDateTime;
 import com.fasterxml.jackson.annotation.JsonProperty;

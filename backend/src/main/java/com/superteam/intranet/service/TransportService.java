@@ -1,6 +1,7 @@
 package com.superteam.intranet.service;
 
 import com.superteam.intranet.dto.DepartureResponse;
+import com.superteam.intranet.model.trafiklab.TrafikLabDepartureList;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
 
@@ -23,7 +24,7 @@ public class TransportService {
         this.apiKey = apiKey;
     }
 
-    public String getDepartures(
+    public TrafikLabDepartureList getDepartures(
             ) {
         return restClient.get()
                 .uri(uriBuilder -> uriBuilder
@@ -31,6 +32,6 @@ public class TransportService {
                         .queryParam("key", apiKey)
                         .build(stopId))
                 .retrieve()
-                .body(String.class);
+                .body(TrafikLabDepartureList.class);
         }
 }

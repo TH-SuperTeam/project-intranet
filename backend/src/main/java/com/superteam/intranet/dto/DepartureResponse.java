@@ -6,7 +6,6 @@ public record DepartureResponse (
     String lineNumber,
     String destination,
     LocalDateTime scheduledDeparture,
-    LocalDateTime estimatedDeparture,
-    Integer delayMinutes
-) {
+    LocalDateTime estimatedDeparture
+    ) {
 }

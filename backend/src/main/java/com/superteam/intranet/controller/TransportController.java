@@ -1,5 +1,6 @@
 package com.superteam.intranet.controller;
 
+import com.superteam.intranet.model.trafiklab.TrafikLabDepartureList;
 import com.superteam.intranet.service.TransportService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,7 +17,7 @@ public class TransportController {
     }
 
     @GetMapping("/departures")
-    public String getDepartures() {
+    public TrafikLabDepartureList getDepartures() {
         return transportService.getDepartures();
     }
 }
