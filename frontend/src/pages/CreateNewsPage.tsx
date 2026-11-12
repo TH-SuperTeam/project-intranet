@@ -55,6 +55,13 @@ const CreateNewsPage = () => {
             return;
         }
 
+        if (
+            targetAudience.includes(TargetAudience.PUBLIC_DASHBOARD) &&
+            content.length > 300
+        ) {
+            return;
+        }
+
         // Skickar nyheten till backend via POST /api/news
         mutation.mutate({
             title: title.trim(),

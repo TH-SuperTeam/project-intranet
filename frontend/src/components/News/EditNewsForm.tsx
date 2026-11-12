@@ -1,6 +1,6 @@
 import { useState, type FormEvent } from "react";
 import type { News } from "../../types/News";
-import type { TargetAudience } from "../../types/TargetAudience";
+import { TargetAudience } from "../../types/TargetAudience";
 import { useUpdateNews } from "../../hooks/NewsHooks/useUpdateNews";
 import NewsForm from "../News/NewsForm";
 
@@ -34,6 +34,13 @@ const EditNewsForm = ({ news }: { news: News }) => {
 
         if (targetAudience.length === 0) {
             setValidationError("Välj minst en målgrupp.");
+            return;
+        }
+
+        if (
+            targetAudience.includes(TargetAudience.PUBLIC_DASHBOARD) &&
+            content.length > 300
+        ) {
             return;
         }
 

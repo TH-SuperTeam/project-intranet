@@ -48,6 +48,7 @@ const NewsForm = ({
 
     const isContentTooLong =
         isPublicNews && content.length > PUBLIC_CONTENT_MAX_LENGTH;
+
     return (
         <form className={styles.form} onSubmit={handleSubmit} noValidate>
             <div className={styles.formGroup}>
@@ -150,6 +151,7 @@ const NewsForm = ({
 
             <SubmitButton
                 isPending={mutation.isPending}
+                isDisabled={isContentTooLong}
                 submitLabel={submitLabel}
                 pendingLabel={pendingLabel}
             />
