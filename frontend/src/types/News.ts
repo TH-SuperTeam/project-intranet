@@ -6,6 +6,6 @@ export interface News {
     content: string;
     userId: number;
     isPublished: boolean;
-    targetAudience: TargetAudience;
+    targetAudience: TargetAudience[];
     createdAt: string;
 }

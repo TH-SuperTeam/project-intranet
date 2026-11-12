@@ -11,9 +11,7 @@ const CreateNewsPage = () => {
     // State för formulärets värden
     const [title, setTitle] = useState("");
     const [content, setContent] = useState("");
-    const [targetAudience, setTargetAudience] = useState<TargetAudience>(
-        TargetAudience.ALL,
-    );
+    const [targetAudience, setTargetAudience] = useState<TargetAudience[]>([]);
     const [validationError, setValidationError] = useState("");
 
     const queryClient = useQueryClient();
@@ -29,7 +27,7 @@ const CreateNewsPage = () => {
             // Återställer formuläret
             setTitle("");
             setContent("");
-            setTargetAudience(TargetAudience.ALL);
+            setTargetAudience([]);
             setValidationError("");
         },
     });
@@ -49,6 +47,11 @@ const CreateNewsPage = () => {
 
         if (title.trim().length > 255) {
             setValidationError("Titeln får innehålla max 255 tecken.");
+            return;
+        }
+
+        if (targetAudience.length === 0) {
+            setValidationError("Välj minst en målgrupp.");
             return;
         }
 
