@@ -1,0 +1,46 @@
+
+.profilePage {
+    width: 100%;
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 1.5rem 1rem 2.5rem;
+    box-sizing: border-box;
+}
+
+.profilePage h1 {
+    margin: 1.5rem 0;
+    color: var(--color-text-primary);
+    font-size: 1.8rem;
+    font-weight: 700;
+}
+
+.backLink {
+    display: inline-block;
+    color: var(--color-primary);
+    font-size: 0.9rem;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.backLink:hover {
+    text-decoration: underline;
+}
+
+.errorMessage {
+    padding: 1rem 1.25rem;
+    margin-bottom: 1rem;
+    border-radius: 8px;
+    background-color: var(--color-error-light);
+    color: var(--color-error);
+    font-size: 0.9rem;
+}
+
+@media (max-width: 600px) {
+    .profilePage {
+        padding: 1.25rem 0.75rem 2rem;
+    }
+
+    .profilePage h1 {
+        font-size: 1.5rem;
+    }
+}
