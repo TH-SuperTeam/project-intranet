@@ -191,3 +191,37 @@
         min-height: 120px;
     }
 }
+
+@media (min-width: 1600px) {
+    .widgetTitle h2,
+    .infoWidgetHeader h2 {
+        font-size: 1.75rem;
+    }
+
+    .widgetTitle svg,
+    .infoWidgetHeader svg {
+        width: 32px;
+        height: 32px;
+    }
+
+    .newsContent h3 {
+        font-size: 1.5rem;
+    }
+
+    .newsContent p {
+        font-size: 1.25rem;
+        line-height: 1.6;
+    }
+
+    .newsContent time {
+        font-size: 1rem;
+    }
+
+    .infoWidgetContent {
+        font-size: 1.25rem;
+    }
+
+    .emptyState {
+        font-size: 1.25rem;
+    }
+}
