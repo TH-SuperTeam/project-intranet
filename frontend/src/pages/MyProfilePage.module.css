@@ -198,6 +198,110 @@
   font-size: 0.9rem;
 }
 
+/* ===== EDIT PROFILE FORM ===== */
+
+.editForm {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.formField {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  color: var(--color-text-primary);
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.formField input,
+.formField textarea {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 0.8rem 1rem;
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  background-color: var(--color-surface);
+  color: var(--color-text-primary);
+  font: inherit;
+  font-weight: 400;
+  font-size: 0.95rem;
+  transition: border-color 0.2s ease;
+}
+
+.formField textarea {
+  resize: vertical;
+  min-height: 120px;
+  line-height: 1.6;
+}
+
+.formField input:focus,
+.formField textarea:focus {
+  outline: none;
+  border-color: var(--color-primary);
+}
+
+.formField input:focus-visible,
+.formField textarea:focus-visible {
+  box-shadow: 0 0 0 3px var(--color-primary-soft);
+}
+
+.formActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: 0.5rem;
+}
+
+.saveButton,
+.cancelButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.8rem 1.3rem;
+  border: 1px solid var(--color-primary);
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease,
+    opacity 0.2s ease;
+}
+
+.saveButton {
+  background-color: var(--color-primary);
+  color: white;
+}
+
+.saveButton:hover:not(:disabled) {
+  opacity: 0.85;
+}
+
+.cancelButton {
+  background-color: transparent;
+  color: var(--color-text-muted);
+  border-color: var(--color-border);
+}
+
+.cancelButton:hover {
+  background-color: var(--color-primary-soft);
+  color: var(--color-primary);
+}
+
+.saveButton:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.saveButton:focus-visible,
+.cancelButton:focus-visible {
+  outline: 3px solid var(--color-primary-soft);
+  outline-offset: 3px;
+}
+
 /* ===== TABLET ===== */
 
 @media (max-width: 800px) {
