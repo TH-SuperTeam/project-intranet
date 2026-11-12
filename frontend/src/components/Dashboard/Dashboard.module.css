@@ -2,10 +2,15 @@
 
 .dashboard {
     width: 100%;
-    max-width: 1400px;
+    max-width: 1600px;
     margin: 0 auto;
     padding: 1rem;
     box-sizing: border-box;
+}
+
+/* Endast publika dashboarden */
+.publicDashboard .dashboard {
+    max-width: 1920px;
 }
 
 .widgetGrid {
@@ -148,7 +153,7 @@
 }
 
 .publicDashboard .widgetGrid {
-    height: calc(100dvh - 250px);
+    height: calc(100dvh - 290px);
     min-height: 0;
     overflow: hidden;
 }
@@ -299,5 +304,37 @@
 
     .welcomeLeft h1 {
         overflow-wrap: anywhere;
+    }
+}
+
+@media (min-width: 1600px) {
+    .publicHeaderLogo {
+        width: 340px;
+    }
+
+    .publicWelcomeText h1 {
+        font-size: 3rem;
+    }
+
+    .publicWelcomeText p {
+        font-size: 1.25rem;
+    }
+
+    .publicDateTime .dateTimeItem {
+        font-size: 1.5rem;
+    }
+
+    .publicDateTime .dateTimeItem:last-child {
+        font-size: 2.5rem;
+    }
+
+    .publicDateTime .dateTimeItem svg {
+        width: 30px;
+        height: 30px;
+    }
+
+    .publicDateTime .dateTimeItem:last-child svg {
+        width: 36px;
+        height: 36px;
     }
 }
