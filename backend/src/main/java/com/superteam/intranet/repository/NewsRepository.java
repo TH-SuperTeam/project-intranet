@@ -39,4 +39,16 @@ public interface NewsRepository extends JpaRepository<News, Long> {
             @Param("id") Long id,
             @Param("audiences") Collection<TargetAudience> audiences
     );
+
+    @Query("""
+        SELECT DISTINCT n
+        FROM News n
+        JOIN n.targetAudience a
+        WHERE n.isPublished = true
+        AND a = :audience
+        """)
+    Page<News> findPublishedNewsByAudience(
+            @Param("audience") TargetAudience audience,
+            Pageable pageable
+    );
 }

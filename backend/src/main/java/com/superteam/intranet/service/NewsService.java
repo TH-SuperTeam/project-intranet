@@ -84,7 +84,24 @@ public class NewsService {
                     .findPublishedNewsByAudiences(audiences, pageable)
                     .map(newsMapper::toResponse);
         }
- 
+
+
+    @Transactional(readOnly = true)
+    public Page<NewsResponse> getPublicNews() {
+
+        Pageable pageable = PageRequest.of(
+                0,
+                5,
+                Sort.by(Sort.Direction.DESC, "createdAt")
+        );
+
+        return newsRepository
+                .findPublishedNewsByAudience(
+                        TargetAudience.PUBLIC_DASHBOARD,
+                        pageable
+                )
+                .map(newsMapper::toResponse);
+    }
 
     // Hämta en specifik publicerad nyhet utifrån användarens användartyp.
     public NewsResponse getPublishedNewsById(
