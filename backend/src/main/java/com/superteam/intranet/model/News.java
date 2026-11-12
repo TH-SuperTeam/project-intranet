@@ -5,6 +5,9 @@ import jakarta.persistence.*;
 // Datum och tider hanteras utan tidszon.
 import java.time.LocalDateTime;
 
+import java.util.Set;
+import java.util.HashSet;
+
 // Representerar en nyhet och sparas i tabellen "news".
 @Entity
 @Table(name = "news")
@@ -31,10 +34,15 @@ public class News {
     @Column(name = "is_published", nullable = false)
     private boolean isPublished = false;
 
-    // Målgrupp lagras som enumens namn; standardvärdet är alla.
-    @Enumerated(EnumType.STRING)
-    @Column(name = "target_audience", nullable = false)
-    private TargetAudience targetAudience = TargetAudience.ALL;
+    // Målgrupp lagras som enumens namn i en separat tabell, vilket möjliggör flera målgrupper per nyhet.
+ @ElementCollection
+@CollectionTable(
+    name = "news_target_audiences",
+    joinColumns = @JoinColumn(name = "news_id")
+)
+@Enumerated(EnumType.STRING)
+@Column(name = "target_audience", nullable = false)
+private Set<TargetAudience> targetAudience = new HashSet<>();
 
     // Tidpunkten då nyheten skapades.
     @Column(name = "created_at", nullable = false)
@@ -80,8 +88,8 @@ public class News {
         isPublished = published;
     }
 
-    public TargetAudience getTargetAudience() { return targetAudience; }
-    public void setTargetAudience(TargetAudience targetAudience) {
+    public Set<TargetAudience> getTargetAudience() { return targetAudience; }
+    public void setTargetAudience(Set<TargetAudience> targetAudience) {
         this.targetAudience = targetAudience;
     }
 

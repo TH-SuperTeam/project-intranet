@@ -4,12 +4,8 @@
     width: 100%;
     max-width: 1400px;
     margin: 0 auto;
-    padding: 2rem;
+    padding: 1rem;
     box-sizing: border-box;
-}
-
-.dashboardHeader {
-    margin-bottom: 2rem;
 }
 
 .widgetGrid {
@@ -144,22 +140,47 @@
     flex-shrink: 0;
 }
 
-/* ===== PUBLIC DASHBOARD ===== */
+/* ===== PUBLIC DASHBOARD WIDGET LAYOUT ===== */
 
 .publicDashboard {
     min-height: 100dvh;
     background-color: var(--color-background);
 }
 
-/* Widget layout */
+.publicDashboard .widgetGrid {
+    height: calc(100dvh - 250px);
+    min-height: 0;
+    overflow: hidden;
+}
 
+/* Vänsterkolumnens wrapper */
+.publicDashboard .widgetMain {
+    min-height: 0;
+}
+
+/* Nyheter 70 %, lektioner 30 % */
 .publicWidgetColumn {
-    display: flex;
-    flex-direction: column;
+    display: grid;
+    grid-template-rows: minmax(0, 7fr) minmax(0, 3fr);
     gap: 1.5rem;
+    height: 100%;
+    min-height: 0;
     min-width: 0;
 }
 
+/* Väder 50 %, bussar 50 % */
+.publicDashboard .widgetColumn {
+    display: grid;
+    grid-template-rows: repeat(2, minmax(0, 1fr));
+    min-height: 0;
+}
+
+/* Widgetarna fyller sin tilldelade yta */
+.publicWidgetColumn > *,
+.publicDashboard .widgetColumn > * {
+    min-height: 0;
+    min-width: 0;
+}
 /* ===== PUBLIC DASHBOARD HEADER ===== */
 
 .publicHeaderLeft {
@@ -239,6 +260,15 @@
     .widgetMain,
     .widgetColumn {
         gap: 1rem;
+    }
+
+    .publicWidgetGrid {
+        height: auto;
+    }
+
+    .publicWidgetColumn,
+    .publicWidgetColumn:first-child {
+        grid-template-rows: auto;
     }
 
     .welcomeHeader {
