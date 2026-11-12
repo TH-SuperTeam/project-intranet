@@ -86,6 +86,33 @@ public class UserService {
         return userMapper.toMyProfileResponse(user);
     }
 
+    @Transactional
+    public MyProfileResponse updateMyProfile(
+            Long userId,
+            UpdateProfileRequest request) {
+
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND,
+                        "User not found"
+                ));
+
+        String email = request.email().trim().toLowerCase();
+
+        if (userRepository.existsByEmailIgnoreCaseAndIdNot(email, userId)) {
+            throw new DuplicateEmailException("E-postadressen används redan");
+        }
+
+        user.setFirstName(request.firstName().trim());
+        user.setLastName(request.lastName().trim());
+        user.setEmail(email);
+        user.setBio(request.bio() != null ? request.bio().trim() : null);
+
+        User updatedUser = userRepository.save(user);
+
+        return userMapper.toMyProfileResponse(updatedUser);
+    }
+
     // Get another user's profile
     public UserProfileResponse getUserProfileById(Long userId) {
 
