@@ -1,13 +1,15 @@
 package com.superteam.intranet.model.TrafikLab;
 
 import java.time.LocalDateTime;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class TrafikLabDeparture {
     private TrafikLabRoute route;
     private LocalDateTime scheduled;
     private LocalDateTime realtime;
-    private boolean cancelled;
+    private boolean canceled;
     private Integer delay;
+    @JsonProperty("is_realtime")
     private boolean isRealtime;
 
     public TrafikLabRoute getRoute() {
@@ -34,12 +36,12 @@ public class TrafikLabDeparture {
         this.realtime = realtime;
     }
 
-    public boolean isCancelled() {
-        return cancelled;
+    public boolean isCanceled() {
+        return canceled;
     }
 
-    public void setCancelled(boolean cancelled) {
-        this.cancelled = cancelled;
+    public void setCanceled(boolean canceled) {
+        this.canceled = canceled;
     }
 
     public Integer getDelay() {
