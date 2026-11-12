@@ -15,6 +15,7 @@ import AdminRoute from "./components/auth/AdminRoute"
 import MainLayout from "./layouts/MainLayout"
 import PublicDashboardPage from "./pages/PublicDashboardPage"
 import MyProfilePage from "./pages/MyProfilePage"
+import UserProfilePage from "./pages/UserProfilePage"
 
 function App() {
   return (
@@ -33,6 +34,7 @@ function App() {
                 <Route path="/news" element={<NewsPage />} />
                 <Route path="/news/:id" element={<NewsDetailsPage />} />
                 <Route path="/users" element={<UsersPage />} />
+                <Route path="/users/:id" element={<UserProfilePage />} />
 
                 {/* Admin only */}
                 <Route element={<AdminRoute />}>

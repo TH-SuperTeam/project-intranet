@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { useState } from "react";
 import styles from "./Users.module.css";
 import type { User } from "../../types/User";
@@ -23,6 +24,12 @@ const userTypeLabels: Record<UserType, string> = {
 const UserCard = ({ user, onStatusFeedback }: UserCardProps) => {
     const { user: currentUser } = useAuth();
     const isAdmin = currentUser?.accessRole === "ADMIN";
+    
+    const isOwnProfile = currentUser?.id === user.id;
+    const profilePath = isOwnProfile
+    ? "/profile"
+    : `/users/${user.id}`;
+    
     const userStatus = "status" in user ? user.status : undefined;
     const [selectedStatus, setSelectedStatus] = useState<Status>(
         userStatus ?? Status.ACTIVE,
@@ -81,19 +88,21 @@ const UserCard = ({ user, onStatusFeedback }: UserCardProps) => {
 
     return (
         <li className={styles.userCard}>
-            <UserAvatar size={48} />
+            <Link to={profilePath} className={styles.userProfileLink}>
+                <UserAvatar size={48} />
 
-            <div className={styles.userInfo}>
-                <h3 className={styles.userName}>
-                    {user.firstName} {user.lastName}
-                </h3>
+                <div className={styles.userInfo}>
+                    <h3 className={styles.userName}>
+                        {user.firstName} {user.lastName}
+                    </h3>
 
-                <p className={styles.userEmail}>{user.email}</p>
+                    <p className={styles.userEmail}>{user.email}</p>
 
-                <span className={styles.userType}>
-                    {userTypeLabels[user.userType]}
-                </span>
-            </div>
+                    <span className={styles.userType}>
+                        {userTypeLabels[user.userType]}
+                    </span>
+                </div>
+            </Link>
 
             {isAdmin && (
                 <div className={styles.statusControl}>

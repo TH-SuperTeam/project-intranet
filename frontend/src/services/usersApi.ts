@@ -4,6 +4,7 @@ import { apiFetch } from "./api"
 import type { Status } from "../types/Status"
 import type { PublicUser } from "../types/PublicUser"
 import type { MyProfile } from "../types/MyProfile"
+import type { UserProfile } from "../types/UserProfile"
 
 export const createUser = async (user: CreateUserRequest) => {
   const res = await apiFetch("/api/users", {
@@ -70,6 +71,20 @@ export const getMyProfile = async (): Promise<MyProfile> => {
 
   if (!res.ok) {
     throw new Error("Kunde inte hämta din profil.")
+  }
+
+  return res.json()
+}
+
+export const getUserProfile = async (userId: number): Promise<UserProfile> => {
+  const res = await apiFetch(`/api/users/${userId}`)
+
+  if (res.status === 404) {
+    throw new Error("Användaren kunde inte hittas.")
+  }
+
+  if (!res.ok) {
+    throw new Error("Kunde inte hämta användarens profil.")
   }
 
   return res.json()
