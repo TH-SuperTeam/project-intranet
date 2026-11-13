@@ -7,7 +7,6 @@ import com.superteam.intranet.service.NewsService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-import com.superteam.intranet.model.TargetAudience;
 import com.superteam.intranet.dto.UserResponse;
 import com.superteam.intranet.service.UserService;
 import org.springframework.security.core.Authentication;
@@ -35,6 +34,7 @@ public class NewsController {
     public Page<NewsResponse> getPublishedNews(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size,
+            @RequestParam(required = false) String search,
             Authentication authentication) {
 
         if (page < 0) {
@@ -51,6 +51,13 @@ public class NewsController {
             );
         }
 
+        if (search != null && search.trim().length() > 100) {
+            throw new ResponseStatusException(
+                    HttpStatus.BAD_REQUEST,
+                    "Search term must not exceed 100 characters."
+            );
+        }
+
         Long userId = (Long) authentication.getPrincipal();
 
         UserResponse user = userService.getUserById(userId);
@@ -59,7 +66,8 @@ public class NewsController {
                 user.userType(),
                 user.accessRole(),
                 page,
-                size
+                size,
+                search
         );
     }
 
