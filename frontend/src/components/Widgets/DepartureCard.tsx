@@ -1,4 +1,4 @@
-import styles from "./News.module.css";
+import styles from "./Widgets.module.css";
 import type { Departure } from "../../types/Departure";
 
 interface DepartureCardProps {
@@ -27,24 +27,66 @@ const DepartureCard = ({ departure }: DepartureCardProps) => {
     //Math.round gör att vi får ett helt antal minuter:
     const differenceInMinutes = Math.round(difference / 60000);
 
+    //Math.ceil avrundar uppåt
+    const minutesUntilDeparture = Math.ceil(
+        (new Date(departure.estimatedDeparture).getTime() - Date.now()) / 60000,
+    );
+
     return (
-        <li className={styles.newsCard}>
-            <div className={styles.cardHeader}>
-                <h2 className={styles.title}>{departure.lineNumber}</h2>
-                <p>{departure.destination}</p>
-                <div>
-                    <p>Planerad avgångstid: </p>
+        <li className={styles.departureCard}>
+            <div className={styles.departureHeader}>
+                <span
+                    className={`${styles.departureLine} ${
+                        departure.destination.includes("Annehem")
+                            ? styles.departureLineDirectionOne
+                            : styles.departureLineDirectionTwo
+                    }`}
+                >
+                    {departure.lineNumber}
+                </span>
+
+                <p className={styles.departureDestination}>
+                    {departure.destination.includes("Annehem")
+                        ? `${departure.destination} via Lund C`
+                        : departure.destination}
+                </p>
+
+                <div className={styles.departureTimes}>
+                    {differenceInMinutes !== 0 && (
+                        <time
+                            dateTime={departure.scheduledDeparture}
+                            className={styles.departureScheduled}
+                        >
+                            {formattedScheduledTime}
+                        </time>
+                    )}
+
                     <time
-                        dateTime={departure.scheduledDeparture}
-                        className={styles.date}
+                        dateTime={departure.estimatedDeparture}
+                        className={styles.departureTime}
                     >
-                        {formattedScheduledTime}
+                        {formattedEstimatedTime}
                     </time>
                 </div>
-                {differenceInMinutes > 0 && (
-                    <div>
-                        <p>Beräknad avgångstid: {formattedEstimatedTime}</p>
-                    </div>
+            </div>
+
+            <div className={styles.departureDetails}>
+                <span className={styles.departureCountdown}>
+                    {minutesUntilDeparture} min kvar
+                </span>
+
+                {differenceInMinutes !== 0 && (
+                    <span
+                        className={
+                            differenceInMinutes > 0
+                                ? styles.departureDelay
+                                : styles.departureEarly
+                        }
+                    >
+                        {differenceInMinutes > 0
+                            ? `${differenceInMinutes} min försening`
+                            : `${Math.abs(differenceInMinutes)} min tidigare`}
+                    </span>
                 )}
             </div>
         </li>
