@@ -81,6 +81,22 @@ fieldset.formGroup {
     resize: vertical;
 }
 
+.characterCount {
+    color: var(--color-text-muted);
+    font-size: 0.875rem;
+}
+
+.characterCountError {
+    color: var(--color-error);
+    font-size: 0.875rem;
+    font-weight: 600;
+}
+
+.validationError {
+    color: var(--color-error);
+    font-size: 0.875rem;
+}
+
 /* Målgrupper */
 
 fieldset.formGroup {
@@ -88,6 +104,12 @@ fieldset.formGroup {
     padding: 0;
     margin: 0;
     min-width: 0;
+}
+
+.audienceGrid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0.75rem;
 }
 
 .checkboxLabel {
@@ -141,5 +163,10 @@ fieldset.formGroup {
 
     .submitButton {
         width: 100%;
+    }
+    .audienceGrid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 0.75rem;
     }
 }

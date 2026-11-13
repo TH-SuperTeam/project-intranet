@@ -22,6 +22,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class NewsService {
@@ -37,20 +38,25 @@ public class NewsService {
     }
 
     // Publicera en nyhet.
-    @Transactional
-    public NewsResponse publishNews(
-            CreateNewsRequest request,
-            Long userId) {
+  @Transactional
+public NewsResponse publishNews(
+        CreateNewsRequest request,
+        Long userId) {
 
-        News news = newsMapper.toEntity(request);
+    validatePublicNewsContent(
+            request.content(),
+            request.targetAudience()
+    );
 
-        news.setUserId(userId);
-        news.setPublished(true);
+    News news = newsMapper.toEntity(request);
 
-        News savedNews = newsRepository.save(news);
+    news.setUserId(userId);
+    news.setPublished(true);
 
-        return newsMapper.toResponse(savedNews);
-    }
+    News savedNews = newsRepository.save(news);
+
+    return newsMapper.toResponse(savedNews);
+}
 
     // Hämta publicerade nyheter utifrån användarens roll med paginering.
         @Transactional(readOnly = true)
@@ -152,6 +158,11 @@ public class NewsService {
             );
         }
 
+        validatePublicNewsContent(
+        request.content(),
+        request.targetAudience()
+);
+
         news.setTitle(request.title().trim());
         news.setContent(request.content().trim());
         news.setTargetAudience(request.targetAudience());
@@ -173,4 +184,18 @@ public class NewsService {
 
         newsRepository.delete(news);
     }
+
+    private void validatePublicNewsContent(
+        String content,
+        Set<TargetAudience> targetAudience) {
+
+    if (targetAudience.contains(TargetAudience.PUBLIC_DASHBOARD)
+            && content.trim().length() > 300) {
+
+        throw new ResponseStatusException(
+                HttpStatus.BAD_REQUEST,
+                "Nyheter för informationsskärmen får innehålla max 300 tecken."
+        );
+    }
+}
 }
