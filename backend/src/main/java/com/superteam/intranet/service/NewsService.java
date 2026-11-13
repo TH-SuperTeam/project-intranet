@@ -58,38 +58,54 @@ public NewsResponse publishNews(
     return newsMapper.toResponse(savedNews);
 }
 
-    // Hämta publicerade nyheter utifrån användarens roll med paginering.
-        @Transactional(readOnly = true)
-        public Page<NewsResponse> getPublishedNews(
-                UserType userType,
-                AccessRole accessRole,
-                int page,
-                int size) {
 
-            List<TargetAudience> audiences;
+    // Hämta publicerade nyheter utifrån användarens roll med paginering och eventuell sökning.
+    @Transactional(readOnly = true)
+    public Page<NewsResponse> getPublishedNews(
+            UserType userType,
+            AccessRole accessRole,
+            int page,
+            int size,
+            String search) {
 
-            if (accessRole == AccessRole.ADMIN) {
-                audiences = List.of(
-                        TargetAudience.STUDENT,
-                        TargetAudience.TEACHER,
-                        TargetAudience.PUBLIC_DASHBOARD
-                );
-            } else {
-                audiences = List.of(
-                        TargetAudience.valueOf(userType.name())
-                );
-            }
+        List<TargetAudience> audiences;
 
-            Pageable pageable = PageRequest.of(
-                    page,
-                    size,
-                    Sort.by(Sort.Direction.DESC, "createdAt")
+        if (accessRole == AccessRole.ADMIN) {
+            audiences = List.of(
+                    TargetAudience.STUDENT,
+                    TargetAudience.TEACHER,
+                    TargetAudience.PUBLIC_DASHBOARD
             );
-
-            return newsRepository
-                    .findPublishedNewsByAudiences(audiences, pageable)
-                    .map(newsMapper::toResponse);
+        } else {
+            audiences = List.of(
+                    TargetAudience.valueOf(userType.name())
+            );
         }
+
+        Pageable pageable = PageRequest.of(
+                page,
+                size,
+                Sort.by(Sort.Direction.DESC, "createdAt")
+        );
+
+        Page<News> newsPage;
+
+        if (search != null && !search.isBlank()) {
+            newsPage = newsRepository.searchPublishedNewsByAudiences(
+                    search.trim(),
+                    audiences,
+                    pageable
+            );
+        } else {
+            newsPage = newsRepository.findPublishedNewsByAudiences(
+                    audiences,
+                    pageable
+            );
+        }
+
+        return newsPage.map(newsMapper::toResponse);
+    }
+
 
 
     @Transactional(readOnly = true)
