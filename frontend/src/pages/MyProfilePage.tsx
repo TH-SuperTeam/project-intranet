@@ -7,6 +7,9 @@ import useUpdateMyProfile from "../hooks/UsersHooks/useUpdateMyProfile"
 import type { UpdateProfileRequest } from "../types/UpdateProfileRequest"
 import { UserType } from "../types/UserType"
 import { AccessRole } from "../types/AccessRole"
+import AvatarPicker from "../components/common/AvatarPicker"
+import { AVATAR_IDS, getAvatarDataUri } from "../utils/avatarUtils"
+import type { AvatarId } from "../utils/avatarUtils"
 import styles from "./MyProfilePage.module.css"
 
 const userTypeLabels: Record<UserType, string> = {
@@ -19,12 +22,15 @@ const MyProfilePage = () => {
   const updateProfile = useUpdateMyProfile()
 
   const [isEditing, setIsEditing] = useState(false)
+  const [showAvatarPicker, setShowAvatarPicker] = useState(false)
+  const [selectedAvatarId, setSelectedAvatarId] = useState<AvatarId | null>(null)
 
   const [formData, setFormData] = useState<UpdateProfileRequest>({
     firstName: "",
     lastName: "",
     email: "",
     bio: "",
+    profileImageUrl: null,
   })
 
   const handleEdit = () => {
@@ -35,7 +41,13 @@ const MyProfilePage = () => {
       lastName: profile.lastName,
       email: profile.email,
       bio: profile.bio,
+      profileImageUrl: profile.profileImageUrl,
     })
+
+    const savedAvatar = AVATAR_IDS.find((avatarId) => profile.profileImageUrl === `dicebear:${avatarId}`) ?? null
+
+    setSelectedAvatarId(savedAvatar)
+    setShowAvatarPicker(false)
 
     updateProfile.reset()
     setIsEditing(true)
@@ -57,10 +69,12 @@ const MyProfilePage = () => {
       {
         ...formData,
         bio: formData.bio?.trim() || null,
+        profileImageUrl: selectedAvatarId ? `dicebear:${selectedAvatarId}` : null,
       },
       {
         onSuccess: () => {
           setIsEditing(false)
+          setShowAvatarPicker(false)
         },
       },
     )
@@ -68,6 +82,8 @@ const MyProfilePage = () => {
 
   const handleCancel = () => {
     setIsEditing(false)
+    setShowAvatarPicker(false)
+    setSelectedAvatarId(null)
     updateProfile.reset()
   }
 
@@ -89,6 +105,13 @@ const MyProfilePage = () => {
     day: "numeric",
   })
 
+  const displayedAvatarId = isEditing
+    ? selectedAvatarId
+    : (AVATAR_IDS.find((avatarId) => profile.profileImageUrl === `dicebear:${avatarId}`) ?? null)
+
+  const hasExistingImage =
+    !isEditing && profile.profileImageUrl !== null && !profile.profileImageUrl.startsWith("dicebear:")
+
   return (
     <section className={styles.profilePage}>
       <header className={styles.pageHeader}>
@@ -98,17 +121,35 @@ const MyProfilePage = () => {
 
       {/* Profile header */}
       <div className={styles.profileHeader}>
-        {profile.profileImageUrl ? (
-          <img
-            src={profile.profileImageUrl}
-            alt={`${profile.firstName} ${profile.lastName}`}
-            className={styles.profileImage}
-          />
-        ) : (
-          <div className={styles.profileImagePlaceholder}>
-            <UserRound size={48} />
-          </div>
-        )}
+        <div className={styles.avatarSection}>
+          {displayedAvatarId ? (
+            <img
+              src={getAvatarDataUri(displayedAvatarId)}
+              alt={`${profile.firstName} ${profile.lastName}`}
+              className={styles.profileImage}
+            />
+          ) : hasExistingImage ? (
+            <img
+              src={profile.profileImageUrl!}
+              alt={`${profile.firstName} ${profile.lastName}`}
+              className={styles.profileImage}
+            />
+          ) : (
+            <div className={styles.profileImagePlaceholder}>
+              <UserRound size={48} />
+            </div>
+          )}
+
+          {isEditing && (
+            <button
+              type="button"
+              className={styles.avatarButton}
+              onClick={() => setShowAvatarPicker((previous) => !previous)}>
+              <Pencil size={16} />
+              {showAvatarPicker ? "Dölj avatarer" : "Byt profilbild"}
+            </button>
+          )}
+        </div>
 
         <div className={styles.profileInfo}>
           <h2>
@@ -132,6 +173,8 @@ const MyProfilePage = () => {
           <h3>Redigera profiluppgifter</h3>
 
           <form className={styles.editForm} onSubmit={handleSubmit}>
+            {showAvatarPicker && <AvatarPicker selectedAvatarId={selectedAvatarId} onSelect={setSelectedAvatarId} />}
+
             <label className={styles.formField}>
               Förnamn
               <input type="text" name="firstName" value={formData.firstName} onChange={handleChange} required />
@@ -168,14 +211,12 @@ const MyProfilePage = () => {
       ) : (
         /* Profile content */
         <div className={styles.profileContent}>
-          {/* About me */}
           <div className={styles.profileCard}>
             <h3>Om mig</h3>
 
             <p className={styles.bio}>{profile.bio || "Berätta lite om dig själv."}</p>
           </div>
 
-          {/* Account information */}
           <div className={styles.profileCard}>
             <h3>Kontouppgifter</h3>
 

@@ -5,6 +5,7 @@ import com.superteam.intranet.dto.MyProfileResponse;
 import com.superteam.intranet.mapper.UserMapper;
 import com.superteam.intranet.model.User;
 import com.superteam.intranet.repository.UserRepository;
+import com.superteam.intranet.service.UserService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -15,12 +16,8 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertSame;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyNoInteractions;
-import static org.mockito.Mockito.when;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class UserServiceTest {
@@ -53,7 +50,6 @@ class UserServiceTest {
                 null,
                 null,
                 null
-
         );
 
         when(userRepository.findById(1L))
@@ -88,6 +84,7 @@ class UserServiceTest {
         assertEquals(404, exception.getStatusCode().value());
         assertEquals("User not found", exception.getReason());
 
+        verify(userRepository).findById(999L);
         verifyNoInteractions(userMapper);
     }
 }
