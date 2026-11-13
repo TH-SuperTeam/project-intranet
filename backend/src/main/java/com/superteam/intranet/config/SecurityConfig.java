@@ -74,6 +74,8 @@ public class SecurityConfig {
 
                         .requestMatchers("/api/auth/**").permitAll()
 
+                        .requestMatchers(HttpMethod.GET, "/api/weather").permitAll()
+
                         .requestMatchers(HttpMethod.GET, "/api/public/news").permitAll()
 
                         .requestMatchers(HttpMethod.PATCH, "/api/users/*/status")

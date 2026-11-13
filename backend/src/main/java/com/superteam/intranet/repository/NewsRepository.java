@@ -51,4 +51,22 @@ public interface NewsRepository extends JpaRepository<News, Long> {
             @Param("audience") TargetAudience audience,
             Pageable pageable
     );
+
+    // Sök bland publicerade nyheter utifrån målgrupp, titel och innehåll.
+    @Query("""
+            SELECT DISTINCT n
+            FROM News n
+            JOIN n.targetAudience a
+            WHERE n.isPublished = true
+            AND a IN :audiences
+            AND (
+                LOWER(n.title) LIKE LOWER(CONCAT('%', :search, '%'))
+                OR LOWER(n.content) LIKE LOWER(CONCAT('%', :search, '%'))
+            )
+            """)
+    Page<News> searchPublishedNewsByAudiences(
+            @Param("search") String search,
+            @Param("audiences") Collection<TargetAudience> audiences,
+            Pageable pageable
+    );
 }
