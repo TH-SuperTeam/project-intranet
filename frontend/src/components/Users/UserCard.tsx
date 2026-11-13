@@ -5,11 +5,12 @@ import type { User } from "../../types/User";
 import { Status } from "../../types/Status";
 import { UserType } from "../../types/UserType";
 import UserStatusSelect from "./UserStatus/UserStatusSelect";
-import StatusConfirmDialog from "./UserStatus/StatusConfirmDialog";
+
 import useUpdateUserStatus from "../../hooks/UsersHooks/useUpdateUserStatus";
 import type { PublicUser } from "../../types/PublicUser";
 import { useAuth } from "../../hooks/useAuth";
 import UserAvatar from "../common/UserAvatar";
+import ConfirmDialog from "../common/ConfirmDialog";
 
 interface UserCardProps {
     user: User | PublicUser;
@@ -21,20 +22,30 @@ const userTypeLabels: Record<UserType, string> = {
     [UserType.STUDENT]: "Student",
 };
 
+const statusLabels: Record<Status, string> = {
+    [Status.ACTIVE]: "Aktiv",
+    [Status.SUSPENDED]: "Avstängd",
+    [Status.GRADUATED]: "Examinerad",
+    [Status.WITHDRAWN]: "Avbruten",
+    [Status.TERMINATED]: "Avslutad",
+    [Status.ON_LEAVE]: "Tjänstledig",
+    [Status.PAUSED]: "Pausad",
+};
+
 const UserCard = ({ user, onStatusFeedback }: UserCardProps) => {
     const { user: currentUser } = useAuth();
     const isAdmin = currentUser?.accessRole === "ADMIN";
-    
+
     const isOwnProfile = currentUser?.id === user.id;
-    const profilePath = isOwnProfile
-    ? "/profile"
-    : `/users/${user.id}`;
-    
+    const profilePath = isOwnProfile ? "/profile" : `/users/${user.id}`;
+
     const userStatus = "status" in user ? user.status : undefined;
     const [selectedStatus, setSelectedStatus] = useState<Status>(
         userStatus ?? Status.ACTIVE,
     );
     const [showConfirmDialog, setShowConfirmDialog] = useState(false);
+
+    const [statusError, setStatusError] = useState("");
 
     const updateStatusMutation = useUpdateUserStatus();
 
@@ -43,6 +54,7 @@ const UserCard = ({ user, onStatusFeedback }: UserCardProps) => {
             return;
         }
 
+        setStatusError("");
         setSelectedStatus(status);
         setShowConfirmDialog(true);
     };
@@ -51,6 +63,8 @@ const UserCard = ({ user, onStatusFeedback }: UserCardProps) => {
         if (userStatus) {
             setSelectedStatus(userStatus);
         }
+
+        setStatusError("");
         setShowConfirmDialog(false);
     };
 
@@ -70,16 +84,10 @@ const UserCard = ({ user, onStatusFeedback }: UserCardProps) => {
                     );
                 },
                 onError: (error) => {
-                    if (userStatus) {
-                        setSelectedStatus(userStatus);
-                    }
-                    setShowConfirmDialog(false);
-
-                    onStatusFeedback(
+                    setStatusError(
                         error instanceof TypeError
                             ? "Kunde inte ansluta till servern. Försök igen."
                             : error.message,
-                        "error",
                     );
                 },
             },
@@ -115,13 +123,35 @@ const UserCard = ({ user, onStatusFeedback }: UserCardProps) => {
             )}
 
             {isAdmin && showConfirmDialog && (
-                <StatusConfirmDialog
-                    userName={`${user.firstName} ${user.lastName}`}
-                    currentStatus={userStatus ?? Status.ACTIVE}
-                    newStatus={selectedStatus}
+                <ConfirmDialog
+                    title="Bekräfta statusändring"
+                    message={
+                        <>
+                            Vill du ändra status för{" "}
+                            <strong>
+                                {user.firstName} {user.lastName}
+                            </strong>{" "}
+                            från{" "}
+                            <strong>
+                                {userStatus
+                                    ? statusLabels[userStatus]
+                                    : "Okänd"}
+                            </strong>{" "}
+                            till <strong>{statusLabels[selectedStatus]}</strong>
+                            ?
+                            {selectedStatus !== Status.ACTIVE && (
+                                <span className="mt-3 block">
+                                    Användaren kommer inte kunna logga in med
+                                    denna status.
+                                </span>
+                            )}
+                        </>
+                    }
+                    confirmLabel="Bekräfta"
                     onConfirm={handleConfirm}
                     onCancel={handleCancel}
                     isPending={updateStatusMutation.isPending}
+                    errorMessage={statusError}
                 />
             )}
         </li>
