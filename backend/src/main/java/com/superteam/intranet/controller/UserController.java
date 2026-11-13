@@ -80,6 +80,17 @@ public ResponseEntity<UserResponse> updateUserStatus(
     return ResponseEntity.ok(updatedUser);
 }
 
+@PatchMapping("/{id}/role")
+public UserResponse updateUserRole(
+        @PathVariable Long id,
+        @Valid @RequestBody UpdateUserRoleRequest request,
+        Authentication authentication) {
+
+    Long currentUserId = (Long) authentication.getPrincipal();
+
+    return userService.updateUserRole(id, request, currentUserId);
+}
+
     @GetMapping
     public ResponseEntity<List<?>> getUsers(
             @RequestParam(required = false) String search, Authentication authentication) {

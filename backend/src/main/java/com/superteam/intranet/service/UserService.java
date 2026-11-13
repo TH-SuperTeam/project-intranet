@@ -41,12 +41,7 @@ public class UserService {
             throw new DuplicateEmailException("Email already exists");
         }
 
-        if (request.userType() == UserType.STUDENT
-                && request.accessRole() == AccessRole.ADMIN) {
-            throw new IllegalArgumentException(
-                    "A student cannot have admin access"
-            );
-        }
+        validateAccessRole(request.userType(), request.accessRole());
 
         User user = new User();
 
@@ -158,6 +153,39 @@ public UserResponse updateUserStatus(
     return userMapper.toResponse(updatedUser);
 }
 
+@Transactional
+public UserResponse updateUserRole(
+        Long userId,
+        UpdateUserRoleRequest request,
+        Long currentUserId) {
+
+    User user = userRepository.findById(userId)
+            .orElseThrow(() -> new ResponseStatusException(
+                    HttpStatus.NOT_FOUND,
+                    "User not found"
+            ));
+
+    // En administratör får inte ta bort sin egen ADMIN-behörighet
+    if (userId.equals(currentUserId)
+            && user.getAccessRole() == AccessRole.ADMIN
+            && request.accessRole() != AccessRole.ADMIN) {
+
+        throw new ResponseStatusException(
+                HttpStatus.BAD_REQUEST,
+                "Du kan inte ta bort din egen administratörsbehörighet."
+        );
+    }
+
+    // Studenter får inte ha ADMIN-behörighet
+    validateAccessRole(user.getUserType(), request.accessRole());
+
+    user.setAccessRole(request.accessRole());
+
+    User updatedUser = userRepository.save(user);
+
+    return userMapper.toResponse(updatedUser);
+}
+
     public List<?> getUsers(String search, Long userId) {
         String term = (search == null) ? "" : search.trim();
 
@@ -180,4 +208,14 @@ public UserResponse updateUserStatus(
                     .toList();
         }
     }
+
+    private void validateAccessRole(UserType userType, AccessRole accessRole) {
+    if (userType == UserType.STUDENT
+            && accessRole == AccessRole.ADMIN) {
+
+        throw new IllegalArgumentException(
+                "A student cannot have admin access"
+        );
+    }
+}
 }
