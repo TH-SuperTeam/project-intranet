@@ -29,7 +29,7 @@
 |   Caroline   |     ja    |   #16   |   #70 #56   |   nej     |
 |   Sofie   |    ja     |  sjuk    |   #67   |    nej    |
 
-## Torsdag ÅÅÅÅ-MM-DD
+## Torsdag 2026-11-12
 
 | Namn | Närvaro | Igår | Idag | Hinder |
 | ---- | ------- | ---- | ---- | ------ |
@@ -39,11 +39,12 @@
 |   Caroline   |     ja    |    #56   |   #62   |   nej     |
 |   Sofie   |    ja     |  #67 backend    |   #67 frontend  |    nej    |
 
-## Fredag ÅÅÅÅ-MM-DD
+## Fredag 2026-11-13
 
 | Namn | Närvaro | Igår | Idag | Hinder |
 | ---- | ------- | ---- | ---- | ------ |
-|      |         |      |      |        |
-|      |         |      |      |        |
-|      |         |      |      |        |
-|      |         |      |      |        |
+|   Mette   |    ja     |  #63 backend    |   #63  frontend |    nej    |
+|   Inna   |     ja    |   #69 #122   |   #69 #109  |    nej    |
+|    Josefine  |    ja     |   #104 #111   |   #87   |    nej    |
+|   Caroline   |     ja    |    #62 backend   |   #62 frontend  |   nej     |
+|   Sofie   |    ja     |  #67 frontend    |   #70  |    nej    |

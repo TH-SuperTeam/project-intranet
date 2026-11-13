@@ -25,6 +25,8 @@ type NewsFormProps = {
     successMessage: string;
 };
 
+const PUBLIC_CONTENT_MAX_LENGTH = 300;
+
 const NewsForm = ({
     title,
     setTitle,
@@ -40,6 +42,13 @@ const NewsForm = ({
     errorMessage,
     successMessage,
 }: NewsFormProps) => {
+    const isPublicNews = targetAudience.includes(
+        TargetAudience.PUBLIC_DASHBOARD,
+    );
+
+    const isContentTooLong =
+        isPublicNews && content.length > PUBLIC_CONTENT_MAX_LENGTH;
+
     return (
         <form className={styles.form} onSubmit={handleSubmit} noValidate>
             <div className={styles.formGroup}>
@@ -70,38 +79,61 @@ const NewsForm = ({
                     onChange={(e) => setContent(e.target.value)}
                     required
                 />
+                {isPublicNews && (
+                    <div>
+                        <span
+                            className={
+                                isContentTooLong
+                                    ? styles.characterCountError
+                                    : styles.characterCount
+                            }
+                        >
+                            {content.length} / {PUBLIC_CONTENT_MAX_LENGTH}{" "}
+                            tecken
+                        </span>
+
+                        {isContentTooLong && (
+                            <p className={styles.validationError} role="alert">
+                                Nyheter för informationsskärmen får innehålla
+                                max 300 tecken.
+                            </p>
+                        )}
+                    </div>
+                )}
             </div>
 
             <fieldset className={styles.formGroup}>
                 <legend className={styles.label}>Målgrupp:</legend>
-
-                {[
-                    { value: TargetAudience.STUDENT, label: "Studenter" },
-                    { value: TargetAudience.TEACHER, label: "Lärare" },
-                    {
-                        value: TargetAudience.PUBLIC_DASHBOARD,
-                        label: "Informationsskärm",
-                    },
-                ].map(({ value, label }) => (
-                    <label key={value} className={styles.checkboxLabel}>
-                        <input
-                            type="checkbox"
-                            name="targetAudience"
-                            value={value}
-                            checked={targetAudience.includes(value)}
-                            onChange={(e) => {
-                                setTargetAudience((prev) =>
-                                    e.target.checked
-                                        ? [...prev, value]
-                                        : prev.filter(
-                                              (audience) => audience !== value,
-                                          ),
-                                );
-                            }}
-                        />
-                        {label}
-                    </label>
-                ))}
+                <div className={styles.audienceGrid}>
+                    {[
+                        { value: TargetAudience.STUDENT, label: "Studenter" },
+                        { value: TargetAudience.TEACHER, label: "Lärare" },
+                        {
+                            value: TargetAudience.PUBLIC_DASHBOARD,
+                            label: "Informationsskärm",
+                        },
+                    ].map(({ value, label }) => (
+                        <label key={value} className={styles.checkboxLabel}>
+                            <input
+                                type="checkbox"
+                                name="targetAudience"
+                                value={value}
+                                checked={targetAudience.includes(value)}
+                                onChange={(e) => {
+                                    setTargetAudience((prev) =>
+                                        e.target.checked
+                                            ? [...prev, value]
+                                            : prev.filter(
+                                                  (audience) =>
+                                                      audience !== value,
+                                              ),
+                                    );
+                                }}
+                            />
+                            {label}
+                        </label>
+                    ))}
+                </div>
 
                 {targetAudience.includes(TargetAudience.PUBLIC_DASHBOARD) && (
                     <p className={styles.publicInfo}>
@@ -121,6 +153,7 @@ const NewsForm = ({
 
             <SubmitButton
                 isPending={mutation.isPending}
+                isDisabled={isContentTooLong}
                 submitLabel={submitLabel}
                 pendingLabel={pendingLabel}
             />
