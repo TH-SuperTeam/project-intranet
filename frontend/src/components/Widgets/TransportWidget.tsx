@@ -1,5 +1,6 @@
 import { BusFront } from "lucide-react";
 import styles from "./Widgets.module.css";
+import DepartureList from "./DepartureList";
 
 const TransportWidget = () => {
     return (
@@ -10,7 +11,7 @@ const TransportWidget = () => {
             </header>
 
             <div className={styles.infoWidgetContent}>
-                {/* Avgångar kommer senare */}
+                <DepartureList />
             </div>
         </section>
     );

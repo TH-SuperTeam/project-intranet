@@ -1,0 +1,78 @@
+.avatarPicker {
+  margin-top: 1rem;
+}
+
+.avatarPicker h4 {
+  margin: 0 0 0.4rem;
+  color: var(--color-text-primary);
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.description {
+  margin: 0 0 1rem;
+  color: var(--color-text-muted);
+  font-size: 0.875rem;
+}
+
+.avatarGrid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.75rem;
+  max-width: 420px;
+}
+
+.avatarOption {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  min-width: 0;
+  aspect-ratio: 1;
+  padding: 0.5rem;
+  border: 2px solid var(--color-border);
+  border-radius: 12px;
+  background-color: var(--color-surface);
+  color: var(--color-text-muted);
+  cursor: pointer;
+  transition:
+    border-color 0.2s ease,
+    background-color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.avatarOption:hover {
+  border-color: var(--color-primary);
+  transform: translateY(-2px);
+}
+
+.avatarOption:focus-visible {
+  outline: 3px solid var(--color-primary-soft);
+  outline-offset: 3px;
+}
+
+.avatarOption.selected {
+  border-color: var(--color-primary);
+  background-color: var(--color-primary-soft);
+}
+
+.avatarImage {
+  display: block;
+  width: 100%;
+  max-width: 76px;
+  height: auto;
+  aspect-ratio: 1;
+  object-fit: contain;
+}
+
+.avatarOption span {
+  font-size: 0.7rem;
+  text-align: center;
+}
+
+@media (max-width: 480px) {
+  .avatarGrid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}

@@ -31,6 +31,7 @@ public class UserMapper {
                 user.getFirstName(),
                 user.getLastName(),
                 user.getEmail(),
+                user.getProfileImageUrl(),
                 user.getUserType(),
                 user.getAccessRole(),
                 user.getStatus()

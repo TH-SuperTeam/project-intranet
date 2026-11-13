@@ -97,7 +97,7 @@ const UserCard = ({ user, onStatusFeedback }: UserCardProps) => {
     return (
         <li className={styles.userCard}>
             <Link to={profilePath} className={styles.userProfileLink}>
-                <UserAvatar size={48} />
+                <UserAvatar size={48} profileImageUrl={user.profileImageUrl} />
 
                 <div className={styles.userInfo}>
                     <h3 className={styles.userName}>

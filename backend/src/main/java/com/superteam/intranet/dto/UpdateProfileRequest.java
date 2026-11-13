@@ -17,6 +17,8 @@ public record UpdateProfileRequest(
         String email,
 
         @Size(max = 500, message = "Biografin får inte överstiga 500 tecken")
-        String bio
+        String bio,
+
+        String profileImageUrl
 
 ) {}

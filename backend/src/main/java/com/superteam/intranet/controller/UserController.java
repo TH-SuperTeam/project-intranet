@@ -56,6 +56,7 @@ public class UserController {
         return ResponseEntity.ok(updatedProfile);
     }
 
+
     @GetMapping("/{id}")
     public ResponseEntity<UserProfileResponse> getUserProfile(
             @PathVariable Long id) {
