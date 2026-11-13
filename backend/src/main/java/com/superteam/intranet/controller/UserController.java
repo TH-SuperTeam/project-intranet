@@ -67,14 +67,18 @@ public class UserController {
     }
 
     @PatchMapping("/{id}/status")
-    public ResponseEntity<UserResponse> updateUserStatus(
-            @PathVariable Long id,
-            @Valid @RequestBody UpdateUserStatusRequest request) {
+public ResponseEntity<UserResponse> updateUserStatus(
+        @PathVariable Long id,
+        @Valid @RequestBody UpdateUserStatusRequest request,
+        Authentication authentication) {
 
-        UserResponse updatedUser = userService.updateUserStatus(id, request);
+    Long currentUserId = (Long) authentication.getPrincipal();
 
-        return ResponseEntity.ok(updatedUser);
-    }
+    UserResponse updatedUser =
+            userService.updateUserStatus(id, request, currentUserId);
+
+    return ResponseEntity.ok(updatedUser);
+}
 
     @GetMapping
     public ResponseEntity<List<?>> getUsers(

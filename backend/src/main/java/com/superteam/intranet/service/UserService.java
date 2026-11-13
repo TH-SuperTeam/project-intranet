@@ -128,23 +128,35 @@ public class UserService {
         return userMapper.toProfileResponse(user);
     }
 
-    @Transactional
-    public UserResponse updateUserStatus(
-            Long userId,
-            UpdateUserStatusRequest request) {
+   @Transactional
+public UserResponse updateUserStatus(
+        Long userId,
+        UpdateUserStatusRequest request,
+        Long currentUserId) {
 
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new ResponseStatusException(
-                        HttpStatus.NOT_FOUND,
-                        "User not found"
-                ));
+    User user = userRepository.findById(userId)
+            .orElseThrow(() -> new ResponseStatusException(
+                    HttpStatus.NOT_FOUND,
+                    "User not found"
+            ));
 
-        user.setStatus(request.status());
+    if (userId.equals(currentUserId)
+            && user.getAccessRole() == AccessRole.ADMIN
+            && user.getStatus() == UserStatus.ACTIVE
+            && request.status() != UserStatus.ACTIVE) {
 
-        User updatedUser = userRepository.save(user);
-
-        return userMapper.toResponse(updatedUser);
+        throw new ResponseStatusException(
+                HttpStatus.BAD_REQUEST,
+                "Du kan inte inaktivera ditt eget administratörskonto."
+        );
     }
+
+    user.setStatus(request.status());
+
+    User updatedUser = userRepository.save(user);
+
+    return userMapper.toResponse(updatedUser);
+}
 
     public List<?> getUsers(String search, Long userId) {
         String term = (search == null) ? "" : search.trim();
