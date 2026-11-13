@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from "react";
 import { useUsers } from "../../hooks/UsersHooks/useUsers";
 import UserCard from "./UserCard";
@@ -80,12 +79,8 @@ const UsersList = ({ search }: UserListProps) => {
             )}
 
             <ul className={styles.usersList}>
-                {users.map(user => (
-                    <UserCard
-                        key={user.id}
-                        user={user}
-                        onStatusFeedback={handleStatusFeedback}
-                    />
+                {users.map((user) => (
+                    <UserCard user={user} />
                 ))}
             </ul>
         </>
