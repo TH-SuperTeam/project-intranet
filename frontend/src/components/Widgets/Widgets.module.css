@@ -2,246 +2,301 @@
 
 .newsWidget,
 .infoWidget {
-    min-width: 0;
-    padding: 1rem;
-    border: 1px solid var(--color-border);
-    border-radius: 16px;
-    background-color: var(--color-surface);
+	min-width: 0;
+	padding: 1rem;
+	border: 1px solid var(--color-border);
+	border-radius: 16px;
+	background-color: var(--color-surface);
 }
 
 /* ===== WIDGET HEADERS ===== */
 
 .widgetHeader {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    gap: 1rem;
-    margin-bottom: 1.5rem;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	flex-wrap: wrap;
+	gap: 1rem;
+	margin-bottom: 1.5rem;
 }
 
 .widgetTitle,
 .infoWidgetHeader {
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-    color: var(--color-secondary-dark);
+	display: flex;
+	align-items: center;
+	gap: 0.75rem;
+	color: var(--color-secondary-dark);
 }
 
 .infoWidgetHeader {
-    margin-bottom: 0.5rem;
+	margin-bottom: 0.5rem;
 }
 
 .widgetTitle h2,
 .infoWidgetHeader h2 {
-    margin: 0;
-    color: var(--color-text-primary);
-    font-size: 1.25rem;
-    font-weight: 700;
+	margin: 0;
+	color: var(--color-text-primary);
+	font-size: 1.25rem;
+	font-weight: 700;
 }
 
 .viewAll {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    color: var(--color-text-accent);
-    font-size: 0.875rem;
-    font-weight: 600;
-    text-decoration: none;
+	display: inline-flex;
+	align-items: center;
+	gap: 0.5rem;
+	color: var(--color-text-accent);
+	font-size: 0.875rem;
+	font-weight: 600;
+	text-decoration: none;
 }
 
 .viewAll:hover {
-    text-decoration: underline;
+	text-decoration: underline;
 }
 
 /* ===== NEWS LIST ===== */
 
 .newsList {
-    display: flex;
-    flex-direction: column;
-    margin: 0;
-    padding: 0;
-    list-style: none;
+	display: flex;
+	flex-direction: column;
+	margin: 0;
+	padding: 0;
+	list-style: none;
 }
 
 .newsList li + li {
-    border-top: 1px solid var(--color-border);
+	border-top: 1px solid var(--color-border);
 }
 
 /* ===== NEWS ITEM ===== */
 
 .newsItem {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 1rem;
-    padding: 1rem 0;
-    border: 1px solid transparent;
-    border-radius: 8px;
-    color: inherit;
-    text-decoration: none;
-    transition:
-        border-color 0.2s ease,
-        background-color 0.2s ease;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 1rem;
+	padding: 1rem 0;
+	border: 1px solid transparent;
+	border-radius: 8px;
+	color: inherit;
+	text-decoration: none;
+	transition:
+		border-color 0.2s ease,
+		background-color 0.2s ease;
 }
 
 .newsItem:hover {
-    border-color: var(--color-border-hover);
-    background-color: var(--color-background);
+	border-color: var(--color-border-hover);
+	background-color: var(--color-background);
 }
 
 .newsItem:focus-visible {
-    outline: 2px solid var(--color-secondary);
-    outline-offset: 2px;
+	outline: 2px solid var(--color-secondary);
+	outline-offset: 2px;
 }
 
 .newsContent {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-    min-width: 0;
-    margin: 10px;
+	display: flex;
+	flex-direction: column;
+	gap: 0.5rem;
+	min-width: 0;
+	margin: 10px;
 }
 
 .newsContent h3 {
-    margin: 0;
-    color: var(--color-text-primary);
-    font-size: 1rem;
-    font-weight: 600;
+	margin: 0;
+	color: var(--color-text-primary);
+	font-size: 1rem;
+	font-weight: 600;
 }
 
 .newsContent p {
-    display: -webkit-box;
-    margin: 0;
-    overflow: hidden;
-    color: var(--color-text-secondary);
-    font-size: 0.875rem;
-    line-height: 1.5;
-    -webkit-box-orient: vertical;
-    -webkit-line-clamp: 3;
-    line-clamp: 3;
+	display: -webkit-box;
+	margin: 0;
+	overflow: hidden;
+	color: var(--color-text-secondary);
+	font-size: 0.875rem;
+	line-height: 1.5;
+	-webkit-box-orient: vertical;
+	-webkit-line-clamp: 3;
+	line-clamp: 3;
 }
 
 .newsContent time {
-    color: var(--color-text-muted);
-    font-size: 0.75rem;
+	color: var(--color-text-muted);
+	font-size: 0.75rem;
 }
 
 .newsArrow {
-    flex-shrink: 0;
-    color: var(--color-secondary-dark);
-    margin: 10px;
+	flex-shrink: 0;
+	color: var(--color-secondary-dark);
+	margin: 10px;
 }
 
 .publicNewsWidget {
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-    min-height: 0;
-    overflow: hidden;
+	display: flex;
+	flex-direction: column;
+	height: 100%;
+	min-height: 0;
+	overflow: hidden;
 }
 
 .publicNewsWidget .newsList {
-    display: grid;
-    grid-template-rows: repeat(2, minmax(0, 1fr));
-    flex: 1;
-    min-height: 0;
+	display: grid;
+	grid-template-rows: repeat(2, minmax(0, 1fr));
+	flex: 1;
+	min-height: 0;
 }
 
 .publicNewsItem {
-    min-height: 0;
+	min-height: 0;
 }
 
 .publicNewsItem .newsContent {
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-    min-height: 0;
-    padding: 1rem 0;
-    margin: 0;
-    box-sizing: border-box;
+	display: flex;
+	flex-direction: column;
+	height: 100%;
+	min-height: 0;
+	padding: 1rem 0;
+	margin: 0;
+	box-sizing: border-box;
 }
 
 .publicNewsItem .newsContent time {
-    margin-top: auto;
+	margin-top: auto;
 }
 
 .publicNewsItem .newsContent p {
-    display: block;
-    overflow: visible;
-    -webkit-line-clamp: unset;
-    line-clamp: unset;
-    font-size: 0.75rem;
-    line-height: 1.4;
+	display: block;
+	overflow: visible;
+	-webkit-line-clamp: unset;
+	line-clamp: unset;
+	font-size: 0.75rem;
+	line-height: 1.4;
 }
 
 /* ===== EMPTY STATE ===== */
 
 .emptyState {
-    padding: 2rem 0;
-    color: var(--color-text-muted);
-    text-align: center;
-    font-size: 0.875rem;
+	padding: 2rem 0;
+	color: var(--color-text-muted);
+	text-align: center;
+	font-size: 0.875rem;
 }
 
 /* ===== INFO WIDGETS (WEATHER & TRANSPORT) ===== */
 
 .infoWidgetContent {
-    min-height: 160px;
+	min-height: 160px;
+}
+
+/* ===== WEATHER WIDGET ===== */
+
+/* ===== WEATHER WIDGET ===== */
+
+.weatherWidget {
+	display: flex;
+	flex-direction: column;
+}
+
+.weatherWidget .infoWidgetContent {
+	display: flex;
+	flex: 1;
+	min-height: 0;
+}
+
+.weatherContent {
+	display: flex;
+	flex-direction: column;
+	flex: 1;
+	min-height: 0;
+}
+
+.weatherMain {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 1.5rem;
+	flex: 1;
+}
+
+.weatherMain svg {
+	flex-shrink: 0;
+}
+
+.weatherTemperature {
+	margin: 0;
+	font-size: 2.5rem;
+	font-weight: 700;
+	line-height: 1.2;
+	color: var(--color-text-primary);
+}
+
+.weatherCondition {
+	margin: 0.25rem 0 0;
+	font-size: 1.1rem;
+	color: var(--color-text-secondary);
+}
+
+.weatherUpdated {
+	align-self: flex-end;
+	margin: 0;
+	font-size: 0.8rem;
+	color: var(--color-text-muted);
 }
 
 /* ===== RESPONSIVE ===== */
 
 @media (max-width: 640px) {
-    .newsWidget,
-    .infoWidget {
-        padding: 1.25rem;
-    }
+	.newsWidget,
+	.infoWidget {
+		padding: 1.25rem;
+	}
 
-    .widgetTitle h2,
-    .infoWidgetHeader h2 {
-        font-size: 1.1rem;
-    }
+	.widgetTitle h2,
+	.infoWidgetHeader h2 {
+		font-size: 1.1rem;
+	}
 
-    .newsItem {
-        padding: 1rem 0;
-    }
+	.newsItem {
+		padding: 1rem 0;
+	}
 
-    .infoWidgetContent {
-        min-height: 120px;
-    }
+	.infoWidgetContent {
+		min-height: 120px;
+	}
 }
 
 @media (min-width: 1600px) {
-    .widgetTitle h2,
-    .infoWidgetHeader h2 {
-        font-size: 1.75rem;
-    }
+	.widgetTitle h2,
+	.infoWidgetHeader h2 {
+		font-size: 1.75rem;
+	}
 
-    .widgetTitle svg,
-    .infoWidgetHeader svg {
-        width: 32px;
-        height: 32px;
-    }
+	.widgetTitle svg,
+	.infoWidgetHeader svg {
+		width: 32px;
+		height: 32px;
+	}
 
-    .newsContent h3 {
-        font-size: 1.5rem;
-    }
+	.newsContent h3 {
+		font-size: 1.5rem;
+	}
 
-    .publicNewsItem .newsContent p {
-        font-size: 1.25rem;
-        line-height: 1.6;
-    }
+	.publicNewsItem .newsContent p {
+		font-size: 1.25rem;
+		line-height: 1.6;
+	}
 
-    .newsContent time {
-        font-size: 1rem;
-    }
+	.newsContent time {
+		font-size: 1rem;
+	}
 
-    .infoWidgetContent {
-        font-size: 1.25rem;
-    }
+	.infoWidgetContent {
+		font-size: 1.25rem;
+	}
 
-    .emptyState {
-        font-size: 1.25rem;
-    }
+	.emptyState {
+		font-size: 1.25rem;
+	}
 }
