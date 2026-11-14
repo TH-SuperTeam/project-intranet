@@ -3,4 +3,5 @@ export interface UpdateProfileRequest {
   lastName: string
   email: string
   bio: string | null
+  profileImageUrl: string | null
 }

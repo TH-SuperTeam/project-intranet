@@ -107,11 +107,14 @@ public class UserService {
         user.setLastName(request.lastName().trim());
         user.setEmail(email);
         user.setBio(request.bio() != null ? request.bio().trim() : null);
+        user.setProfileImageUrl(request.profileImageUrl());
 
         User updatedUser = userRepository.save(user);
 
         return userMapper.toMyProfileResponse(updatedUser);
     }
+
+
 
     // Get another user's profile
     public UserProfileResponse getUserProfileById(Long userId) {

@@ -7,7 +7,7 @@ import com.superteam.intranet.model.News;
 import com.superteam.intranet.model.TargetAudience;
 import org.junit.jupiter.api.Test;
 
-import java.time.LocalDateTime;
+import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -21,7 +21,7 @@ class NewsMapperTest {
         CreateNewsRequest request = new CreateNewsRequest(
                 "Viktig information",
                 "Skolan håller stängt på fredag.",
-                TargetAudience.STUDENT
+                Set.of(TargetAudience.STUDENT)
         );
 
         // Act
@@ -33,7 +33,10 @@ class NewsMapperTest {
                 "Skolan håller stängt på fredag.",
                 news.getContent()
         );
-        assertEquals(TargetAudience.STUDENT, news.getTargetAudience());
+        assertEquals(
+                Set.of(TargetAudience.STUDENT),
+                news.getTargetAudience()
+        );
         assertFalse(news.isPublished());
     }
 
@@ -45,7 +48,7 @@ class NewsMapperTest {
         news.setContent("Skolan håller stängt på fredag.");
         news.setUserId(5L);
         news.setPublished(true);
-        news.setTargetAudience(TargetAudience.TEACHER);
+        news.setTargetAudience(Set.of(TargetAudience.TEACHER));
 
         // Act
         NewsResponse response = newsMapper.toResponse(news);
@@ -58,7 +61,10 @@ class NewsMapperTest {
         );
         assertEquals(5L, response.userId());
         assertTrue(response.isPublished());
-        assertEquals(TargetAudience.TEACHER, response.targetAudience());
+        assertEquals(
+                Set.of(TargetAudience.TEACHER),
+                response.targetAudience()
+        );
         assertEquals(news.getCreatedAt(), response.createdAt());
     }
 }
