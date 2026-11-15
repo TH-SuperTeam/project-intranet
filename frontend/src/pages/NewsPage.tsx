@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import styles from "../components/News/News.module.css";
 import NewsList from "../components/News/NewsList";
 import CreateButton from "../components/common/CreateButton";
+import SearchInput from "../components/common/SearchInput";
 
 import { useAudience } from "../hooks/useAudience";
 import { useCanManageNews } from "../hooks/NewsHooks/useCanManageNews";
@@ -16,6 +17,8 @@ const NewsPage = () => {
     const [successMessage] = useState<string>(
         () => location.state?.successMessage ?? "",
     );
+
+    const [search, setSearch] = useState("");
 
     useEffect(() => {
         if (location.state?.successMessage) {
@@ -41,13 +44,19 @@ const NewsPage = () => {
                 )}
             </header>
 
+            <SearchInput
+                value={search}
+                onChange={setSearch}
+                placeholder="Sök bland nyheter..."
+            />
+
             {successMessage && (
                 <p role="status" className={styles.successMessage}>
                     {successMessage}
                 </p>
             )}
 
-            <NewsList audience={audience} />
+            <NewsList audience={audience} search={search} />
         </main>
     );
 };

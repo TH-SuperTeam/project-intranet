@@ -2,16 +2,20 @@ import NewsCard from "./NewsCard"
 import type { TargetAudience } from "../../types/TargetAudience"
 import styles from "./News.module.css"
 import { useNews } from "../../hooks/NewsHooks/useNews"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 
 type NewsListProps = {
 	audience: TargetAudience
+	search: string
 }
 
-const NewsList = ({ audience }: NewsListProps) => {
+const NewsList = ({ audience, search }: NewsListProps) => {
 	const [page, setPage] = useState(0)
+	useEffect(() => {
+		setPage(0)
+	}, [search])
 
-	const { data: news, isPending, isError } = useNews({ audience, page })
+	const { data: news, isPending, isError } = useNews({ audience, page, search })
 
 	if (isPending) {
 		return <div className={styles.state}>Laddar nyheter...</div>
@@ -28,8 +32,17 @@ const NewsList = ({ audience }: NewsListProps) => {
 	if (news.content.length === 0) {
 		return (
 			<div className={styles.emptyState}>
-				<h3>Inga nyheter att visa</h3>
-				<p>Det finns inga publicerade nyheter just nu.</p>
+				{search.trim() ? (
+					<>
+						<h3>Inga sökresultat</h3>
+						<p>Inga nyheter matchade din sökning.</p>
+					</>
+				) : (
+					<>
+						<h3>Inga nyheter att visa</h3>
+						<p>Det finns inga publicerade nyheter just nu.</p>
+					</>
+				)}
 			</div>
 		)
 	}
