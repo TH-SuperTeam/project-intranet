@@ -1,5 +1,6 @@
+import { useEffect, useRef, useState } from "react";
+import { Check, ChevronDown } from "lucide-react";
 import { Status, statusLabels, statusColors } from "../../../types/Status";
-import { ChevronDown } from "lucide-react";
 
 type UserStatusSelectProps = {
     value: Status;
@@ -12,37 +13,101 @@ const UserStatusSelect = ({
     onChange,
     disabled = false,
 }: UserStatusSelectProps) => {
+    const [isOpen, setIsOpen] = useState(false);
+    const dropdownRef = useRef<HTMLDivElement>(null);
+
+    useEffect(() => {
+        const handleClickOutside = (event: MouseEvent) => {
+            if (
+                dropdownRef.current &&
+                !dropdownRef.current.contains(event.target as Node)
+            ) {
+                setIsOpen(false);
+            }
+        };
+
+        document.addEventListener("mousedown", handleClickOutside);
+
+        return () => {
+            document.removeEventListener("mousedown", handleClickOutside);
+        };
+    }, []);
+
+    const handleSelect = (status: Status) => {
+        setIsOpen(false);
+
+        if (status !== value) {
+            onChange(status);
+        }
+    };
+
     return (
-        <div className="relative w-45 shrink-0">
-            <select
+        <div ref={dropdownRef} className="relative w-45 shrink-0">
+            {/* Selected status */}
+            <button
+                type="button"
                 aria-label="Användarstatus"
-                value={value}
-                onChange={(event) => onChange(event.target.value as Status)}
+                aria-haspopup="listbox"
+                aria-expanded={isOpen && !disabled}
                 disabled={disabled}
+                onClick={() => setIsOpen((prev) => !prev)}
                 className={`
-                    h-10.5 w-full appearance-none
-                    rounded-lg border
-                    py-2 pl-3 pr-9
-                    text-sm font-medium
+                    flex h-10.5 w-full items-center justify-between
+                    rounded-lg border px-3 text-sm font-medium
                     cursor-pointer
-                    focus:outline-none
-                    focus:ring-2 focus:ring-(--color-primary-soft)
+                    focus:outline-none focus:ring-2
+                    focus:ring-(--color-primary-soft)
                     disabled:cursor-not-allowed disabled:opacity-50
                     ${statusColors[value]}
                 `}
             >
-                {Object.values(Status).map((status) => (
-                    <option key={status} value={status}>
-                        {statusLabels[status]}
-                    </option>
-                ))}
-            </select>
+                <span>{statusLabels[value]}</span>
+                <ChevronDown
+                    size={16}
+                    className={`transition-transform ${
+                        isOpen ? "rotate-180" : ""
+                    }`}
+                />
+            </button>
 
-            <ChevronDown
-                size={16}
-                aria-hidden="true"
-                className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2"
-            />
+            {/* Dropdown options */}
+            {isOpen && !disabled && (
+                <div
+                    role="listbox"
+                    aria-label="Välj användarstatus"
+                    className="
+                        absolute left-0 top-full z-20 mt-2
+                        w-full rounded-lg border
+                        border-(--color-border)
+                        bg-(--color-surface)
+                        p-1.5 shadow-lg
+                    "
+                >
+                    {Object.values(Status).map((status) => (
+                        <button
+                            key={status}
+                            type="button"
+                            role="option"
+                            aria-selected={status === value}
+                            onClick={() => handleSelect(status)}
+                            className={`
+                                mb-1 flex w-full items-center justify-between
+                                rounded-md border px-2.5 py-2
+                                text-left text-sm font-medium
+                                transition-opacity hover:opacity-80
+                                last:mb-0
+                                ${statusColors[status]}
+                            `}
+                        >
+                            <span>{statusLabels[status]}</span>
+
+                            {status === value && (
+                                <Check size={15} aria-hidden="true" />
+                            )}
+                        </button>
+                    ))}
+                </div>
+            )}
         </div>
     );
 };

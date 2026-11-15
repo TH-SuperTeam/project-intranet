@@ -32,6 +32,7 @@ const UserProfileCard = ({ profile }: UserProfileCardProps) => {
     const isAdmin = currentUser?.accessRole === AccessRole.ADMIN;
     const isOwnProfile = currentUser?.id === profile.id;
     const canEdit = isAdmin && !isOwnProfile;
+    const isStudent = profile.userType === UserType.STUDENT;
 
     const userName = `${profile.firstName} ${profile.lastName}`;
 
@@ -191,6 +192,7 @@ const UserProfileCard = ({ profile }: UserProfileCardProps) => {
                                                 )
                                             }
                                             disabled={
+                                                isStudent ||
                                                 statusMutation.isPending ||
                                                 roleMutation.isPending
                                             }
@@ -198,13 +200,7 @@ const UserProfileCard = ({ profile }: UserProfileCardProps) => {
                                             <option value={AccessRole.USER}>
                                                 Användare
                                             </option>
-                                            <option
-                                                value={AccessRole.ADMIN}
-                                                disabled={
-                                                    profile.userType ===
-                                                    UserType.STUDENT
-                                                }
-                                            >
+                                            <option value={AccessRole.ADMIN}>
                                                 Administratör
                                             </option>
                                         </select>
@@ -219,6 +215,12 @@ const UserProfileCard = ({ profile }: UserProfileCardProps) => {
                                     <span>
                                         {roleLabels[profile.accessRole]}
                                     </span>
+                                )}
+                                {isStudent && (
+                                    <p className={styles.roleHint}>
+                                        Studenter kan inte tilldelas
+                                        administratörsbehörighet.
+                                    </p>
                                 )}
                             </div>
                         </div>
