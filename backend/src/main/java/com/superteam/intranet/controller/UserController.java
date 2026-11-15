@@ -58,13 +58,17 @@ public class UserController {
 
 
     @GetMapping("/{id}")
-    public ResponseEntity<UserProfileResponse> getUserProfile(
-            @PathVariable Long id) {
+public ResponseEntity<UserProfileResponse> getUserProfile(
+        @PathVariable Long id,
+        Authentication authentication) {
 
-        UserProfileResponse profile = userService.getUserProfileById(id);
+    Long currentUserId = (Long) authentication.getPrincipal();
 
-        return ResponseEntity.ok(profile);
-    }
+    UserProfileResponse profile =
+            userService.getUserProfileById(id, currentUserId);
+
+    return ResponseEntity.ok(profile);
+}
 
     @PatchMapping("/{id}/status")
 public ResponseEntity<UserResponse> updateUserStatus(

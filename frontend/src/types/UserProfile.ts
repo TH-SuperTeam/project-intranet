@@ -10,6 +10,6 @@ export interface UserProfile {
     email: string;
     userType: UserType;
     accessRole: AccessRole;
-    status: Status;
+    status: Status | null;
     bio: string | null;
 }

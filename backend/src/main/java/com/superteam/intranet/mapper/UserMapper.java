@@ -53,7 +53,7 @@ public class UserMapper {
         );
     }
 
-   public UserProfileResponse toProfileResponse(User user) {
+   public UserProfileResponse toProfileResponse(User user, boolean isAdmin) {
     return new UserProfileResponse(
             user.getId(),
             user.getFirstName(),
@@ -62,7 +62,7 @@ public class UserMapper {
             user.getEmail(),
             user.getUserType(),
             user.getAccessRole(),
-            user.getStatus(),
+            isAdmin ? user.getStatus() : null,
             user.getBio()
     );
 }

@@ -112,7 +112,9 @@ public class UserService {
 
 
     // Get another user's profile
-    public UserProfileResponse getUserProfileById(Long userId) {
+    public UserProfileResponse getUserProfileById(
+            Long userId,
+            Long currentUserId) {
 
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new ResponseStatusException(
@@ -120,7 +122,15 @@ public class UserService {
                         "User not found"
                 ));
 
-        return userMapper.toProfileResponse(user);
+        User currentUser = userRepository.findById(currentUserId)
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND,
+                        "Current user not found"
+                ));
+
+        boolean isAdmin = currentUser.getAccessRole() == AccessRole.ADMIN;
+
+        return userMapper.toProfileResponse(user, isAdmin);
     }
 
    @Transactional
