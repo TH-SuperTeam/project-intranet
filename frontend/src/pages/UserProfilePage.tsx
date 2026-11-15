@@ -1,31 +1,22 @@
-
 import { Link, useParams } from "react-router-dom";
 import UserProfileCard from "../components/Users/UserProfileCard";
 import { useUserProfile } from "../hooks/UsersHooks/useUserProfile";
 import styles from "./UserProfilePage.module.css";
+import BackLink from "../components/common/BackLink";
 
 const UserProfilePage = () => {
     const { id } = useParams<{ id: string }>();
     const userId = Number(id);
 
     const isValidId =
-        id !== undefined &&
-        Number.isInteger(userId) &&
-        userId > 0;
+        id !== undefined && Number.isInteger(userId) && userId > 0;
 
-    const {
-        data: profile,
-        isLoading,
-        isError,
-        error,
-    } = useUserProfile(userId);
+    const { data: profile, isLoading, isError, error } = useUserProfile(userId);
 
     if (!isValidId) {
         return (
             <section className={styles.profilePage}>
-                <p className={styles.errorMessage}>
-                    Ogiltigt användar-ID.
-                </p>
+                <p className={styles.errorMessage}>Ogiltigt användar-ID.</p>
                 <Link to="/users">Tillbaka till användare</Link>
             </section>
         );
@@ -52,18 +43,14 @@ const UserProfilePage = () => {
                         : "Kunde inte hämta profilen. Försök igen senare."}
                 </p>
 
-                <Link to="/users">
-                    Tillbaka till användare
-                </Link>
+                <Link to="/users">Tillbaka till användare</Link>
             </section>
         );
     }
 
     return (
         <section className={styles.profilePage}>
-            <Link to="/users" className={styles.backLink}>
-                ← Tillbaka till användare
-            </Link>
+            <BackLink to="/users" label="Tillbaka till användare" />
 
             <h1>Användarprofil</h1>
 
