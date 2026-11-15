@@ -30,15 +30,18 @@ export interface PaginatedNews {
 }
 
 export const getNews = async (
-    audience: TargetAudience,
     page: number = 0,
     size: number = 10,
+    search: string = "",
 ): Promise<PaginatedNews> => {
     const params = new URLSearchParams({
-        targetAudience: audience,
         page: String(page),
         size: String(size),
     });
+
+    if (search.trim()) {
+        params.append("search", search.trim());
+    }
 
     const res = await apiFetch(`/api/news?${params}`);
 
@@ -48,6 +51,7 @@ export const getNews = async (
 
     return res.json();
 };
+
 
 export const getNewsById = async (
     id: number,

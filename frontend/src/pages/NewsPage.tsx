@@ -44,11 +44,13 @@ const NewsPage = () => {
                 )}
             </header>
 
-            <SearchInput
-                value={search}
-                onChange={setSearch}
-                placeholder="Sök bland nyheter..."
-            />
+            <div className={styles.searchContainer}>
+                <SearchInput
+                    value={search}
+                    onChange={setSearch}
+                    placeholder="Sök bland nyheter..."
+                />
+            </div>
 
             {successMessage && (
                 <p role="status" className={styles.successMessage}>

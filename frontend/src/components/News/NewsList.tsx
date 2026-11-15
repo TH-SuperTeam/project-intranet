@@ -2,7 +2,7 @@ import NewsCard from "./NewsCard"
 import type { TargetAudience } from "../../types/TargetAudience"
 import styles from "./News.module.css"
 import { useNews } from "../../hooks/NewsHooks/useNews"
-import { useEffect, useState } from "react"
+import { useState } from "react"
 
 type NewsListProps = {
 	audience: TargetAudience
@@ -10,10 +10,11 @@ type NewsListProps = {
 }
 
 const NewsList = ({ audience, search }: NewsListProps) => {
+	return <PaginatedNewsList key={search} audience={audience} search={search} />
+}
+
+const PaginatedNewsList = ({ audience, search }: NewsListProps) => {
 	const [page, setPage] = useState(0)
-	useEffect(() => {
-		setPage(0)
-	}, [search])
 
 	const { data: news, isPending, isError } = useNews({ audience, page, search })
 
