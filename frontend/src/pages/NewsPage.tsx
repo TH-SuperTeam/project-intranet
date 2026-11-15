@@ -20,6 +20,16 @@ const NewsPage = () => {
 
     const [search, setSearch] = useState("");
 
+    const [debouncedSearch, setDebouncedSearch] = useState(search);
+
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            setDebouncedSearch(search);
+        }, 300);
+
+        return () => clearTimeout(timer);
+    }, [search]);
+
     useEffect(() => {
         if (location.state?.successMessage) {
             navigate(location.pathname, {
@@ -58,7 +68,7 @@ const NewsPage = () => {
                 </p>
             )}
 
-            <NewsList audience={audience} search={search} />
+            <NewsList audience={audience} search={debouncedSearch} />
         </main>
     );
 };
