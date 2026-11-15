@@ -2,6 +2,8 @@
 package com.superteam.intranet.dto;
 
 import com.superteam.intranet.model.UserType;
+import com.superteam.intranet.model.AccessRole;
+import com.superteam.intranet.model.UserStatus;
 
 public record UserProfileResponse(
         Long id,
@@ -10,6 +12,8 @@ public record UserProfileResponse(
         String profileImageUrl,
         String email,
         UserType userType,
+        AccessRole accessRole,
+        UserStatus status,
         String bio
 ) {
 }

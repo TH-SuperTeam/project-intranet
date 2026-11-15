@@ -53,17 +53,19 @@ public class UserMapper {
         );
     }
 
-    public UserProfileResponse toProfileResponse(User user) {
-        return new UserProfileResponse(
-                user.getId(),
-                user.getFirstName(),
-                user.getLastName(),
-                user.getProfileImageUrl(),
-                user.getEmail(),
-                user.getUserType(),
-                user.getBio()
-        );
-    }
+   public UserProfileResponse toProfileResponse(User user) {
+    return new UserProfileResponse(
+            user.getId(),
+            user.getFirstName(),
+            user.getLastName(),
+            user.getProfileImageUrl(),
+            user.getEmail(),
+            user.getUserType(),
+            user.getAccessRole(),
+            user.getStatus(),
+            user.getBio()
+    );
+}
 
     public PublicUserResponse toPublicUserResponse(User user) {
         return new PublicUserResponse(
