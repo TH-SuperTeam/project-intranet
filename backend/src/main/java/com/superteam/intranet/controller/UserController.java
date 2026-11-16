@@ -58,23 +58,42 @@ public class UserController {
 
 
     @GetMapping("/{id}")
-    public ResponseEntity<UserProfileResponse> getUserProfile(
-            @PathVariable Long id) {
+public ResponseEntity<UserProfileResponse> getUserProfile(
+        @PathVariable Long id,
+        Authentication authentication) {
 
-        UserProfileResponse profile = userService.getUserProfileById(id);
+    Long currentUserId = (Long) authentication.getPrincipal();
 
-        return ResponseEntity.ok(profile);
-    }
+    UserProfileResponse profile =
+            userService.getUserProfileById(id, currentUserId);
+
+    return ResponseEntity.ok(profile);
+}
 
     @PatchMapping("/{id}/status")
-    public ResponseEntity<UserResponse> updateUserStatus(
-            @PathVariable Long id,
-            @Valid @RequestBody UpdateUserStatusRequest request) {
+public ResponseEntity<UserResponse> updateUserStatus(
+        @PathVariable Long id,
+        @Valid @RequestBody UpdateUserStatusRequest request,
+        Authentication authentication) {
 
-        UserResponse updatedUser = userService.updateUserStatus(id, request);
+    Long currentUserId = (Long) authentication.getPrincipal();
 
-        return ResponseEntity.ok(updatedUser);
-    }
+    UserResponse updatedUser =
+            userService.updateUserStatus(id, request, currentUserId);
+
+    return ResponseEntity.ok(updatedUser);
+}
+
+@PatchMapping("/{id}/role")
+public UserResponse updateUserRole(
+        @PathVariable Long id,
+        @Valid @RequestBody UpdateUserRoleRequest request,
+        Authentication authentication) {
+
+    Long currentUserId = (Long) authentication.getPrincipal();
+
+    return userService.updateUserRole(id, request, currentUserId);
+}
 
     @GetMapping
     public ResponseEntity<List<?>> getUsers(

@@ -31,8 +31,9 @@ const NewsDetails = ({ news }: NewsDetailsProps) => {
     };
 
     const confirmDelete = () => {
-        setShowConfirm(false);
-        mutation.mutate(news.id);
+        mutation.mutate(news.id, {
+            onSuccess: () => setShowConfirm(false),
+        });
     };
 
     return (
@@ -55,11 +56,7 @@ const NewsDetails = ({ news }: NewsDetailsProps) => {
 
                     <p className={styles.detailsContent}>{news.content}</p>
                 </div>
-                {mutation.isError && (
-                    <p role="alert" className="text-right text-(--color-error)">
-                        {mutation.error.message}
-                    </p>
-                )}
+
                 <div className="flex items-center justify-end gap-2">
                     {canManageNews && (
                         <EditButton to={`/news/${news.id}/edit`} />
@@ -76,6 +73,12 @@ const NewsDetails = ({ news }: NewsDetailsProps) => {
                             message="Är du säker på att du vill ta bort nyheten?"
                             onConfirm={confirmDelete}
                             onCancel={() => setShowConfirm(false)}
+                            isPending={mutation.isPending}
+                            errorMessage={
+                                mutation.isError
+                                    ? mutation.error.message
+                                    : undefined
+                            }
                         />
                     )}
                 </div>

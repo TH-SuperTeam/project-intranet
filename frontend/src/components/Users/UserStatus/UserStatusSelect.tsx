@@ -1,66 +1,115 @@
-import { Status } from "../../../types/Status"
-import { ChevronDown } from "lucide-react"
+import { useEffect, useRef, useState } from "react";
+import { Check, ChevronDown } from "lucide-react";
+import { Status, statusLabels, statusColors } from "../../../types/Status";
 
 type UserStatusSelectProps = {
-	value: Status
-	onChange: (newStatus: Status) => void
-	disabled?: boolean
-}
-
-const statusOptions: { value: Status; label: string }[] = [
-	{ value: Status.ACTIVE, label: "Aktiv" },
-	{ value: Status.SUSPENDED, label: "Avstängd" },
-	{ value: Status.GRADUATED, label: "Examinerad" },
-	{ value: Status.WITHDRAWN, label: "Avbruten" },
-	{ value: Status.TERMINATED, label: "Avslutad" },
-	{ value: Status.ON_LEAVE, label: "Tjänstledig" },
-	{ value: Status.PAUSED, label: "Pausad" },
-]
-
-const statusColors: Record<Status, string> = {
-	[Status.ACTIVE]: "border-[#b5d8c3] bg-[#dceee3] text-[#276749]",
-
-	[Status.SUSPENDED]: "border-[#e5b9ba] bg-[#f3dedd] text-[#923f48]",
-
-	[Status.GRADUATED]: "border-[#bdcfe8] bg-[#dfe8f5] text-[#345c91]",
-
-	[Status.WITHDRAWN]: "border-[#e8cbb4] bg-[#f5e5d7] text-[#965b35]",
-
-	[Status.TERMINATED]: "border-[#cdd0d5] bg-[#e8e9ec] text-[#4b5563]",
-
-	[Status.ON_LEAVE]: "border-[#d2c1e2] bg-[#eae2f2] text-[#72518c]",
-
-	[Status.PAUSED]: "border-[#e2d59c] bg-[#f2eacb] text-[#806522]",
-}
+    value: Status;
+    onChange: (newStatus: Status) => void;
+    disabled?: boolean;
+};
 
 const UserStatusSelect = ({
-	value,
-	onChange,
-	disabled = false,
+    value,
+    onChange,
+    disabled = false,
 }: UserStatusSelectProps) => {
-	return (
-		<div className="relative w-36 shrink-0">
-			<select
-				aria-label="Användarstatus"
-				value={value}
-				onChange={event => onChange(event.target.value as Status)}
-				disabled={disabled}
-				className={`w-full appearance-none rounded-lg border py-2 pl-3 pr-9 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-50 ${statusColors[value]}`}
-			>
-				{statusOptions.map(option => (
-					<option key={option.value} value={option.value}>
-						{option.label}
-					</option>
-				))}
-			</select>
+    const [isOpen, setIsOpen] = useState(false);
+    const dropdownRef = useRef<HTMLDivElement>(null);
 
-			<ChevronDown
-				size={16}
-				aria-hidden="true"
-				className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-gray-600"
-			/>
-		</div>
-	)
-}
+    useEffect(() => {
+        const handleClickOutside = (event: MouseEvent) => {
+            if (
+                dropdownRef.current &&
+                !dropdownRef.current.contains(event.target as Node)
+            ) {
+                setIsOpen(false);
+            }
+        };
 
-export default UserStatusSelect
+        document.addEventListener("mousedown", handleClickOutside);
+
+        return () => {
+            document.removeEventListener("mousedown", handleClickOutside);
+        };
+    }, []);
+
+    const handleSelect = (status: Status) => {
+        setIsOpen(false);
+
+        if (status !== value) {
+            onChange(status);
+        }
+    };
+
+    return (
+        <div ref={dropdownRef} className="relative w-45 shrink-0">
+            {/* Selected status */}
+            <button
+                type="button"
+                aria-label="Användarstatus"
+                aria-haspopup="listbox"
+                aria-expanded={isOpen && !disabled}
+                disabled={disabled}
+                onClick={() => setIsOpen((prev) => !prev)}
+                className={`
+                    flex h-10.5 w-full items-center justify-between
+                    rounded-lg border px-3 text-sm font-medium
+                    cursor-pointer
+                    focus:outline-none focus:ring-2
+                    focus:ring-(--color-primary-soft)
+                    disabled:cursor-not-allowed disabled:opacity-50
+                    ${statusColors[value]}
+                `}
+            >
+                <span>{statusLabels[value]}</span>
+                <ChevronDown
+                    size={16}
+                    className={`transition-transform ${
+                        isOpen ? "rotate-180" : ""
+                    }`}
+                />
+            </button>
+
+            {/* Dropdown options */}
+            {isOpen && !disabled && (
+                <div
+                    role="listbox"
+                    aria-label="Välj användarstatus"
+                    className="
+                        absolute left-0 top-full z-20 mt-2
+                        w-full rounded-lg border
+                        border-(--color-border)
+                        bg-(--color-surface)
+                        p-1.5 shadow-lg
+                    "
+                >
+                    {Object.values(Status).map((status) => (
+                        <button
+                            key={status}
+                            type="button"
+                            role="option"
+                            aria-selected={status === value}
+                            onClick={() => handleSelect(status)}
+                            className={`
+                                mb-1 flex w-full items-center justify-between
+                                rounded-md border px-2.5 py-2
+                                text-left text-sm font-medium
+                                transition-opacity hover:opacity-80
+                                last:mb-0
+                                ${statusColors[status]}
+                            `}
+                        >
+                            <span>{statusLabels[status]}</span>
+
+                            {status === value && (
+                                <Check size={15} aria-hidden="true" />
+                            )}
+                        </button>
+                    ))}
+                </div>
+            )}
+        </div>
+    );
+};
+
+export default UserStatusSelect;

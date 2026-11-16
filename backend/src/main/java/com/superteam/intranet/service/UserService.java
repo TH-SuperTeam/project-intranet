@@ -41,12 +41,7 @@ public class UserService {
             throw new DuplicateEmailException("Email already exists");
         }
 
-        if (request.userType() == UserType.STUDENT
-                && request.accessRole() == AccessRole.ADMIN) {
-            throw new IllegalArgumentException(
-                    "A student cannot have admin access"
-            );
-        }
+        validateAccessRole(request.userType(), request.accessRole());
 
         User user = new User();
 
@@ -117,21 +112,9 @@ public class UserService {
 
 
     // Get another user's profile
-    public UserProfileResponse getUserProfileById(Long userId) {
-
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new ResponseStatusException(
-                        HttpStatus.NOT_FOUND,
-                        "User not found"
-                ));
-
-        return userMapper.toProfileResponse(user);
-    }
-
-    @Transactional
-    public UserResponse updateUserStatus(
+    public UserProfileResponse getUserProfileById(
             Long userId,
-            UpdateUserStatusRequest request) {
+            Long currentUserId) {
 
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new ResponseStatusException(
@@ -139,12 +122,79 @@ public class UserService {
                         "User not found"
                 ));
 
-        user.setStatus(request.status());
+        User currentUser = userRepository.findById(currentUserId)
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND,
+                        "Current user not found"
+                ));
 
-        User updatedUser = userRepository.save(user);
+        boolean isAdmin = currentUser.getAccessRole() == AccessRole.ADMIN;
 
-        return userMapper.toResponse(updatedUser);
+        return userMapper.toProfileResponse(user, isAdmin);
     }
+
+   @Transactional
+public UserResponse updateUserStatus(
+        Long userId,
+        UpdateUserStatusRequest request,
+        Long currentUserId) {
+
+    User user = userRepository.findById(userId)
+            .orElseThrow(() -> new ResponseStatusException(
+                    HttpStatus.NOT_FOUND,
+                    "User not found"
+            ));
+
+    if (userId.equals(currentUserId)
+            && user.getAccessRole() == AccessRole.ADMIN
+            && user.getStatus() == UserStatus.ACTIVE
+            && request.status() != UserStatus.ACTIVE) {
+
+        throw new ResponseStatusException(
+                HttpStatus.BAD_REQUEST,
+                "Du kan inte inaktivera ditt eget administratörskonto."
+        );
+    }
+
+    user.setStatus(request.status());
+
+    User updatedUser = userRepository.save(user);
+
+    return userMapper.toResponse(updatedUser);
+}
+
+@Transactional
+public UserResponse updateUserRole(
+        Long userId,
+        UpdateUserRoleRequest request,
+        Long currentUserId) {
+
+    User user = userRepository.findById(userId)
+            .orElseThrow(() -> new ResponseStatusException(
+                    HttpStatus.NOT_FOUND,
+                    "User not found"
+            ));
+
+    // En administratör får inte ta bort sin egen ADMIN-behörighet
+    if (userId.equals(currentUserId)
+            && user.getAccessRole() == AccessRole.ADMIN
+            && request.accessRole() != AccessRole.ADMIN) {
+
+        throw new ResponseStatusException(
+                HttpStatus.BAD_REQUEST,
+                "Du kan inte ta bort din egen administratörsbehörighet."
+        );
+    }
+
+    // Studenter får inte ha ADMIN-behörighet
+    validateAccessRole(user.getUserType(), request.accessRole());
+
+    user.setAccessRole(request.accessRole());
+
+    User updatedUser = userRepository.save(user);
+
+    return userMapper.toResponse(updatedUser);
+}
 
     public List<?> getUsers(String search, Long userId) {
         String term = (search == null) ? "" : search.trim();
@@ -168,4 +218,14 @@ public class UserService {
                     .toList();
         }
     }
+
+    private void validateAccessRole(UserType userType, AccessRole accessRole) {
+    if (userType == UserType.STUDENT
+            && accessRole == AccessRole.ADMIN) {
+
+        throw new IllegalArgumentException(
+                "A student cannot have admin access"
+        );
+    }
+}
 }
