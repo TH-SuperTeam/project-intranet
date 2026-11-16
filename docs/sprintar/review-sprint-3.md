@@ -86,15 +86,12 @@ En användare ska kunna logga ut samt söka upp andra användare, admin ska kunn
 
 ### Feedback
 
-> **Exempel:** Läraren frågade hur man vet vem som ska göra nästa disk. I deras kollektiv turas man om varje vecka i stället för att tilldela.
-
--
--
+- Nils tycker att väder-widgeten är för tom. Förslag - att visa upp väder för kommande timmar.
+- Nils tycker att intranätet ska ge mer möjligheter för kontakt mellan användarna, ex. ett forum eller direktmeddelanden. 
 
 ### Ändringar i backloggen
 
 <!-- Nya stories, ändrad prioritet, stories som tagits bort. Länka issues. -->
 
-> **Exempel:** Ny story #15 "Turordning per vecka" som Must. "Tilldela en syssla" (#5) sänks till Should.
-
--
+- [#131]– Ny story tillagd: Tydlig och enhetlig återkoppling när innehåll laddas.
+- [#132]– Ny story tillagd: En mer levande väderwidget.
