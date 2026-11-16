@@ -3,8 +3,11 @@ package com.superteam.intranet.dto;
 
 import com.superteam.intranet.model.TargetAudience;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+
+import java.util.Set;
 
 public record UpdateNewsRequest(
 
@@ -15,7 +18,7 @@ public record UpdateNewsRequest(
         @NotBlank
         String content,
 
-        @NotNull(message = "TargetAudience must not be empty")
-        TargetAudience targetAudience
+        @NotEmpty(message = "Minst en målgrupp måste väljas")
+        Set<TargetAudience> targetAudience
 
 ) {}

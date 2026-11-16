@@ -1,20 +1,18 @@
+
 package com.superteam.intranet.service;
 
-import com.superteam.intranet.dto.CreateUserRequest;
-import com.superteam.intranet.dto.UpdateUserStatusRequest;
-import com.superteam.intranet.dto.UserListResponse;
-import com.superteam.intranet.dto.UserResponse;
+import com.superteam.intranet.dto.*;
 import com.superteam.intranet.mapper.UserMapper;
 import com.superteam.intranet.model.AccessRole;
 import com.superteam.intranet.model.User;
 import com.superteam.intranet.model.UserStatus;
 import com.superteam.intranet.model.UserType;
 import com.superteam.intranet.repository.UserRepository;
+import com.superteam.intranet.exception.DuplicateEmailException;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import com.superteam.intranet.exception.DuplicateEmailException;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
@@ -43,12 +41,7 @@ public class UserService {
             throw new DuplicateEmailException("Email already exists");
         }
 
-        if (request.userType() == UserType.STUDENT
-                && request.accessRole() == AccessRole.ADMIN) {
-            throw new IllegalArgumentException(
-                    "A student cannot have admin access"
-            );
-        }
+        validateAccessRole(request.userType(), request.accessRole());
 
         User user = new User();
 
@@ -76,10 +69,8 @@ public class UserService {
         return userMapper.toResponse(user);
     }
 
-    @Transactional
-    public UserResponse updateUserStatus(
-            Long userId,
-            UpdateUserStatusRequest request) {
+    // Get current user's own profile
+    public MyProfileResponse getMyProfile(Long userId) {
 
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new ResponseStatusException(
@@ -87,19 +78,154 @@ public class UserService {
                         "User not found"
                 ));
 
-        user.setStatus(request.status());
+        return userMapper.toMyProfileResponse(user);
+    }
+
+    @Transactional
+    public MyProfileResponse updateMyProfile(
+            Long userId,
+            UpdateProfileRequest request) {
+
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND,
+                        "User not found"
+                ));
+
+        String email = request.email().trim().toLowerCase();
+
+        if (userRepository.existsByEmailIgnoreCaseAndIdNot(email, userId)) {
+            throw new DuplicateEmailException("E-postadressen används redan");
+        }
+
+        user.setFirstName(request.firstName().trim());
+        user.setLastName(request.lastName().trim());
+        user.setEmail(email);
+        user.setBio(request.bio() != null ? request.bio().trim() : null);
+        user.setProfileImageUrl(request.profileImageUrl());
 
         User updatedUser = userRepository.save(user);
 
-        return userMapper.toResponse(updatedUser);
+        return userMapper.toMyProfileResponse(updatedUser);
     }
 
-    public List<UserListResponse> getUsers(String search) {
 
+
+    // Get another user's profile
+    public UserProfileResponse getUserProfileById(
+            Long userId,
+            Long currentUserId) {
+
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND,
+                        "User not found"
+                ));
+
+        User currentUser = userRepository.findById(currentUserId)
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND,
+                        "Current user not found"
+                ));
+
+        boolean isAdmin = currentUser.getAccessRole() == AccessRole.ADMIN;
+
+        return userMapper.toProfileResponse(user, isAdmin);
+    }
+
+   @Transactional
+public UserResponse updateUserStatus(
+        Long userId,
+        UpdateUserStatusRequest request,
+        Long currentUserId) {
+
+    User user = userRepository.findById(userId)
+            .orElseThrow(() -> new ResponseStatusException(
+                    HttpStatus.NOT_FOUND,
+                    "User not found"
+            ));
+
+    if (userId.equals(currentUserId)
+            && user.getAccessRole() == AccessRole.ADMIN
+            && user.getStatus() == UserStatus.ACTIVE
+            && request.status() != UserStatus.ACTIVE) {
+
+        throw new ResponseStatusException(
+                HttpStatus.BAD_REQUEST,
+                "Du kan inte inaktivera ditt eget administratörskonto."
+        );
+    }
+
+    user.setStatus(request.status());
+
+    User updatedUser = userRepository.save(user);
+
+    return userMapper.toResponse(updatedUser);
+}
+
+@Transactional
+public UserResponse updateUserRole(
+        Long userId,
+        UpdateUserRoleRequest request,
+        Long currentUserId) {
+
+    User user = userRepository.findById(userId)
+            .orElseThrow(() -> new ResponseStatusException(
+                    HttpStatus.NOT_FOUND,
+                    "User not found"
+            ));
+
+    // En administratör får inte ta bort sin egen ADMIN-behörighet
+    if (userId.equals(currentUserId)
+            && user.getAccessRole() == AccessRole.ADMIN
+            && request.accessRole() != AccessRole.ADMIN) {
+
+        throw new ResponseStatusException(
+                HttpStatus.BAD_REQUEST,
+                "Du kan inte ta bort din egen administratörsbehörighet."
+        );
+    }
+
+    // Studenter får inte ha ADMIN-behörighet
+    validateAccessRole(user.getUserType(), request.accessRole());
+
+    user.setAccessRole(request.accessRole());
+
+    User updatedUser = userRepository.save(user);
+
+    return userMapper.toResponse(updatedUser);
+}
+
+    public List<?> getUsers(String search, Long userId) {
         String term = (search == null) ? "" : search.trim();
 
-        return userRepository.searchUsers(term).stream()
-                .map(userMapper::toListResponse)
-                .toList();
+        User currentUser = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException(
+                        "Användaren hittades inte."
+                ));
+
+        List<User> users = currentUser.getAccessRole() == AccessRole.ADMIN
+                ? userRepository.searchUsers(term)
+                : userRepository.searchActiveUsers(term);
+
+        if (currentUser.getAccessRole() == AccessRole.ADMIN) {
+            return users.stream()
+                    .map(userMapper::toListResponse)
+                    .toList();
+        } else {
+            return users.stream()
+                    .map(userMapper::toPublicUserResponse)
+                    .toList();
+        }
     }
+
+    private void validateAccessRole(UserType userType, AccessRole accessRole) {
+    if (userType == UserType.STUDENT
+            && accessRole == AccessRole.ADMIN) {
+
+        throw new IllegalArgumentException(
+                "A student cannot have admin access"
+        );
+    }
+}
 }

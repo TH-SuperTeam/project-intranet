@@ -1,7 +1,7 @@
 import type { AuthUser } from "../types/AuthUser";
 import type { LoginRequest } from "../types/LoginRequest";
 import type { LoginResponse } from "../types/LoginResponse";
-import { API_URL } from "./api";
+import { API_URL, apiFetch } from "./api";
 
 export const login = async (
     credentials: LoginRequest,
@@ -23,13 +23,19 @@ export const login = async (
     }
 
     return res.json();
-
-    
 };
 
-export const getCurrentUser = async (
-    token: string,
-): Promise<AuthUser> => {
+export const logoutRequest = async (): Promise<void> => {
+    const response = await apiFetch("/api/auth/logout", {
+        method: "POST",
+    });
+
+    if (!response.ok) {
+        throw new Error("Kunde inte logga ut.");
+    }
+};
+
+export const getCurrentUser = async (token: string): Promise<AuthUser> => {
     const res = await fetch(`${API_URL}/api/users/me`, {
         headers: {
             Authorization: `Bearer ${token}`,

@@ -12,54 +12,45 @@ import LoginPage from "./pages/LoginPage"
 import DashboardPage from "./pages/DashboardPage"
 import ProtectedRoute from "./components/auth/ProtectedRoute"
 import AdminRoute from "./components/auth/AdminRoute"
+import MainLayout from "./layouts/MainLayout"
+import PublicDashboardPage from "./pages/PublicDashboardPage"
+import MyProfilePage from "./pages/MyProfilePage"
+import UserProfilePage from "./pages/UserProfilePage"
 
 function App() {
-	return (
-		<>
-			<AuthProvider>
-				<AudienceProvider>
-					<Routes>
-						<Route path="/login" element={<LoginPage />} />
+  return (
+    <>
+      <AuthProvider>
+        <AudienceProvider>
+          <Routes>
+            <Route path="/login" element={<LoginPage />} />
+            <Route path="/public" element={<PublicDashboardPage />} />
 
-						<Route element={<ProtectedRoute />}>
-							{/* All authenticated users */}
-							<Route
-								path="/dashboard"
-								element={<DashboardPage />}
-							/>
-							<Route path="/news" element={<NewsPage />} />
-							<Route
-								path="/news/:id"
-								element={<NewsDetailsPage />}
-							/>
+            <Route element={<ProtectedRoute />}>
+              {/* All authenticated users */}
+              <Route element={<MainLayout />}>
+                <Route path="/dashboard" element={<DashboardPage />} />
+                <Route path="/profile" element={<MyProfilePage />} />
+                <Route path="/news" element={<NewsPage />} />
+                <Route path="/news/:id" element={<NewsDetailsPage />} />
+                <Route path="/users" element={<UsersPage />} />
+                <Route path="/users/:id" element={<UserProfilePage />} />
 
-							{/* Admin only */}
-							<Route element={<AdminRoute />}>
-								<Route
-									path="/news/create"
-									element={<CreateNewsPage />}
-								/>
-								<Route
-									path="/news/:id/edit"
-									element={<EditNewsPage />}
-								/>
-								<Route path="/users" element={<UsersPage />} />
-								<Route
-									path="/users/create"
-									element={<CreateUsersPage />}
-								/>
-							</Route>
-						</Route>
+                {/* Admin only */}
+                <Route element={<AdminRoute />}>
+                  <Route path="/news/create" element={<CreateNewsPage />} />
+                  <Route path="/news/:id/edit" element={<EditNewsPage />} />
+                  <Route path="/users/create" element={<CreateUsersPage />} />
+                </Route>
+              </Route>
+            </Route>
 
-						<Route
-							path="/"
-							element={<Navigate to="/dashboard" replace />}
-						/>
-					</Routes>
-				</AudienceProvider>
-			</AuthProvider>
-		</>
-	)
+            <Route path="/" element={<Navigate to="/dashboard" replace />} />
+          </Routes>
+        </AudienceProvider>
+      </AuthProvider>
+    </>
+  )
 }
 
 export default App

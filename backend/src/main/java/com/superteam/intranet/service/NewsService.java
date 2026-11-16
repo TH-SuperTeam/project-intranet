@@ -16,7 +16,13 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 import com.superteam.intranet.model.AccessRole;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
+
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class NewsService {
@@ -32,53 +38,94 @@ public class NewsService {
     }
 
     // Publicera en nyhet.
-    @Transactional
-    public NewsResponse publishNews(
-            CreateNewsRequest request,
-            Long userId) {
+  @Transactional
+public NewsResponse publishNews(
+        CreateNewsRequest request,
+        Long userId) {
 
-        News news = newsMapper.toEntity(request);
+    validatePublicNewsContent(
+            request.content(),
+            request.targetAudience()
+    );
 
-        news.setUserId(userId);
-        news.setPublished(true);
+    News news = newsMapper.toEntity(request);
 
-        News savedNews = newsRepository.save(news);
+    news.setUserId(userId);
+    news.setPublished(true);
 
-        return newsMapper.toResponse(savedNews);
-    }
+    News savedNews = newsRepository.save(news);
 
-    // Hämta publicerade nyheter utifrån användarens användartyp.
+    return newsMapper.toResponse(savedNews);
+}
+
+
+    // Hämta publicerade nyheter utifrån användarens roll med paginering och eventuell sökning.
     @Transactional(readOnly = true)
-    public List<NewsResponse> getPublishedNews(
+    public Page<NewsResponse> getPublishedNews(
             UserType userType,
-            AccessRole accessRole) {
+            AccessRole accessRole,
+            int page,
+            int size,
+            String search) {
 
         List<TargetAudience> audiences;
 
         if (accessRole == AccessRole.ADMIN) {
             audiences = List.of(
-                    TargetAudience.ALL,
                     TargetAudience.STUDENT,
-                    TargetAudience.TEACHER
+                    TargetAudience.TEACHER,
+                    TargetAudience.PUBLIC_DASHBOARD
             );
         } else {
             audiences = List.of(
-                    TargetAudience.ALL,
                     TargetAudience.valueOf(userType.name())
             );
         }
 
+        Pageable pageable = PageRequest.of(
+                page,
+                size,
+                Sort.by(Sort.Direction.DESC, "createdAt")
+        );
+
+        Page<News> newsPage;
+
+        if (search != null && !search.isBlank()) {
+            newsPage = newsRepository.searchPublishedNewsByAudiences(
+                    search.trim(),
+                    audiences,
+                    pageable
+            );
+        } else {
+            newsPage = newsRepository.findPublishedNewsByAudiences(
+                    audiences,
+                    pageable
+            );
+        }
+
+        return newsPage.map(newsMapper::toResponse);
+    }
+
+
+
+    @Transactional(readOnly = true)
+    public Page<NewsResponse> getPublicNews() {
+
+        Pageable pageable = PageRequest.of(
+                0,
+                5,
+                Sort.by(Sort.Direction.DESC, "createdAt")
+        );
+
         return newsRepository
-                .findByIsPublishedTrueAndTargetAudienceInOrderByCreatedAtDesc(
-                        audiences
+                .findPublishedNewsByAudience(
+                        TargetAudience.PUBLIC_DASHBOARD,
+                        pageable
                 )
-                .stream()
-                .map(newsMapper::toResponse)
-                .toList();
+                .map(newsMapper::toResponse);
     }
 
     // Hämta en specifik publicerad nyhet utifrån användarens användartyp.
-    @Transactional(readOnly = true)
     public NewsResponse getPublishedNewsById(
             Long id,
             UserType userType,
@@ -88,22 +135,18 @@ public class NewsService {
 
         if (accessRole == AccessRole.ADMIN) {
             audiences = List.of(
-                    TargetAudience.ALL,
                     TargetAudience.STUDENT,
-                    TargetAudience.TEACHER
+                    TargetAudience.TEACHER,
+                    TargetAudience.PUBLIC_DASHBOARD
             );
         } else {
             audiences = List.of(
-                    TargetAudience.ALL,
                     TargetAudience.valueOf(userType.name())
             );
         }
 
         News news = newsRepository
-                .findByIdAndIsPublishedTrueAndTargetAudienceIn(
-                        id,
-                        audiences
-                )
+                .findPublishedNewsByIdAndAudiences(id, audiences)
                 .orElseThrow(() -> new ResponseStatusException(
                         HttpStatus.NOT_FOUND,
                         "News not found."
@@ -131,6 +174,11 @@ public class NewsService {
             );
         }
 
+        validatePublicNewsContent(
+        request.content(),
+        request.targetAudience()
+);
+
         news.setTitle(request.title().trim());
         news.setContent(request.content().trim());
         news.setTargetAudience(request.targetAudience());
@@ -152,4 +200,18 @@ public class NewsService {
 
         newsRepository.delete(news);
     }
+
+    private void validatePublicNewsContent(
+        String content,
+        Set<TargetAudience> targetAudience) {
+
+    if (targetAudience.contains(TargetAudience.PUBLIC_DASHBOARD)
+            && content.trim().length() > 300) {
+
+        throw new ResponseStatusException(
+                HttpStatus.BAD_REQUEST,
+                "Nyheter för informationsskärmen får innehålla max 300 tecken."
+        );
+    }
+}
 }

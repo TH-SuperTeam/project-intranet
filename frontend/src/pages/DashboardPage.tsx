@@ -1,15 +1,35 @@
+import DashboardLayout from "../components/Dashboard/DashboardLayout"
+import DashboardHeader from "../components/Dashboard/DashboardHeader"
+import NewsWidget from "../components/Widgets/NewsWidget"
+import { useAuth } from "../hooks/useAuth"
+import { useAudience } from "../hooks/useAudience"
+import WeatherWidget from "../components/Widgets/WeatherWidget"
+import TransportWidget from "../components/Widgets/TransportWidget"
+
 const DashboardPage = () => {
-    return (
-        <main>
-            <h1>Hej!</h1>
-            <p>Välkommen till Teknikhögskolan.</p>
+  const { user, isLoading } = useAuth()
+  const { audience } = useAudience()
 
-            <p>
-                Vi behöver skapa vår sidebar så att vi kan få hit lite
-                nav-länkar!
-            </p>
-        </main>
-    );
-};
+  if (isLoading) {
+    return <p>Laddar dashboard...</p>
+  }
 
-export default DashboardPage;
+  if (!user) {
+    return null
+  }
+
+  return (
+    <DashboardLayout
+      header={<DashboardHeader firstName={user.firstName} profileImageUrl={user.profileImageUrl} />}
+      mainWidget={<NewsWidget audience={audience} />}
+      sideWidgets={
+        <>
+          <WeatherWidget />
+          <TransportWidget />
+        </>
+      }
+    />
+  )
+}
+
+export default DashboardPage

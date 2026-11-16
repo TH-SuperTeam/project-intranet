@@ -1,3 +1,4 @@
+
 package com.superteam.intranet.dto;
 
 import com.superteam.intranet.model.AccessRole;
@@ -9,6 +10,7 @@ public record UserListResponse(
         String firstName,
         String lastName,
         String email,
+        String profileImageUrl,
         UserType userType,
         AccessRole accessRole,
         UserStatus status

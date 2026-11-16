@@ -1,0 +1,340 @@
+/* ===== DASHBOARD LAYOUT ===== */
+
+.dashboard {
+    width: 100%;
+    max-width: 1600px;
+    margin: 0 auto;
+    padding: 1rem;
+    box-sizing: border-box;
+}
+
+/* Endast publika dashboarden */
+.publicDashboard .dashboard {
+    max-width: 1920px;
+}
+
+.widgetGrid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
+    gap: 1.5rem;
+}
+
+.widgetMain,
+.widgetColumn {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    min-width: 0;
+}
+
+/* ===== WELCOME HEADER ===== */
+
+.welcomeHeader {
+    position: relative;
+    isolation: isolate;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 2rem;
+    min-height: 180px;
+    padding: 2rem;
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+/* Background illustration */
+
+.welcomeHeader::before {
+    content: "";
+    position: absolute;
+    inset: 0 0 0 auto;
+    width: 65%;
+    z-index: -1;
+    pointer-events: none;
+
+    background-image: url("../../assets/school-building.png");
+    background-repeat: no-repeat;
+    background-size: auto 130%;
+    background-position: right center;
+
+    -webkit-mask-image:
+        radial-gradient(
+            ellipse 65% 85% at bottom left,
+            transparent 0%,
+            black 100%
+        ),
+        radial-gradient(
+            ellipse 65% 85% at bottom right,
+            transparent 0%,
+            black 100%
+        );
+
+    mask-image:
+        radial-gradient(
+            ellipse 65% 85% at bottom left,
+            transparent 0%,
+            black 100%
+        ),
+        radial-gradient(
+            ellipse 65% 85% at bottom right,
+            transparent 0%,
+            black 100%
+        );
+
+    -webkit-mask-composite: source-in;
+    mask-composite: intersect;
+}
+
+/* ===== GREETING ===== */
+
+.welcomeLeft {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.welcomeAvatar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: 64px;
+    height: 64px;
+    border-radius: 16px;
+    background-color: var(--color-secondary-soft);
+    color: var(--color-secondary-dark);
+}
+
+.welcomeLeft h1 {
+    margin: 0 0 0.5rem;
+    color: var(--color-text-primary);
+    font-size: clamp(1.4rem, 2.5vw, 2rem);
+    font-weight: 700;
+}
+
+.welcomeLeft p {
+    margin: 0;
+    color: var(--color-text-secondary);
+    font-size: 0.95rem;
+}
+
+/* ===== DATE & TIME ===== */
+
+.dateTime {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+    margin-right: 7rem;
+    color: var(--color-text-secondary);
+    font-size: 0.875rem;
+    font-weight: 600;
+}
+
+.dateTimeItem {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.dateTimeItem svg {
+    flex-shrink: 0;
+}
+
+/* ===== PUBLIC DASHBOARD WIDGET LAYOUT ===== */
+
+.publicDashboard {
+    min-height: 100dvh;
+    background-color: var(--color-background);
+}
+
+.publicDashboard .widgetGrid {
+    height: calc(100dvh - 290px);
+    min-height: 0;
+    overflow: hidden;
+}
+
+/* Vänsterkolumnens wrapper */
+.publicDashboard .widgetMain {
+    min-height: 0;
+}
+
+/* Nyheter 70 %, lektioner 30 % */
+.publicWidgetColumn {
+    display: grid;
+    grid-template-rows: minmax(0, 7fr) minmax(0, 3fr);
+    gap: 1.5rem;
+    height: 100%;
+    min-height: 0;
+    min-width: 0;
+}
+
+/* Väder 50 %, bussar 50 % */
+.publicDashboard .widgetColumn {
+    display: grid;
+    grid-template-rows: minmax(0, 0.7fr) minmax(0, 1.3fr);
+    min-height: 0;
+}
+
+/* Widgetarna fyller sin tilldelade yta */
+.publicWidgetColumn > *,
+.publicDashboard .widgetColumn > * {
+    min-height: 0;
+    min-width: 0;
+}
+/* ===== PUBLIC DASHBOARD HEADER ===== */
+
+.publicHeaderLeft {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1.5rem;
+    min-width: 0;
+}
+
+.publicHeaderLogo {
+    display: block;
+    width: 280px;
+    max-width: 100%;
+    height: auto;
+    color: var(--color-primary-light);
+}
+
+.publicWelcomeText h1 {
+    margin: 0;
+    font-size: clamp(1.5rem, 2.5vw, 2.5rem);
+    font-weight: 700;
+    color: var(--color-text-primary);
+}
+
+.publicWelcomeText p {
+    margin: 0.5rem 0 0;
+    font-size: 1rem;
+    color: var(--color-text-secondary);
+}
+
+/* Date and time */
+
+.publicDateTime {
+    flex-shrink: 0;
+}
+
+.publicDateTime .dateTime {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 0.75rem;
+}
+
+.publicDateTime .dateTimeItem {
+    font-size: 1.25rem;
+    font-weight: 600;
+}
+
+.publicDateTime .dateTimeItem:last-child {
+    font-size: 2rem;
+    font-weight: 700;
+}
+
+.publicDateTime .dateTimeItem svg {
+    width: 24px;
+    height: 24px;
+}
+
+.publicDateTime .dateTimeItem:last-child svg {
+    width: 30px;
+    height: 30px;
+}
+
+/* ===== MOBILE ===== */
+
+@media (max-width: 640px) {
+    .dashboard {
+        padding: 1rem;
+    }
+
+    .widgetGrid {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 1rem;
+    }
+
+    .widgetMain,
+    .widgetColumn {
+        gap: 1rem;
+    }
+
+    .publicWidgetGrid {
+        height: auto;
+    }
+
+    .publicWidgetColumn,
+    .publicWidgetColumn:first-child {
+        grid-template-rows: auto;
+    }
+
+    .welcomeHeader {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 1.5rem;
+        padding: 1.5rem;
+    }
+
+    .welcomeHeader::before {
+        width: 100%;
+        background-size: cover;
+        background-position: right bottom;
+        opacity: 0.4;
+    }
+
+    .dateTime {
+        order: -1;
+        width: 100%;
+        margin-right: 0;
+        gap: 1rem;
+    }
+
+    .welcomeLeft {
+        order: 1;
+        min-width: 0;
+    }
+
+    .welcomeLeft h1 {
+        overflow-wrap: anywhere;
+    }
+}
+
+@media (min-width: 1600px) {
+    .publicHeaderLogo {
+        width: 340px;
+    }
+
+    .publicWelcomeText h1 {
+        font-size: 3rem;
+    }
+
+    .publicWelcomeText p {
+        font-size: 1.25rem;
+    }
+
+    .publicDateTime .dateTimeItem {
+        font-size: 1.5rem;
+    }
+
+    .publicDateTime .dateTimeItem:last-child {
+        font-size: 2.5rem;
+    }
+
+    .publicDateTime .dateTimeItem svg {
+        width: 30px;
+        height: 30px;
+    }
+
+    .publicDateTime .dateTimeItem:last-child svg {
+        width: 36px;
+        height: 36px;
+    }
+}

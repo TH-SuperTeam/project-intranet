@@ -18,6 +18,7 @@
 
 ## Sprintmål
 En användare ska kunna logga ut samt söka upp andra användare, admin ska kunna redigera användare.
+Som användare ska man kunna se en publik och en personlig dashboard.
 
 ## Kapacitet
 

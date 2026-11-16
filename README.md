@@ -14,10 +14,11 @@
 
 | Namn | GitHub |
 |---|---|
-| | |
-| | |
-| | |
-| | |
+| Inna Kuljanac | |
+| Caroline Enggren | |
+| Josefine Asplund | |
+| Sofie Törnqvist | |
+| Mette Karlsson | |
 
 ## Teknik
 
@@ -25,8 +26,8 @@
 
 | Del | Teknik |
 |---|---|
-| Frontend | |
-| Backend | |
+| Frontend | TypeScript, React |
+| Backend | Java, Spring Boot |
 | Databas | |
 
 ## Kom igång
@@ -126,9 +127,27 @@ Standardinställningen är `3600000`, vilket motsvarar **1 timme**.
 
 I din fil `backend/src/main/resources/application-local.properties` lägger du till ```JWT_SECRET=DIN_JWT_NYCKEL_123456```
 
+### 4. Konfigurera Trafiklab API
 
+Transportwidgeten använder Trafiklabs API för att hämta aktuella bussavgångar.
 
-### 3. Starta backend
+Varje utvecklare utanför projektgruppen behöver skapa en egen API-nyckel via [Trafiklab](https://www.trafiklab.se/).
+
+1. Skapa ett konto på Trafiklab.
+2. Skapa ett projekt och aktivera Realtime API.
+3. Generera en API-nyckel.
+
+Lägg sedan till följande i `backend/src/main/resources/application-local.properties`:
+
+```properties
+TRAFIKLAB_API_KEY=DIN_EGEN_API_NYCKEL
+```
+
+API-nyckeln hämtas automatiskt av backendens konfiguration. Filen `application-local.properties` är lokal och ska inte pushas till GitHub.
+
+**Viktigt:** Dela aldrig din API-nyckel offentligt eller lägg in den direkt i källkoden.
+
+### 5. Starta backend
 
 Öppna terminalen i projektets rotmapp:
 
@@ -144,7 +163,7 @@ Starta Spring Boot på Windows:
 
 Backend körs normalt på `http://localhost:8080`.
 
-### 4. Starta frontend
+### 6. Starta frontend
 
 Frontend är byggd med React, TypeScript och Vite.
 

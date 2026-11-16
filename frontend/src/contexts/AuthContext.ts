@@ -1,4 +1,3 @@
-
 import { createContext } from "react";
 import type { AuthUser } from "../types/AuthUser";
 import type { LoginRequest } from "../types/LoginRequest";
@@ -8,7 +7,7 @@ export type AuthContextType = {
     isAuthenticated: boolean;
     isLoading: boolean;
     loginUser: (credentials: LoginRequest) => Promise<void>;
-    logout: () => void;
+    logout: () => Promise<void>;
 };
 
 export const AuthContext = createContext<AuthContextType | undefined>(

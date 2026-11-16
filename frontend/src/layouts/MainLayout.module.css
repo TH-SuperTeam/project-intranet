@@ -1,0 +1,62 @@
+.appLayout {
+    display: flex;
+    height: 100dvh;
+    overflow: hidden;
+    background-color: var(--color-background);
+}
+
+.mainContent {
+    flex: 1;
+    min-width: 0;
+    min-height: 0;
+    overflow-y: auto;
+}
+
+.menuButton {
+    display: none;
+}
+
+.backdrop {
+    display: none;
+}
+
+@media (max-width: 768px) {
+    .mainContent {
+        width: 100%;
+        min-width: 0;
+        padding-top: 50px;
+        box-sizing: border-box;
+    }
+
+    @media (max-width: 768px) {
+        .menuButton {
+            position: absolute;
+            top: 16px;
+            left: 16px;
+            z-index: 10;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            width: 44px;
+            height: 44px;
+            padding: 8px;
+
+            background: var(--color-primary);
+            color: var(--color-text-white);
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+    }
+    .backdrop {
+        display: block;
+        position: fixed;
+        inset: 0;
+        z-index: 999;
+        background-color: rgb(0 0 0 / 50%);
+        border: none;
+        cursor: pointer;
+    }
+}

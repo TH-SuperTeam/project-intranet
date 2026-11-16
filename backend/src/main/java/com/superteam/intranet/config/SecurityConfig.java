@@ -67,16 +67,21 @@ public class SecurityConfig {
 
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
 
+                        .requestMatchers(HttpMethod.GET, "/api/transport/departures").permitAll()
+
                         .requestMatchers(HttpMethod.POST, "/api/auth/logout")
                         .authenticated()
 
                         .requestMatchers("/api/auth/**").permitAll()
 
-                        .requestMatchers(HttpMethod.GET, "/api/users")
-                        .hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.GET, "/api/weather").permitAll()
+
+                        .requestMatchers(HttpMethod.GET, "/api/public/news").permitAll()
 
                         .requestMatchers(HttpMethod.PATCH, "/api/users/*/status")
                         .hasRole("ADMIN")
+
+                        .requestMatchers(HttpMethod.PATCH, "/api/users/*/role").hasRole("ADMIN")
 
                         .requestMatchers(HttpMethod.POST, "/api/users")
                         .hasRole("ADMIN")

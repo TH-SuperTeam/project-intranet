@@ -1,6 +1,6 @@
 import { useState, type FormEvent } from "react";
 import type { News } from "../../types/News";
-import type { TargetAudience } from "../../types/TargetAudience";
+import { TargetAudience } from "../../types/TargetAudience";
 import { useUpdateNews } from "../../hooks/NewsHooks/useUpdateNews";
 import NewsForm from "../News/NewsForm";
 
@@ -8,7 +8,7 @@ const EditNewsForm = ({ news }: { news: News }) => {
     // State för formulärets värden, med nyhetens befintliga information
     const [title, setTitle] = useState(news.title);
     const [content, setContent] = useState(news.content);
-    const [targetAudience, setTargetAudience] = useState<TargetAudience>(
+    const [targetAudience, setTargetAudience] = useState<TargetAudience[]>(
         news.targetAudience,
     );
     const [validationError, setValidationError] = useState("");
@@ -29,6 +29,18 @@ const EditNewsForm = ({ news }: { news: News }) => {
 
         if (title.trim().length > 255) {
             setValidationError("Titeln får innehålla max 255 tecken.");
+            return;
+        }
+
+        if (targetAudience.length === 0) {
+            setValidationError("Välj minst en målgrupp.");
+            return;
+        }
+
+        if (
+            targetAudience.includes(TargetAudience.PUBLIC_DASHBOARD) &&
+            content.length > 300
+        ) {
             return;
         }
 

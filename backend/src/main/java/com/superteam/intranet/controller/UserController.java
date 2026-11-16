@@ -1,9 +1,6 @@
 package com.superteam.intranet.controller;
 
-import com.superteam.intranet.dto.CreateUserRequest;
-import com.superteam.intranet.dto.UpdateUserStatusRequest;
-import com.superteam.intranet.dto.UserListResponse;
-import com.superteam.intranet.dto.UserResponse;
+import com.superteam.intranet.dto.*;
 import com.superteam.intranet.service.UserService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
@@ -36,30 +33,74 @@ public class UserController {
     }
 
     @GetMapping("/me")
-    public ResponseEntity<UserResponse> getCurrentUser(
+    public ResponseEntity<MyProfileResponse> getCurrentUser(
             Authentication authentication) {
 
         Long userId = (Long) authentication.getPrincipal();
 
-        UserResponse response = userService.getUserById(userId);
+        MyProfileResponse response = userService.getMyProfile(userId);
 
         return ResponseEntity.ok(response);
     }
 
-    @PatchMapping("/{id}/status")
-    public ResponseEntity<UserResponse> updateUserStatus(
-            @PathVariable Long id,
-            @Valid @RequestBody UpdateUserStatusRequest request) {
+    @PatchMapping("/me")
+    public ResponseEntity<MyProfileResponse> updateCurrentUser(
+            Authentication authentication,
+            @Valid @RequestBody UpdateProfileRequest request) {
 
-        UserResponse updatedUser = userService.updateUserStatus(id, request);
+        Long userId = (Long) authentication.getPrincipal();
 
-        return ResponseEntity.ok(updatedUser);
+        MyProfileResponse updatedProfile =
+                userService.updateMyProfile(userId, request);
+
+        return ResponseEntity.ok(updatedProfile);
     }
 
-    @GetMapping
-    public ResponseEntity<List<UserListResponse>> getUsers(
-            @RequestParam(required = false) String search) {
 
-        return ResponseEntity.ok(userService.getUsers(search));
+    @GetMapping("/{id}")
+public ResponseEntity<UserProfileResponse> getUserProfile(
+        @PathVariable Long id,
+        Authentication authentication) {
+
+    Long currentUserId = (Long) authentication.getPrincipal();
+
+    UserProfileResponse profile =
+            userService.getUserProfileById(id, currentUserId);
+
+    return ResponseEntity.ok(profile);
+}
+
+    @PatchMapping("/{id}/status")
+public ResponseEntity<UserResponse> updateUserStatus(
+        @PathVariable Long id,
+        @Valid @RequestBody UpdateUserStatusRequest request,
+        Authentication authentication) {
+
+    Long currentUserId = (Long) authentication.getPrincipal();
+
+    UserResponse updatedUser =
+            userService.updateUserStatus(id, request, currentUserId);
+
+    return ResponseEntity.ok(updatedUser);
+}
+
+@PatchMapping("/{id}/role")
+public UserResponse updateUserRole(
+        @PathVariable Long id,
+        @Valid @RequestBody UpdateUserRoleRequest request,
+        Authentication authentication) {
+
+    Long currentUserId = (Long) authentication.getPrincipal();
+
+    return userService.updateUserRole(id, request, currentUserId);
+}
+
+    @GetMapping
+    public ResponseEntity<List<?>> getUsers(
+            @RequestParam(required = false) String search, Authentication authentication) {
+
+        Long userId = (Long) authentication.getPrincipal();
+
+        return ResponseEntity.ok(userService.getUsers(search, userId));
     }
 }
