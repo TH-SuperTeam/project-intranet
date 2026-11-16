@@ -56,6 +56,18 @@ public class UserController {
         return ResponseEntity.ok(updatedProfile);
     }
 
+    @PatchMapping("/me/password")
+    public ResponseEntity<Void> changePassword(
+            Authentication authentication,
+            @Valid @RequestBody ChangePasswordRequest request) {
+
+        Long userId = (Long) authentication.getPrincipal();
+
+        userService.changePassword(userId, request);
+
+        return ResponseEntity.noContent().build();
+    }
+
 
     @GetMapping("/{id}")
 public ResponseEntity<UserProfileResponse> getUserProfile(
