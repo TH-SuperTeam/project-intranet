@@ -109,6 +109,43 @@ public class UserService {
         return userMapper.toMyProfileResponse(updatedUser);
     }
 
+    @Transactional
+    public void changePassword(Long userId, ChangePasswordRequest request) {
+
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND,
+                        "Användaren kunde inte hittas."
+                ));
+
+        // Kontrollerar att nuvarande lösenord är korrekt.
+        if (!passwordEncoder.matches(
+                request.currentPassword(),
+                user.getPasswordHash())) {
+
+            throw new ResponseStatusException(
+                    HttpStatus.BAD_REQUEST,
+                    "Nuvarande lösenord är felaktigt."
+            );
+        }
+
+        // Kontrollerar att det nya lösenordet skiljer sig från det gamla.
+        if (passwordEncoder.matches(
+                request.newPassword(),
+                user.getPasswordHash())) {
+
+            throw new ResponseStatusException(
+                    HttpStatus.BAD_REQUEST,
+                    "Det nya lösenordet måste skilja sig från det nuvarande."
+            );
+        }
+
+        // Hashar och sparar det nya lösenordet.
+        user.setPasswordHash(passwordEncoder.encode(request.newPassword()));
+
+        userRepository.save(user);
+    }
+
 
 
     // Get another user's profile
