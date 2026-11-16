@@ -6,12 +6,13 @@ type NewsProps = {
 	audience: TargetAudience
 	page?: number
 	size?: number
+	search?: string
 }
 
-const useNews = ({ audience, page = 0, size = 10 }: NewsProps) => {
+const useNews = ({ audience, page = 0, size = 10, search = "" }: NewsProps) => {
 	return useQuery({
-		queryKey: ["news", audience, page, size],
-		queryFn: () => getNews(audience, page, size),
+		queryKey: ["news", audience, page, size, search],
+		queryFn: () => getNews(page, size, search),
 	})
 }
 

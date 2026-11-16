@@ -6,12 +6,17 @@ import { useState } from "react"
 
 type NewsListProps = {
 	audience: TargetAudience
+	search: string
 }
 
-const NewsList = ({ audience }: NewsListProps) => {
+const NewsList = ({ audience, search }: NewsListProps) => {
+	return <PaginatedNewsList key={search} audience={audience} search={search} />
+}
+
+const PaginatedNewsList = ({ audience, search }: NewsListProps) => {
 	const [page, setPage] = useState(0)
 
-	const { data: news, isPending, isError } = useNews({ audience, page })
+	const { data: news, isPending, isError } = useNews({ audience, page, search })
 
 	if (isPending) {
 		return <div className={styles.state}>Laddar nyheter...</div>
@@ -28,8 +33,17 @@ const NewsList = ({ audience }: NewsListProps) => {
 	if (news.content.length === 0) {
 		return (
 			<div className={styles.emptyState}>
-				<h3>Inga nyheter att visa</h3>
-				<p>Det finns inga publicerade nyheter just nu.</p>
+				{search.trim() ? (
+					<>
+						<h3>Inga sökresultat</h3>
+						<p>Inga nyheter matchade din sökning.</p>
+					</>
+				) : (
+					<>
+						<h3>Inga nyheter att visa</h3>
+						<p>Det finns inga publicerade nyheter just nu.</p>
+					</>
+				)}
 			</div>
 		)
 	}

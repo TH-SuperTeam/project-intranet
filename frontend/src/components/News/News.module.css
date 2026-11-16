@@ -33,6 +33,14 @@
     font-weight: 500;
 }
 
+.searchContainer {
+    margin-bottom: 1.5rem;
+}
+
+.searchContainer input {
+    background-color: white;
+}
+
 /* News List */
 
 .newsList {
