@@ -1,6 +1,7 @@
 
 package com.superteam.intranet.service;
 
+import com.superteam.intranet.dto.HourlyWeatherResponse;
 import com.superteam.intranet.dto.SmhiTimeSeries;
 import com.superteam.intranet.dto.SmhiWeatherResponse;
 import com.superteam.intranet.dto.WeatherResponse;
@@ -10,9 +11,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
 import org.springframework.web.server.ResponseStatusException;
 import com.superteam.intranet.mapper.WeatherCodeMapper;
+import com.superteam.intranet.dto.HourlyWeatherResponse;
 
 import java.time.Instant;
 import java.util.Comparator;
+import java.util.List;
 
 @Service
 public class WeatherService {
@@ -60,8 +63,8 @@ public class WeatherService {
 
         Instant now = Instant.now();
 
-        // Välj den första prognosen som inte har passerat
-        SmhiTimeSeries forecast = response.timeSeries()
+        // Filtrerar och sorterar kommande prognoser
+        List<SmhiTimeSeries> forecasts = response.timeSeries()
                 .stream()
                 .filter(item -> item != null
                         && item.time() != null
@@ -69,25 +72,50 @@ public class WeatherService {
                         && item.data() != null
                         && item.data().airTemperature() != null
                         && item.data().symbolCode() != null)
-                .min(Comparator.comparing(SmhiTimeSeries::time))
-                .orElseThrow(() -> new ResponseStatusException(
-                        HttpStatus.BAD_GATEWAY,
-                        "Ingen giltig väderprognos hittades"
-                ));
+                .sorted(Comparator.comparing(SmhiTimeSeries::time))
+                .toList();
+
+                // Kontrollera att det finns minst en giltig prognos
+                if (forecasts.isEmpty()) {
+                    throw new ResponseStatusException(
+                            HttpStatus.BAD_GATEWAY,
+                            "Ingen giltig väderprognos hittades"
+                    );
+
+                }
+
+        // Hämtar den första prognosen från den sorterade listan
+        SmhiTimeSeries current = forecasts.getFirst();
+
 
         // Översätter SMHI:s väderkod till en svensk beskrivning
         String condition = WeatherCodeMapper.toDescription(
-                forecast.data().symbolCode()
+                current.data().symbolCode()
         );
 
+        // Skapar en lista med de fyra kommande prognoserna
+        List<HourlyWeatherResponse> hourlyForecasts = forecasts.stream()
+                .skip(1)
+                .limit(4)
+                .map(item -> new HourlyWeatherResponse(
+                        item.time(),
+                        item.data().airTemperature(),
+                        item.data().symbolCode()
+                ))
+                .toList();
+
         return new WeatherResponse(
-                forecast.data().airTemperature(),
+                current.data().airTemperature(),
                 condition,
-                forecast.data().symbolCode(),
-                forecast.time(),
-                Instant.now()
+                current.data().symbolCode(),
+                current.time(),
+                Instant.now(),
+                hourlyForecasts
+
         );
     }
+
+
 
 
 }
