@@ -27,6 +27,11 @@ public record CreateUserRequest(
         UserType userType,
 
         @NotNull(message = "Access role is required")
-        AccessRole accessRole
+        AccessRole accessRole,
+
+        @NotNull(message = "Program is required")
+        Long programId,
+
+        Long classId
 
 ) {}
