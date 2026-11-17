@@ -21,6 +21,8 @@ const CreateUsersPage = () => {
     const [userType, setUserType] = useState<UserType>(UserType.STUDENT);
     const [accessRole, setAccessRole] = useState<AccessRole>(AccessRole.USER);
     const [validationError, setValidationError] = useState("");
+    const [programId, setProgramId] = useState<number | null>(null);
+    const [classId, setClassId] = useState<number | null>(null);
 
     const queryClient = useQueryClient();
 
@@ -40,6 +42,8 @@ const CreateUsersPage = () => {
             setUserType(UserType.STUDENT);
             setAccessRole(AccessRole.USER);
             setValidationError("");
+            setProgramId(null);
+            setClassId(null);
         },
     });
 
@@ -84,6 +88,16 @@ const CreateUsersPage = () => {
             return;
         }
 
+        if (programId === null) {
+            setValidationError("Du måste välja en utbildning.");
+            return;
+        }
+
+        if (userType === UserType.STUDENT && classId === null) {
+            setValidationError("Du måste välja en klass.");
+            return;
+        }
+
         // Skickar användaren till backend via POST /api/users
         mutation.mutate(
             {
@@ -93,6 +107,8 @@ const CreateUsersPage = () => {
                 password: password,
                 userType,
                 accessRole,
+                programId: programId,
+                classId: userType === UserType.STUDENT ? classId : null,
             },
             {
                 onError: (error) => {
@@ -124,6 +140,10 @@ const CreateUsersPage = () => {
                 validationError={validationError}
                 mutation={mutation}
                 handleSubmit={handleSubmit}
+                programId={programId}
+                setProgramId={setProgramId}
+                classId={classId}
+                setClassId={setClassId}
                 submitLabel="Skapa"
                 pendingLabel="Skapar..."
                 errorMessage="Kunde inte skapa användare."
