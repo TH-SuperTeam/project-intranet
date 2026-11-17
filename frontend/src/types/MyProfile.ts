@@ -11,4 +11,9 @@ export interface MyProfile {
   bio: string | null
   accessRole: AccessRole
   createdAt: string
+  school: "TH" | "VH" | null
+  programId: number | null
+  programName: string | null
+  classId: number | null
+  className: string | null
 }
