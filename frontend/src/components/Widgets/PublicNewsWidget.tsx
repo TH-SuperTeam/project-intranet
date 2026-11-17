@@ -34,8 +34,15 @@ const PublicNewsWidget = () => {
                 </p>
             ) : (
                 <ul className={styles.newsList}>
-                    {news.content.slice(0, 2).map((item) => (
+                    {news.content.slice(0, 2).map(item => (
                         <li key={item.id} className={styles.publicNewsItem}>
+                            {item.newsImageUrl && (
+                                <img
+                                    src={item.newsImageUrl}
+                                    alt=""
+                                    className={styles.newsWidgetImage}
+                                />
+                            )}
                             <div className={styles.newsContent}>
                                 <h3>{item.title}</h3>
 

@@ -157,7 +157,11 @@
 }
 
 .publicNewsItem {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
     min-height: 0;
+    padding: 0 0.75rem;
 }
 
 .publicNewsItem .newsContent {
@@ -181,6 +185,11 @@
     line-clamp: unset;
     font-size: 0.75rem;
     line-height: 1.4;
+}
+
+.publicNewsItem .newsWidgetImage {
+    width: 20rem;
+    height: 13rem;
 }
 
 /* ===== EMPTY STATE ===== */
