@@ -95,17 +95,14 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.DELETE, "/api/news/**")
                         .hasRole("ADMIN")
 
-                                // Endast ADMIN får skapa utbildningar
-                                .requestMatchers(HttpMethod.POST, "/api/programs")
-                                .hasRole("ADMIN")
+                        // Programs & Classes - inloggade får läsa, endast ADMIN får ändra
+                        .requestMatchers(HttpMethod.GET, "/api/programs", "/api/programs/**",
+                                "/api/classes", "/api/classes/**")
+                        .authenticated()
 
-// Endast ADMIN får uppdatera utbildningar
-                                .requestMatchers(HttpMethod.PUT, "/api/programs/*")
-                                .hasRole("ADMIN")
-
-// Endast ADMIN får ta bort utbildningar
-                                .requestMatchers(HttpMethod.DELETE, "/api/programs/*")
-                                .hasRole("ADMIN")
+                        .requestMatchers("/api/programs", "/api/programs/**",
+                                "/api/classes", "/api/classes/**")
+                        .hasRole("ADMIN")
 
                         .anyRequest().authenticated()
                 )
