@@ -42,6 +42,13 @@ const NewsDetails = ({ news }: NewsDetailsProps) => {
                 <BackLink to="/news" />
 
                 <div className={styles.detailsCard}>
+                    {news.newsImageUrl && (
+                        <img
+                            src={news.newsImageUrl}
+                            alt=""
+                            className={styles.newsDetailsImage}
+                        />
+                    )}
                     <header className={styles.detailsHeader}>
                         <time
                             dateTime={news.createdAt}

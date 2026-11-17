@@ -156,6 +156,40 @@ fieldset.formGroup {
     line-height: 1.5;
 }
 
+.imageGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 12px;
+    margin-top: 10px;
+}
+
+.imageOption,
+.selectedImage {
+    padding: 4px;
+    border: 2px solid transparent;
+    border-radius: 8px;
+    background: none;
+    cursor: pointer;
+    overflow: hidden;
+}
+
+.imageOption img,
+.selectedImage img {
+    display: block;
+    width: 100%;
+    height: 110px;
+    object-fit: cover;
+    border-radius: 4px;
+}
+
+.imageOption:hover {
+    border-color: #999;
+}
+
+.selectedImage {
+    border-color: #2563eb;
+}
+
 @media (max-width: 600px) {
     .container {
         padding: 1rem;

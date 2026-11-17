@@ -15,18 +15,27 @@ const NewsCard = ({ news }: NewsCardProps) => {
 
     return (
         <li className={styles.newsCard}>
-            <div className={styles.cardHeader}>
-                <h2 className={styles.title}>{news.title}</h2>
+            {news.newsImageUrl && (
+                <img
+                    src={news.newsImageUrl}
+                    alt=""
+                    className={styles.newsImage}
+                />
+            )}
+            <div className={styles.newsInfo}>
+                <div className={styles.cardHeader}>
+                    <h2 className={styles.title}>{news.title}</h2>
 
-                <time dateTime={news.createdAt} className={styles.date}>
-                    {formattedDate}
-                </time>
+                    <time dateTime={news.createdAt} className={styles.date}>
+                        {formattedDate}
+                    </time>
+                </div>
+
+                <p className={styles.content}>{news.content}</p>
+                <Link to={`/news/${news.id}`} className={styles.readMore}>
+                    Läs mer...
+                </Link>
             </div>
-
-            <p className={styles.content}>{news.content}</p>
-            <Link to={`/news/${news.id}`} className={styles.readMore}>
-                Läs mer...
-            </Link>
         </li>
     );
 };

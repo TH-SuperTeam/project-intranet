@@ -2,6 +2,7 @@ import type { FormEvent, Dispatch, SetStateAction } from "react";
 import { TargetAudience } from "../../types/TargetAudience";
 import styles from "./NewsForm.module.css";
 import SubmitButton from "../common/SubmitButton";
+import { newsImages } from "../../utils/newsImageUtils";
 
 // Dispatch<SetStateAction<T>> är Reacts typ för en state-setter från useState.
 // Den kan uppdatera state med ett nytt värde eller en funktion som utgår från föregående värde.
@@ -12,6 +13,8 @@ type NewsFormProps = {
     setContent: Dispatch<SetStateAction<string>>;
     targetAudience: TargetAudience[];
     setTargetAudience: Dispatch<SetStateAction<TargetAudience[]>>;
+    newsImageUrl: string | null;
+    setNewsImageUrl: Dispatch<SetStateAction<string | null>>;
     validationError: string;
     mutation: {
         isPending: boolean;
@@ -34,6 +37,8 @@ const NewsForm = ({
     setContent,
     targetAudience,
     setTargetAudience,
+    newsImageUrl,
+    setNewsImageUrl,
     validationError,
     mutation,
     handleSubmit,
@@ -61,7 +66,7 @@ const NewsForm = ({
                     id="title"
                     name="title"
                     value={title}
-                    onChange={(e) => setTitle(e.target.value)}
+                    onChange={e => setTitle(e.target.value)}
                     maxLength={255}
                     required
                 />
@@ -76,7 +81,7 @@ const NewsForm = ({
                     id="content"
                     name="content"
                     value={content}
-                    onChange={(e) => setContent(e.target.value)}
+                    onChange={e => setContent(e.target.value)}
                     required
                 />
                 {isPublicNews && (
@@ -119,12 +124,12 @@ const NewsForm = ({
                                 name="targetAudience"
                                 value={value}
                                 checked={targetAudience.includes(value)}
-                                onChange={(e) => {
-                                    setTargetAudience((prev) =>
+                                onChange={e => {
+                                    setTargetAudience(prev =>
                                         e.target.checked
                                             ? [...prev, value]
                                             : prev.filter(
-                                                  (audience) =>
+                                                  audience =>
                                                       audience !== value,
                                               ),
                                     );
@@ -142,6 +147,27 @@ const NewsForm = ({
                     </p>
                 )}
             </fieldset>
+
+            <div className={styles.formGroup}>
+                <label className={styles.label}>Välj en bild:</label>
+
+                <div className={styles.imageGrid}>
+                    {newsImages.map(image => (
+                        <button
+                            key={image.id}
+                            type="button"
+                            onClick={() => setNewsImageUrl(image.url)}
+                            className={
+                                newsImageUrl === image.url
+                                    ? styles.selectedImage
+                                    : styles.imageOption
+                            }
+                        >
+                            <img src={image.url} alt={image.alt} />
+                        </button>
+                    ))}
+                </div>
+            </div>
 
             {/* Visar valideringsfel */}
             {validationError && <p role="alert">{validationError}</p>}
