@@ -1,3 +1,5 @@
+import type { Program } from "../../types/Program";
+import type { SchoolClass } from "../../types/SchoolClass";
 import type { FormEvent, Dispatch, SetStateAction } from "react";
 import SubmitButton from "../common/SubmitButton";
 import styles from "./Users.module.css";
@@ -23,6 +25,13 @@ type UsersFormProps = {
     setProgramId: Dispatch<SetStateAction<number | null>>;
     classId: number | null;
     setClassId: Dispatch<SetStateAction<number | null>>;
+    programs: Program[];
+    programsLoading: boolean;
+    programsError: boolean;
+
+    classes: SchoolClass[];
+    classesLoading: boolean;
+    classesError: boolean;
     validationError: string;
     mutation: {
         isPending: boolean;
@@ -60,6 +69,12 @@ const UsersForm = ({
     pendingLabel,
     errorMessage,
     successMessage,
+    programs,
+    programsLoading,
+    programsError,
+    classes,
+    classesLoading,
+    classesError,
 }: UsersFormProps) => {
     return (
         <form className={styles.form} onSubmit={handleSubmit} noValidate>
@@ -154,6 +169,7 @@ const UsersForm = ({
                 <label className={styles.label} htmlFor="program">
                     Utbildning:
                 </label>
+
                 <select
                     className={styles.select}
                     id="program"
@@ -165,17 +181,34 @@ const UsersForm = ({
                         );
                         setClassId(null);
                     }}
+                    disabled={programsLoading || programsError}
                     required
                 >
-                    <option value="">Välj utbildning</option>
+
+                    <option value="" disabled hidden>
+                        {programsLoading
+                            ? "Hämtar utbildningar..."
+                            : "Välj utbildning"}
+                    </option>
+
+                    {programs.map((program) => (
+                        <option key={program.id} value={program.id}>
+                            {program.name}
+                        </option>
+                    ))}
                 </select>
+
+                {programsError && (
+                    <p role="alert">Kunde inte hämta utbildningar.</p>
+                )}
             </div>
 
-            {userType === UserType.STUDENT && (
+           {userType === UserType.STUDENT && (
                 <div className={styles.formGroup}>
                     <label className={styles.label} htmlFor="schoolClass">
                         Klass:
                     </label>
+
                     <select
                         className={styles.select}
                         id="schoolClass"
@@ -186,11 +219,38 @@ const UsersForm = ({
                                 e.target.value ? Number(e.target.value) : null
                             )
                         }
-                        disabled={programId === null}
+                        disabled={
+                            programId === null ||
+                            classesLoading ||
+                            classesError
+                        }
                         required
                     >
-                        <option value="">Välj klass</option>
+                        <option value="" disabled hidden>
+                            {programId === null
+                                ? "Välj utbildning först"
+                                : classesLoading
+                                ? "Hämtar klasser..."
+                                : "Välj klass"}
+                        </option>
+
+                        {classes.map((schoolClass) => (
+                            <option key={schoolClass.id} value={schoolClass.id}>
+                                {schoolClass.name}
+                            </option>
+                        ))}
                     </select>
+
+                    {classesError && (
+                        <p role="alert">Kunde inte hämta klasser.</p>
+                    )}
+
+                    {!classesLoading &&
+                        !classesError &&
+                        programId !== null &&
+                        classes.length === 0 && (
+                            <p>Det finns inga klasser för denna utbildning.</p>
+                        )}
                 </div>
             )}
 
