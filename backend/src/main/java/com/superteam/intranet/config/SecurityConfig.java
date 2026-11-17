@@ -95,16 +95,26 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.DELETE, "/api/news/**")
                         .hasRole("ADMIN")
 
-                        // Programs & Classes - inloggade får läsa, endast ADMIN får ändra
-                        .requestMatchers(HttpMethod.GET, "/api/programs", "/api/programs/**",
-                                "/api/classes", "/api/classes/**")
-                        .authenticated()
+                                // Programs, Classes & Classrooms
+// Alla inloggade får läsa
+                                .requestMatchers(
+                                        HttpMethod.GET,
+                                        "/api/programs", "/api/programs/**",
+                                        "/api/classes", "/api/classes/**",
+                                        "/api/classrooms", "/api/classrooms/**"
+                                )
+                                .authenticated()
 
-                        .requestMatchers("/api/programs", "/api/programs/**",
-                                "/api/classes", "/api/classes/**")
-                        .hasRole("ADMIN")
+// Endast ADMIN får skapa, uppdatera och ta bort
+                                .requestMatchers(
+                                        "/api/programs", "/api/programs/**",
+                                        "/api/classes", "/api/classes/**",
+                                        "/api/classrooms", "/api/classrooms/**"
+                                )
+                                .hasRole("ADMIN")
 
-                        .anyRequest().authenticated()
+
+                                .anyRequest().authenticated()
                 )
 
                 // Registrera JWT-filtret före Spring Securitys
