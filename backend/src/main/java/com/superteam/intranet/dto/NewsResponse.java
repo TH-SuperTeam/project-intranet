@@ -17,5 +17,6 @@ public record NewsResponse(
         Long userId,
         boolean isPublished,
         Set<TargetAudience> targetAudience,
-        LocalDateTime createdAt
+        LocalDateTime createdAt,
+        String newsImageUrl
 ) {}
