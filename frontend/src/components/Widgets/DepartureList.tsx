@@ -19,13 +19,13 @@ const DepartureList = () => {
     }, []);
 
     if (isPending) {
-        return <div className={styles.state}>Laddar avgångar...</div>;
+        return <div className={styles.state}>Hämtar avgångar...</div>;
     }
 
     if (isError) {
         return (
             <div className={styles.errorState} role="alert">
-                Det gick inte att ladda avgångarna.
+                Det gick inte att hämta avgångarna.
             </div>
         );
     }

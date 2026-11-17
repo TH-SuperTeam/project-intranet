@@ -174,6 +174,26 @@
   font-weight: 700;
 }
 
+/* ===== CARD HEADER ===== */
+
+.cardHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1.25rem;
+}
+
+.cardHeader h3 {
+  margin: 0;
+}
+
+.cardHeader .editButton {
+  margin-left: auto;
+  padding: 0.55rem 0.9rem;
+  font-size: 0.8rem;
+}
+
 /* ===== BIO ===== */
 
 .bio {
@@ -220,7 +240,7 @@
   overflow-wrap: anywhere;
 }
 
-/* ===== ERROR MESSAGE ===== */
+/* ===== ERROR AND SUCCESS MESSAGES ===== */
 
 .errorMessage {
   padding: 1rem 1.25rem;
@@ -228,6 +248,15 @@
   background-color: var(--color-error-light);
   color: var(--color-error);
   font-size: 0.9rem;
+}
+
+.successMessage {
+  padding: 0.85rem 1rem;
+  border-radius: 8px;
+  background-color: var(--color-primary-soft);
+  color: var(--color-primary);
+  font-size: 0.9rem;
+  font-weight: 500;
 }
 
 /* ===== EDIT PROFILE FORM ===== */
@@ -278,6 +307,73 @@
 .formField textarea:focus-visible {
   box-shadow: 0 0 0 3px var(--color-primary-soft);
 }
+
+/* ===== PASSWORD INPUT WITH EYE BUTTON ===== */
+
+.passwordInputWrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.passwordInputWrapper input {
+  padding-right: 2.75rem;
+}
+
+.passwordToggle {
+  position: absolute;
+  right: 0.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  padding: 0;
+  border: none;
+  border-radius: 4px;
+  background: transparent;
+  color: var(--color-text-muted);
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.passwordToggle:hover {
+  color: var(--color-primary);
+}
+
+.passwordToggle:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+.passwordToggle svg {
+  width: 1.25rem;
+  height: 1.25rem;
+}
+
+/* ===== ACCOUNT EDITING ===== */
+
+.accountEditForms {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.accountEditForms h4 {
+  margin: 0;
+  color: var(--color-text-primary);
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+.sectionDivider {
+  width: 100%;
+  height: 1px;
+  background-color: var(--color-border);
+}
+
+/* ===== FORM ACTIONS ===== */
 
 .formActions {
   display: flex;
@@ -399,5 +495,15 @@
 
   .profileCard {
     padding: 1.25rem;
+  }
+
+  .cardHeader {
+    align-items: flex-start;
+  }
+
+  .cardHeader .editButton {
+    width: auto;
+    margin: 0;
+    flex-shrink: 0;
   }
 }
