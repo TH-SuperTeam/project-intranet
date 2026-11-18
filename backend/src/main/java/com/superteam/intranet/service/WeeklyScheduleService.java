@@ -11,6 +11,9 @@ import com.superteam.intranet.model.SchoolClass;
 import com.superteam.intranet.model.WeeklySchedule;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 public class WeeklyScheduleService {
 
@@ -29,31 +32,55 @@ public class WeeklyScheduleService {
         this.weeklyScheduleMapper = weeklyScheduleMapper;
     }
 
+    public List<WeeklyScheduleResponse> getAllSchedules() {
 
+        List<WeeklySchedule> schedules = weeklyScheduleRepository.findAll();
+
+        return schedules.stream()
+                .map(weeklyScheduleMapper::toResponse)
+                .collect(Collectors.toList());
+    }
 
     public WeeklyScheduleResponse createSchedule(WeeklyScheduleRequest request) {
 
         // Kontrollera att sluttiden är efter starttiden
         if (!request.endTime().isAfter(request.startTime())) {
             throw new IllegalArgumentException(
-                    "End time must be after start time"
+                    "Sluttiden måste vara efter starttiden"
             );
         }
 
         // Kontrollera giltighetsperioden
         if (request.validUntil().isBefore(request.validFrom())) {
             throw new IllegalArgumentException(
-                    "Valid until must be after or equal to valid from"
+                    "Slutdatumet måste vara samma som eller senare än startdatumet"
             );
         }
 
         // Hämta klassen från databasen
         SchoolClass schoolClass = schoolClassRepository.findById(request.classId())
-                .orElseThrow(() -> new RuntimeException("Class not found"));
+                .orElseThrow(() -> new RuntimeException("Klassen kunde inte hittas"));
 
         // Hämta klassrummet från databasen
         Classroom classroom = classroomRepository.findById(request.classroomId())
-                .orElseThrow(() -> new RuntimeException("Classroom not found"));
+                .orElseThrow(() -> new RuntimeException("Klassrum kunde inte hittas"));
+
+        // Kontrollera om klassrummet redan är bokat
+        boolean classroomBooked = !weeklyScheduleRepository.findOverlapping(
+                classroom.getId(),
+                request.weekday(),
+                request.startTime(),
+                request.endTime(),
+                request.validFrom(),
+                request.validUntil(),
+                null
+        ).isEmpty();
+
+        if (classroomBooked) {
+            throw new IllegalArgumentException(
+                    "Klassrummet är redan bokat under den valda tiden"
+            );
+        }
 
         // Omvandla request till entity
         WeeklySchedule schedule = weeklyScheduleMapper.toEntity(
