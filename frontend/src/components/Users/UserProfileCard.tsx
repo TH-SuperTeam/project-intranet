@@ -11,6 +11,7 @@ import { UserType } from "../../types/UserType";
 import { Status, statusLabels } from "../../types/Status";
 import { AccessRole } from "../../types/AccessRole";
 import styles from "./UserProfileCard.module.css";
+import { formatEducation } from "../../utils/formatEducation";
 
 interface UserProfileCardProps {
     profile: UserProfile;
@@ -136,9 +137,20 @@ const UserProfileCard = ({ profile }: UserProfileCardProps) => {
 
                     <div className={styles.profileInfo}>
                         <h2>{userName}</h2>
-                        <span className={styles.userType}>
-                            {userTypeLabels[profile.userType]}
-                        </span>
+                        <div className={styles.profileBadges}>
+                            <span className={styles.userType}>
+                                {userTypeLabels[profile.userType]}
+                            </span>
+
+                            {profile.programName && (
+                                <span className={styles.educationBadge}>
+                                    {formatEducation(
+                                        profile.programName,
+                                        profile.className,
+                                    )}
+                                </span>
+                            )}
+                        </div>
                     </div>
                 </div>
 

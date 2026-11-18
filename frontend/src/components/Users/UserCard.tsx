@@ -6,13 +6,14 @@ import { UserType } from "../../types/UserType";
 import type { PublicUser } from "../../types/PublicUser";
 import { useAuth } from "../../hooks/useAuth";
 import UserAvatar from "../common/UserAvatar";
+import { formatEducation } from "../../utils/formatEducation";
 
 interface UserCardProps {
     user: User | PublicUser;
 }
 
 const userTypeLabels: Record<UserType, string> = {
-    [UserType.TEACHER]: "Lärare",
+    [UserType.TEACHER]: "Personal",
     [UserType.STUDENT]: "Student",
 };
 
@@ -47,9 +48,20 @@ const UserCard = ({ user }: UserCardProps) => {
 
                     <p className={styles.userEmail}>{user.email}</p>
 
-                    <span className={styles.userType}>
-                        {userTypeLabels[user.userType]}
-                    </span>
+                    <div className={styles.userCardBadges}>
+                        <span className={styles.userTypeBadge}>
+                            {userTypeLabels[user.userType]}
+                        </span>
+
+                        {user.programName && (
+                            <span className={styles.educationBadge}>
+                                {formatEducation(
+                                    user.programName,
+                                    user.className,
+                                )}
+                            </span>
+                        )}
+                    </div>
                 </div>
             </Link>
 

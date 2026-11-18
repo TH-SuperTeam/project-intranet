@@ -144,9 +144,35 @@
     overflow-wrap: anywhere;
 }
 
-.userType {
-    color: var(--color-text-secondary);
+/* ===== USER BADGES ===== */
+
+.userCardBadges {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.userTypeBadge,
+.educationBadge {
+    display: inline-flex;
+    align-items: center;
+    width: fit-content;
+    padding: 0.3rem 0.75rem;
+    border-radius: 999px;
     font-size: 0.8rem;
+    font-weight: 600;
+    overflow-wrap: anywhere;
+}
+
+.userTypeBadge {
+    background-color: var(--color-primary-soft);
+    color: var(--color-primary);
+}
+
+.educationBadge {
+    background-color: var(--color-primary);
+    color: var(--color-text-white);
 }
 
 /* ===== USER STATUS ===== */
