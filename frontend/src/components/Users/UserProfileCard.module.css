@@ -27,32 +27,6 @@
     overflow-wrap: anywhere;
 }
 
-.userType {
-    padding: 0.35rem 0.85rem;
-    border-radius: 999px;
-    background-color: var(--color-primary-soft);
-    color: var(--color-primary);
-    font-size: 0.85rem;
-    font-weight: 600;
-}
-
-.profileBadges {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: 0.5rem;
-}
-
-.educationBadge {
-    padding: 0.35rem 0.85rem;
-    border-radius: 999px;
-    background-color: var(--color-primary);
-    color: var(--color-text-white);
-    font-size: 0.85rem;
-    font-weight: 600;
-    overflow-wrap: anywhere;
-}
-
 /* ===== PROFILE TOP ===== */
 
 .profileTop {

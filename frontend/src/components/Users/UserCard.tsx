@@ -2,20 +2,14 @@ import { Link } from "react-router-dom";
 import styles from "./Users.module.css";
 import type { User } from "../../types/User";
 import { Status } from "../../types/Status";
-import { UserType } from "../../types/UserType";
 import type { PublicUser } from "../../types/PublicUser";
 import { useAuth } from "../../hooks/useAuth";
 import UserAvatar from "../common/UserAvatar";
-import { formatEducation } from "../../utils/formatEducation";
+import UserBadges from "../common/UserBadges";
 
 interface UserCardProps {
     user: User | PublicUser;
 }
-
-const userTypeLabels: Record<UserType, string> = {
-    [UserType.TEACHER]: "Personal",
-    [UserType.STUDENT]: "Student",
-};
 
 const statusLabels: Record<Status, string> = {
     [Status.ACTIVE]: "Aktiv",
@@ -48,20 +42,11 @@ const UserCard = ({ user }: UserCardProps) => {
 
                     <p className={styles.userEmail}>{user.email}</p>
 
-                    <div className={styles.userCardBadges}>
-                        <span className={styles.userTypeBadge}>
-                            {userTypeLabels[user.userType]}
-                        </span>
-
-                        {user.programName && (
-                            <span className={styles.educationBadge}>
-                                {formatEducation(
-                                    user.programName,
-                                    user.className,
-                                )}
-                            </span>
-                        )}
-                    </div>
+                    <UserBadges
+                        userType={user.userType}
+                        programName={user.programName}
+                        className={user.className}
+                    />
                 </div>
             </Link>
 

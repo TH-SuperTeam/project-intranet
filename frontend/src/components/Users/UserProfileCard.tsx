@@ -11,16 +11,11 @@ import { UserType } from "../../types/UserType";
 import { Status, statusLabels } from "../../types/Status";
 import { AccessRole } from "../../types/AccessRole";
 import styles from "./UserProfileCard.module.css";
-import { formatEducation } from "../../utils/formatEducation";
+import UserBadges from "../common/UserBadges";
 
 interface UserProfileCardProps {
     profile: UserProfile;
 }
-
-const userTypeLabels: Record<UserType, string> = {
-    [UserType.TEACHER]: "Personal",
-    [UserType.STUDENT]: "Student",
-};
 
 const roleLabels: Record<AccessRole, string> = {
     [AccessRole.USER]: "Användare",
@@ -137,20 +132,11 @@ const UserProfileCard = ({ profile }: UserProfileCardProps) => {
 
                     <div className={styles.profileInfo}>
                         <h2>{userName}</h2>
-                        <div className={styles.profileBadges}>
-                            <span className={styles.userType}>
-                                {userTypeLabels[profile.userType]}
-                            </span>
-
-                            {profile.programName && (
-                                <span className={styles.educationBadge}>
-                                    {formatEducation(
-                                        profile.programName,
-                                        profile.className,
-                                    )}
-                                </span>
-                            )}
-                        </div>
+                        <UserBadges
+                            userType={profile.userType}
+                            programName={profile.programName}
+                            className={profile.className}
+                        />
                     </div>
                 </div>
 
