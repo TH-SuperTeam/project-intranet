@@ -27,6 +27,7 @@ public class WeeklyScheduleController {
         this.userService = userService;
     }
 
+
     // Skapa en ny schemapost
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
@@ -39,12 +40,27 @@ public class WeeklyScheduleController {
         return weeklyScheduleService.createSchedule(request);
     }
 
+
     // Hämta alla schemaposter
     @GetMapping
     public List<WeeklyScheduleResponse> getAllSchedules() {
 
         return weeklyScheduleService.getAllSchedules();
     }
+
+
+    // Ta bort en schemapost
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteSchedule(
+            @PathVariable Long id,
+            Authentication authentication) {
+
+        checkSchedulePermission(authentication);
+
+        weeklyScheduleService.deleteSchedule(id);
+    }
+
 
     // Hjälpfunktion som kontrollerar behörigheten
     private void checkSchedulePermission(Authentication authentication) {

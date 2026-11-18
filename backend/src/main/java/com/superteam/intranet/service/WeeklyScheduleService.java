@@ -96,5 +96,12 @@ public class WeeklyScheduleService {
         return weeklyScheduleMapper.toResponse(savedSchedule);
     }
 
+    public void deleteSchedule(Long id) {
+        if (!weeklyScheduleRepository.existsById(id)) {
+            throw new RuntimeException("Schemaposten kunde inte hittas");
+        }
+
+        weeklyScheduleRepository.deleteById(id);
+    }
 
 }
