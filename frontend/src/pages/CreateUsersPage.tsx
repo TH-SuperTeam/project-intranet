@@ -1,8 +1,9 @@
+import { getPrograms, getClassesByProgramId } from "../services/programApi";
 import { useState, type FormEvent } from "react";
 import BackLink from "../components/common/BackLink";
 import UsersForm from "../components/Users/UsersForm";
 import { AccessRole } from "../types/AccessRole";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { UserType } from "../types/UserType";
 import { createUser } from "../services/usersApi";
 import styles from "../components/Users/Users.module.css";
@@ -21,8 +22,21 @@ const CreateUsersPage = () => {
     const [userType, setUserType] = useState<UserType>(UserType.STUDENT);
     const [accessRole, setAccessRole] = useState<AccessRole>(AccessRole.USER);
     const [validationError, setValidationError] = useState("");
+    const [programId, setProgramId] = useState<number | null>(null);
+    const [classId, setClassId] = useState<number | null>(null);
 
     const queryClient = useQueryClient();
+
+    const programsQuery = useQuery({
+        queryKey: ["programs"],
+        queryFn: getPrograms,
+    });
+
+    const classesQuery = useQuery({
+        queryKey: ["classes", programId],
+        queryFn: () => getClassesByProgramId(programId!),
+        enabled: programId !== null,
+    });
 
     // Hanterar skapandet av användare via TanStack Query. Fungerar som useQuery men för POST/PUT/DELETE-anrop. mutationFn är den funktion som körs när användaren klickar på Publicera.
     const mutation = useMutation({
@@ -40,6 +54,8 @@ const CreateUsersPage = () => {
             setUserType(UserType.STUDENT);
             setAccessRole(AccessRole.USER);
             setValidationError("");
+            setProgramId(null);
+            setClassId(null);
         },
     });
 
@@ -84,6 +100,16 @@ const CreateUsersPage = () => {
             return;
         }
 
+        if (programId === null) {
+            setValidationError("Du måste välja en utbildning.");
+            return;
+        }
+
+        if (userType === UserType.STUDENT && classId === null) {
+            setValidationError("Du måste välja en klass.");
+            return;
+        }
+
         // Skickar användaren till backend via POST /api/users
         mutation.mutate(
             {
@@ -93,6 +119,8 @@ const CreateUsersPage = () => {
                 password: password,
                 userType,
                 accessRole,
+                programId: programId,
+                classId: userType === UserType.STUDENT ? classId : null,
             },
             {
                 onError: (error) => {
@@ -124,6 +152,16 @@ const CreateUsersPage = () => {
                 validationError={validationError}
                 mutation={mutation}
                 handleSubmit={handleSubmit}
+                programId={programId}
+                setProgramId={setProgramId}
+                classId={classId}
+                setClassId={setClassId}
+                programs={programsQuery.data ?? []}
+                programsLoading={programsQuery.isLoading}
+                programsError={programsQuery.isError}
+                classes={classesQuery.data ?? []}
+                classesLoading={classesQuery.isLoading}
+                classesError={classesQuery.isError}
                 submitLabel="Skapa"
                 pendingLabel="Skapar..."
                 errorMessage="Kunde inte skapa användare."
