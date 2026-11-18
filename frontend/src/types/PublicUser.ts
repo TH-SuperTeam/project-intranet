@@ -7,4 +7,6 @@ export interface PublicUser {
     email: string;
     profileImageUrl: string | null;
     userType: UserType;
+    programName: string | null;
+    className: string | null;
 }

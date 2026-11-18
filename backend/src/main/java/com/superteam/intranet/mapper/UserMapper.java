@@ -89,15 +89,17 @@ public class UserMapper {
     }
 
     public PublicUserResponse toPublicUserResponse(User user) {
-        return new PublicUserResponse(
-                user.getId(),
-                user.getFirstName(),
-                user.getLastName(),
-                user.getEmail(),
-                user.getProfileImageUrl(),
-                user.getUserType()
-        );
-    }
+    return new PublicUserResponse(
+            user.getId(),
+            user.getFirstName(),
+            user.getLastName(),
+            user.getEmail(),
+            user.getProfileImageUrl(),
+            user.getUserType(),
+            getProgramName(user),
+            getClassName(user)
+    );
+}
 
 
     // Hjälpmetoder för att mappa användarens skol- och utbildningstillhörighet.

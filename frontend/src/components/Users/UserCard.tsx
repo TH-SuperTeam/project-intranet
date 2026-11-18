@@ -2,19 +2,14 @@ import { Link } from "react-router-dom";
 import styles from "./Users.module.css";
 import type { User } from "../../types/User";
 import { Status } from "../../types/Status";
-import { UserType } from "../../types/UserType";
 import type { PublicUser } from "../../types/PublicUser";
 import { useAuth } from "../../hooks/useAuth";
 import UserAvatar from "../common/UserAvatar";
+import UserBadges from "../common/UserBadges";
 
 interface UserCardProps {
     user: User | PublicUser;
 }
-
-const userTypeLabels: Record<UserType, string> = {
-    [UserType.TEACHER]: "Lärare",
-    [UserType.STUDENT]: "Student",
-};
 
 const statusLabels: Record<Status, string> = {
     [Status.ACTIVE]: "Aktiv",
@@ -47,9 +42,11 @@ const UserCard = ({ user }: UserCardProps) => {
 
                     <p className={styles.userEmail}>{user.email}</p>
 
-                    <span className={styles.userType}>
-                        {userTypeLabels[user.userType]}
-                    </span>
+                    <UserBadges
+                        userType={user.userType}
+                        programName={user.programName}
+                        className={user.className}
+                    />
                 </div>
             </Link>
 
