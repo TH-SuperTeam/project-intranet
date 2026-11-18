@@ -1,6 +1,7 @@
 import { Megaphone } from "lucide-react";
 import { usePublicNews } from "../../hooks/NewsHooks/usePublicNews";
 import styles from "./Widgets.module.css";
+import NewsImage from "../common/NewsImage";
 
 const PublicNewsWidget = () => {
     const { data: news, isPending, isError } = usePublicNews();
@@ -36,13 +37,10 @@ const PublicNewsWidget = () => {
                 <ul className={styles.newsList}>
                     {news.content.slice(0, 2).map(item => (
                         <li key={item.id} className={styles.publicNewsItem}>
-                            {item.newsImageUrl && (
-                                <img
-                                    src={item.newsImageUrl}
-                                    alt=""
-                                    className={styles.newsWidgetImage}
-                                />
-                            )}
+                            <NewsImage
+                                src={item.newsImageUrl}
+                                className={styles.newsWidgetImage}
+                            />
                             <div className={styles.newsContent}>
                                 <h3>{item.title}</h3>
 

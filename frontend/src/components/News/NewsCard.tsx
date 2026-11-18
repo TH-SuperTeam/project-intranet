@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import type { News } from "../../types/News";
 import styles from "./News.module.css";
+import NewsImage from "../common/NewsImage";
 
 interface NewsCardProps {
     news: News;
@@ -15,13 +16,7 @@ const NewsCard = ({ news }: NewsCardProps) => {
 
     return (
         <li className={styles.newsCard}>
-            {news.newsImageUrl && (
-                <img
-                    src={news.newsImageUrl}
-                    alt=""
-                    className={styles.newsImage}
-                />
-            )}
+            <NewsImage src={news.newsImageUrl} className={styles.newsImage} />
             <div className={styles.newsInfo}>
                 <div className={styles.cardHeader}>
                     <h2 className={styles.title}>{news.title}</h2>
