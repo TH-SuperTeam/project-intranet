@@ -134,6 +134,7 @@ const UserProfileCard = ({ profile }: UserProfileCardProps) => {
                         <h2>{userName}</h2>
                         <UserBadges
                             userType={profile.userType}
+                            school={profile.school}
                             programName={profile.programName}
                             className={profile.className}
                         />
