@@ -122,6 +122,11 @@ const UserProfileCard = ({ profile }: UserProfileCardProps) => {
 
     return (
         <>
+            {feedback && (
+                <p role="status" className={styles.successMessage}>
+                    {feedback}
+                </p>
+            )}
             <div
                 className={`${styles.profileTop} ${
                     !isAdmin ? styles.profileTopSingle : ""
@@ -161,12 +166,6 @@ const UserProfileCard = ({ profile }: UserProfileCardProps) => {
                         className={`${styles.profileCard} ${styles.adminCard}`}
                     >
                         <h3>Administrera användare</h3>
-
-                        {feedback && (
-                            <p role="status" className={styles.successMessage}>
-                                {feedback}
-                            </p>
-                        )}
 
                         <div className={styles.adminFields}>
                             {profile.status && (
