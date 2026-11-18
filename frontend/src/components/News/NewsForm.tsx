@@ -1,8 +1,14 @@
-import type { FormEvent, Dispatch, SetStateAction } from "react";
+import {
+    useState,
+    type FormEvent,
+    type Dispatch,
+    type SetStateAction,
+} from "react";
 import { TargetAudience } from "../../types/TargetAudience";
 import styles from "./NewsForm.module.css";
 import SubmitButton from "../common/SubmitButton";
 import { newsImages } from "../../utils/newsImageUtils";
+import { ChevronDown } from "lucide-react";
 
 // Dispatch<SetStateAction<T>> är Reacts typ för en state-setter från useState.
 // Den kan uppdatera state med ett nytt värde eller en funktion som utgår från föregående värde.
@@ -47,6 +53,7 @@ const NewsForm = ({
     errorMessage,
     successMessage,
 }: NewsFormProps) => {
+    const [isImagePickerOpen, setIsImagePickerOpen] = useState(false);
     const isPublicNews = targetAudience.includes(
         TargetAudience.PUBLIC_DASHBOARD,
     );
@@ -149,37 +156,73 @@ const NewsForm = ({
             </fieldset>
 
             <div className={styles.formGroup}>
-                <label className={styles.label}>Välj en bild:</label>
+                <span className={styles.label}>Lägg till en bild:</span>
 
-                <div className={styles.imageGrid}>
-                    <button
-                        type="button"
-                        onClick={() => setNewsImageUrl(null)}
-                        className={
-                            newsImageUrl === null
-                                ? styles.selectedImage
-                                : styles.imageOption
-                        }
-                    >
-                        <div className={styles.noImageOption}>
-                            <span>Ingen bild</span>
-                        </div>
-                    </button>
-                    {newsImages.map(image => (
+                <button
+                    type="button"
+                    className={styles.imagePickerToggle}
+                    onClick={() => setIsImagePickerOpen(prev => !prev)}
+                    aria-expanded={isImagePickerOpen}
+                >
+                    {isImagePickerOpen ? "Stäng bildväljaren" : "Välj bild"}
+                    <ChevronDown
+                        size={16}
+                        aria-hidden="true"
+                        className={`transition-transform ${
+                            isImagePickerOpen ? "rotate-180" : ""
+                        }`}
+                    />
+                </button>
+
+                {newsImageUrl ? (
+                    <div className={styles.selectedImagePreview}>
+                        <img src={newsImageUrl} alt="Vald nyhetsbild" />
+                        <span>Bild vald</span>
+                    </div>
+                ) : (
+                    <span className={styles.noImageSelected}>
+                        Ingen bild vald
+                    </span>
+                )}
+
+                {isImagePickerOpen && (
+                    <div className={styles.imageGrid}>
                         <button
-                            key={image.id}
                             type="button"
-                            onClick={() => setNewsImageUrl(image.url)}
+                            onClick={() => {
+                                setNewsImageUrl(null);
+                                setIsImagePickerOpen(false);
+                            }}
                             className={
-                                newsImageUrl === image.url
+                                newsImageUrl === null
                                     ? styles.selectedImage
                                     : styles.imageOption
                             }
                         >
-                            <img src={image.url} alt={image.alt} />
+                            <div className={styles.noImageOption}>
+                                <span>Ingen bild</span>
+                            </div>
                         </button>
-                    ))}
-                </div>
+
+                        {newsImages.map(image => (
+                            <button
+                                key={image.id}
+                                type="button"
+                                onClick={() => {
+                                    setNewsImageUrl(image.url);
+                                    setIsImagePickerOpen(false);
+                                }}
+                                className={
+                                    newsImageUrl === image.url
+                                        ? styles.selectedImage
+                                        : styles.imageOption
+                                }
+                            >
+                                <img src={image.url} alt={image.alt} />
+                            </button>
+                        ))}
+                    </div>
+                )}
             </div>
 
             {/* Visar valideringsfel */}
