@@ -96,6 +96,58 @@ public class WeeklyScheduleService {
         return weeklyScheduleMapper.toResponse(savedSchedule);
     }
 
+
+    public WeeklyScheduleResponse updateSchedule(Long id, WeeklyScheduleRequest request) {
+
+        WeeklySchedule schedule = weeklyScheduleRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Schemaposten kunde inte hittas"));
+
+        if (!request.endTime().isAfter(request.startTime())) {
+            throw new IllegalArgumentException("Sluttiden måste vara efter starttiden");
+        }
+
+        if (request.validUntil().isBefore(request.validFrom())) {
+            throw new IllegalArgumentException(
+                    "Slutdatumet måste vara samma som eller senare än startdatumet"
+            );
+        }
+
+        SchoolClass schoolClass = schoolClassRepository.findById(request.classId())
+                .orElseThrow(() -> new RuntimeException("Klassen kunde inte hittas"));
+
+        Classroom classroom = classroomRepository.findById(request.classroomId())
+                .orElseThrow(() -> new RuntimeException("Klassrum kunde inte hittas"));
+
+        boolean classroomBooked = !weeklyScheduleRepository.findOverlapping(
+                classroom.getId(),
+                request.weekday(),
+                request.startTime(),
+                request.endTime(),
+                request.validFrom(),
+                request.validUntil(),
+                id
+        ).isEmpty();
+
+        if (classroomBooked) {
+            throw new IllegalArgumentException(
+                    "Klassrummet är redan bokat under den valda tiden"
+            );
+        }
+
+        schedule.setSchoolClass(schoolClass);
+        schedule.setClassroom(classroom);
+        schedule.setWeekday(request.weekday());
+        schedule.setStartTime(request.startTime());
+        schedule.setEndTime(request.endTime());
+        schedule.setValidFrom(request.validFrom());
+        schedule.setValidUntil(request.validUntil());
+
+        WeeklySchedule updatedSchedule = weeklyScheduleRepository.save(schedule);
+
+        return weeklyScheduleMapper.toResponse(updatedSchedule);
+    }
+
+
     public void deleteSchedule(Long id) {
         if (!weeklyScheduleRepository.existsById(id)) {
             throw new RuntimeException("Schemaposten kunde inte hittas");

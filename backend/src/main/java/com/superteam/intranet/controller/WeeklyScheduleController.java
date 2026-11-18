@@ -49,6 +49,19 @@ public class WeeklyScheduleController {
     }
 
 
+    // Redigera en befintlig schemapost
+    @PutMapping("/{id}")
+    public WeeklyScheduleResponse updateSchedule(
+            @PathVariable Long id,
+            @Valid @RequestBody WeeklyScheduleRequest request,
+            Authentication authentication) {
+
+        checkSchedulePermission(authentication);
+
+        return weeklyScheduleService.updateSchedule(id, request);
+    }
+
+
     // Ta bort en schemapost
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
