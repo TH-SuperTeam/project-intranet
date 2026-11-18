@@ -2,7 +2,7 @@ export interface NewsImage {
     id: string;
     url: string;
     alt: string;
-    category: "dental" | "general" | "programming" | "electrical";
+    category: "dental" | "general" | "fullstack" | "electrical";
 }
 
 export const newsImages: NewsImage[] = [
@@ -10,19 +10,19 @@ export const newsImages: NewsImage[] = [
         id: "programming-01",
         url: "https://images.unsplash.com/photo-1632910121591-29e2484c0259?q=80&w=1031&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=NHwxMjA3fDA%3D",
         alt: "Två personer som arbetar vid datorer",
-        category: "programming",
+        category: "fullstack",
     },
     {
         id: "programming-02",
         url: "https://images.unsplash.com/photo-1580894908361-967195033215?q=80&w=870&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=NHwxMjA3fDA%3D",
         alt: "Kvinna som arbetar vid dator",
-        category: "programming",
+        category: "fullstack",
     },
     {
         id: "programming-03",
         url: "https://images.unsplash.com/photo-1618477388954-7852f32655ec?q=80&w=464&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=NHwxMjA3fDA%3D",
         alt: "Person som arbetar med kod på en laptop",
-        category: "programming",
+        category: "fullstack",
     },
     {
         id: "dental-01",
