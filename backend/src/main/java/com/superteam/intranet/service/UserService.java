@@ -155,6 +155,100 @@ public class UserService {
     }
 
     @Transactional
+    public UserResponse updateUserByAdmin(
+            Long userId,
+            AdminUpdateUserRequest request,
+            Long currentUserId) {
+
+        // Kontrollera att admin inte redigerar sig själv
+        if (userId.equals(currentUserId)) {
+            throw new ResponseStatusException(
+                    HttpStatus.BAD_REQUEST,
+                    "Du kan inte redigera ditt eget konto här."
+            );
+        }
+
+        // Hämta användaren som ska redigeras
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND,
+                        "Användaren kunde inte hittas."
+                ));
+
+        // Kontrollera att e-postadressen är ledig
+        String email = request.email().trim().toLowerCase();
+
+        if (userRepository.existsByEmailIgnoreCaseAndIdNot(email, userId)) {
+            throw new DuplicateEmailException("E-postadressen används redan.");
+        }
+
+        // Uppdatera personuppgifter
+        user.setFirstName(request.firstName().trim());
+        user.setLastName(request.lastName().trim());
+        user.setEmail(email);
+
+        // Uppdatera lösenord endast om ett nytt har angetts
+        if (request.password() != null && !request.password().isBlank()) {
+
+            if (request.password().length() < 12) {
+                throw new ResponseStatusException(
+                        HttpStatus.BAD_REQUEST,
+                        "Lösenordet måste innehålla minst 12 tecken."
+                );
+            }
+
+            user.setPasswordHash(passwordEncoder.encode(request.password()));
+        }
+
+        // Hämta valt program
+        Program program = programRepository.findById(request.programId())
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND,
+                        "Programmet kunde inte hittas."
+                ));
+
+        SchoolClass schoolClass = null;
+
+        // Studenter måste ha en klass som tillhör programmet
+        if (user.getUserType() == UserType.STUDENT) {
+
+            if (request.classId() == null) {
+                throw new ResponseStatusException(
+                        HttpStatus.BAD_REQUEST,
+                        "Studenter måste tilldelas en klass."
+                );
+            }
+
+            schoolClass = schoolClassRepository.findById(request.classId())
+                    .orElseThrow(() -> new ResponseStatusException(
+                            HttpStatus.NOT_FOUND,
+                            "Klassen kunde inte hittas."
+                    ));
+
+            if (!schoolClass.getProgram().getId().equals(program.getId())) {
+                throw new ResponseStatusException(
+                        HttpStatus.BAD_REQUEST,
+                        "Klassen tillhör inte det valda programmet."
+                );
+            }
+
+        } else if (request.classId() != null) {
+            throw new ResponseStatusException(
+                    HttpStatus.BAD_REQUEST,
+                    "Lärare kan inte tilldelas en klass."
+            );
+        }
+
+        // Uppdatera utbildningstillhörighet
+        user.setProgram(program);
+        user.setSchoolClass(schoolClass);
+
+        User updatedUser = userRepository.save(user);
+
+        return userMapper.toResponse(updatedUser);
+    }
+
+    @Transactional
     public void changePassword(Long userId, ChangePasswordRequest request) {
 
         User user = userRepository.findById(userId)
