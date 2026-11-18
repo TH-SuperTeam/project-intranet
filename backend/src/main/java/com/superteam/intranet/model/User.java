@@ -29,6 +29,14 @@ public class User {
     @Column(name = "user_type", nullable = false)
     private UserType userType;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "program_id")
+    private Program program;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "class_id")
+    private SchoolClass schoolClass;
+
     @Enumerated(EnumType.STRING)
     @Column(name = "access_role", nullable = false)
     private AccessRole accessRole;
@@ -111,4 +119,12 @@ public class User {
 
     public LocalDateTime getCreatedAt() { return createdAt; }
     public LocalDateTime getUpdatedAt() { return updatedAt; }
+
+    public Program getProgram() { return program; }
+
+    public void setProgram(Program program) { this.program = program; }
+
+    public SchoolClass getSchoolClass() { return schoolClass; }
+
+    public void setSchoolClass(SchoolClass schoolClass) { this.schoolClass = schoolClass; }
 }

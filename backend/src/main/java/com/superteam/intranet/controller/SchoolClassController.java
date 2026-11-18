@@ -1,0 +1,67 @@
+
+package com.superteam.intranet.controller;
+
+import com.superteam.intranet.dto.SchoolClassRequest;
+import com.superteam.intranet.dto.SchoolClassResponse;
+import com.superteam.intranet.service.SchoolClassService;
+
+import jakarta.validation.Valid;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+@RestController
+@RequestMapping("/api/classes")
+public class SchoolClassController {
+
+    private final SchoolClassService schoolClassService;
+
+    public SchoolClassController(SchoolClassService schoolClassService) {
+        this.schoolClassService = schoolClassService;
+    }
+
+    // Hämta alla klasser eller filtrera på utbildning
+    @GetMapping
+    public List<SchoolClassResponse> getAllClasses(
+            @RequestParam(required = false) Long programId
+    ) {
+        if (programId != null) {
+            return schoolClassService.getClassesByProgramId(programId);
+        }
+
+        return schoolClassService.getAllClasses();
+    }
+
+    // Hämta en klass via ID
+    @GetMapping("/{id}")
+    public SchoolClassResponse getClassById(@PathVariable Long id) {
+        return schoolClassService.getClassById(id);
+    }
+
+    // Skapa en klass
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    public SchoolClassResponse createClass(
+            @Valid @RequestBody SchoolClassRequest request
+    ) {
+        return schoolClassService.createClass(request);
+    }
+
+    // Uppdatera en klass
+    @PutMapping("/{id}")
+    public SchoolClassResponse updateClass(
+            @PathVariable Long id,
+            @Valid @RequestBody SchoolClassRequest request
+    ) {
+        return schoolClassService.updateClass(id, request);
+    }
+
+    // Ta bort en klass
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteClass(@PathVariable Long id) {
+        schoolClassService.deleteClass(id);
+    }
+}

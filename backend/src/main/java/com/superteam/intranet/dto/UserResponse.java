@@ -1,5 +1,6 @@
 package com.superteam.intranet.dto;
 
+import com.superteam.intranet.model.SchoolName;
 import com.superteam.intranet.model.UserStatus;
 import com.superteam.intranet.model.UserType;
 import com.superteam.intranet.model.AccessRole;
@@ -13,5 +14,10 @@ public record UserResponse(
         UserType userType,
         AccessRole accessRole,
         UserStatus status,
-        LocalDateTime createdAt
+        LocalDateTime createdAt,
+        SchoolName school,
+        Long programId,
+        String programName,
+        Long classId,
+        String className
 ) {}

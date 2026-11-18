@@ -414,3 +414,9 @@
         font-size: 1.25rem;
     }
 }
+
+@media (max-height: 1050px) {
+    .departureList > li:nth-child(n + 4) {
+        display: none;
+    }
+}
