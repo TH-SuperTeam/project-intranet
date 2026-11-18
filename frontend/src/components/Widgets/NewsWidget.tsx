@@ -3,85 +3,118 @@ import { Newspaper, ArrowRight } from "lucide-react"
 import { useNews } from "../../hooks/NewsHooks/useNews"
 import type { TargetAudience } from "../../types/TargetAudience"
 import styles from "./Widgets.module.css"
+import Skeleton from "react-loading-skeleton"
 
 interface NewsWidgetProps {
-	audience: TargetAudience
+  audience: TargetAudience
 }
 
 const NewsWidget = ({ audience }: NewsWidgetProps) => {
-	const { data: news, isPending, isError } = useNews({ audience })
+  const { data: news, isPending, isError } = useNews({ audience })
 
-	if (isPending) {
-		return (
-			<section className={styles.newsWidget}>
-				<p>Laddar nyheter...</p>
-			</section>
-		)
-	}
+  // if (isPending) {
+  // 	return (
+  // 		<section className={styles.newsWidget}>
+  // 			<p>Laddar nyheter...</p>
+  // 		</section>
+  // 	)
+  // }
 
-	if (isError) {
-		return (
-			<section className={styles.newsWidget}>
-				<p role="alert">Det gick inte att ladda nyheterna.</p>
-			</section>
-		)
-	}
+  if (isPending) {
+    return (
+      <section className={styles.newsWidget}>
+        <div className={styles.widgetHeader}>
+          <div className={styles.widgetTitle}>
+            <Skeleton circle width={30} height={30} />
+            <Skeleton width={130} />
+          </div>
 
-	const latestNews = news.content.slice(0, 3)
+          <Skeleton width={90} />
+        </div>
 
-	return (
-		<section className={styles.newsWidget}>
-			<div className={styles.widgetHeader}>
-				<div className={styles.widgetTitle}>
-					<Newspaper size={24} />
-					<h2>Skolnyheter</h2>
-				</div>
+        <div>
+          <ul className={styles.newsList}>
+            <li>
+              <div className={styles.newsContent}>
+                <Skeleton width="75%" />
+                <Skeleton count={3} width="100%" />
+              </div>
+            </li>
+          </ul>
+          <ul className={styles.newsList}>
+            <li>
+              <div className={styles.newsContent}>
+                <Skeleton width="75%" />
+                <Skeleton count={3} width="100%" />
+              </div>
+            </li>
+          </ul>
+          <ul className={styles.newsList}>
+            <li>
+              <div className={styles.newsContent}>
+                <Skeleton width="75%" />
+                <Skeleton count={3} width="100%" />
+              </div>
+            </li>
+          </ul>
+        </div>
+      </section>
+    )
+  }
 
-				<Link to="/news" className={styles.viewAll}>
-					Visa alla nyheter
-					<ArrowRight size={18} />
-				</Link>
-			</div>
+  if (isError) {
+    return (
+      <section className={styles.newsWidget}>
+        <p role="alert">Det gick inte att ladda nyheterna.</p>
+      </section>
+    )
+  }
 
-			{latestNews.length === 0 ? (
-				<p className={styles.emptyState}>
-					Det finns inga publicerade nyheter just nu.
-				</p>
-			) : (
-				<ul className={styles.newsList}>
-					{latestNews.map(item => (
-						<li key={item.id}>
-							<Link
-								to={`/news/${item.id}`}
-								className={styles.newsItem}
-							>
-								<div className={styles.newsContent}>
-									<h3>{item.title}</h3>
+  const latestNews = news.content.slice(0, 3)
 
-									<p>{item.content}</p>
+  return (
+    <section className={styles.newsWidget}>
+      <div className={styles.widgetHeader}>
+        <div className={styles.widgetTitle}>
+          <Newspaper size={24} />
+          <h2>Skolnyheter</h2>
+        </div>
 
-									<time dateTime={item.createdAt}>
-										{new Date(
-											item.createdAt,
-										).toLocaleDateString("sv-SE", {
-											day: "numeric",
-											month: "short",
-											year: "numeric",
-										})}
-									</time>
-								</div>
+        <Link to="/news" className={styles.viewAll}>
+          Visa alla nyheter
+          <ArrowRight size={18} />
+        </Link>
+      </div>
 
-								<ArrowRight
-									size={18}
-									className={styles.newsArrow}
-								/>
-							</Link>
-						</li>
-					))}
-				</ul>
-			)}
-		</section>
-	)
+      {latestNews.length === 0 ? (
+        <p className={styles.emptyState}>Det finns inga publicerade nyheter just nu.</p>
+      ) : (
+        <ul className={styles.newsList}>
+          {latestNews.map((item) => (
+            <li key={item.id}>
+              <Link to={`/news/${item.id}`} className={styles.newsItem}>
+                <div className={styles.newsContent}>
+                  <h3>{item.title}</h3>
+
+                  <p>{item.content}</p>
+
+                  <time dateTime={item.createdAt}>
+                    {new Date(item.createdAt).toLocaleDateString("sv-SE", {
+                      day: "numeric",
+                      month: "short",
+                      year: "numeric",
+                    })}
+                  </time>
+                </div>
+
+                <ArrowRight size={18} className={styles.newsArrow} />
+              </Link>
+            </li>
+          ))}
+        </ul>
+      )}
+    </section>
+  )
 }
 
 export default NewsWidget
