@@ -7,6 +7,8 @@ public record WeatherResponse (
         double temperature,
         String condition,
         int weatherCode,
+        Double windSpeed,
+        Double windDirection,
         Instant forecastTime,
         Instant updatedAt,
         List<HourlyWeatherResponse> hourlyForecasts

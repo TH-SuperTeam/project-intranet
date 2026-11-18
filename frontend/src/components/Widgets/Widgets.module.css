@@ -217,11 +217,23 @@
 }
 
 .weatherMain {
-	display: flex;
+	display: grid;
+	grid-template-columns: 1fr 1.5fr 1fr;
 	align-items: center;
-	justify-content: center;
-	gap: 1.5rem;
+	gap: 1rem;
+	width: 100%;
 	flex: 1;
+}
+
+.weatherDetails {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: flex-start;
+	min-width: 0;
+	gap: 0.5rem;
+	padding-left: 1rem;
+	border-left: 2px solid var(--color-border);
 }
 
 .weatherMain svg {
@@ -230,16 +242,31 @@
 
 .weatherTemperature {
 	margin: 0;
-	font-size: 2.5rem;
+	font-size: clamp(3.5rem, 4vw, 4.5rem);
 	font-weight: 700;
-	line-height: 1.2;
+	line-height: 1.1;
 	color: var(--color-text-primary);
+	white-space: nowrap;
 }
 
 .weatherCondition {
-	margin: 0.25rem 0 0;
-	font-size: 1.1rem;
+	margin: 0;
+	font-size: 1.15rem;
 	color: var(--color-text-secondary);
+}
+
+.weatherWind {
+	display: flex;
+	align-items: center;
+	gap: 0.4rem;
+	margin: 0;
+	font-size: 0.8rem;
+	color: var(--color-text-secondary);
+	white-space: nowrap;
+}
+
+.weatherWind svg {
+	flex-shrink: 0;
 }
 
 .weatherUpdated {
@@ -281,6 +308,93 @@
 
 .weatherHourlyTemperature {
 	margin: 0;
+	font-size: 1rem;
+	font-weight: 700;
+	color: var(--color-text-primary);
+}
+
+/* ===== PUBLIC WEATHER WIDGET ===== */
+
+.publicWeatherWidget {
+	padding: 0.75rem 1rem;
+	overflow: hidden;
+}
+
+.publicWeatherWidget .infoWidgetHeader {
+	margin-bottom: 0.25rem;
+}
+
+.publicWeatherWidget .infoWidgetContent {
+	min-height: 0;
+}
+
+/* Aktuellt väder till vänster, prognoser till höger */
+.publicWeatherContent {
+	display: grid;
+	grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
+	align-items: center;
+	gap: 1rem;
+	width: 100%;
+	min-width: 0;
+	height: 100%;
+}
+
+/* Aktuellt väder */
+.publicWeatherCurrent {
+	display: flex;
+	align-items: center;
+	gap: 0.75rem;
+	min-width: 0;
+}
+
+.publicWeatherCurrent > svg {
+	flex-shrink: 0;
+}
+
+.publicWeatherCurrentDetails {
+	display: flex;
+	flex-direction: column;
+	gap: 0.25rem;
+	min-width: 0;
+}
+
+.publicWeatherWidget .weatherTemperature {
+	font-size: clamp(2rem, 2.5vw, 3rem);
+}
+
+.publicWeatherWidget .weatherCondition {
+	font-size: 0.95rem;
+}
+
+.publicWeatherWidget .weatherWind {
+	font-size: 0.75rem;
+}
+
+/* Två prognoser till höger */
+.publicWeatherForecasts {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	gap: 0.25rem;
+	min-width: 0;
+	padding-left: 0.75rem;
+	border-left: 1px solid var(--color-border);
+}
+
+.publicWeatherForecastItem {
+	display: grid;
+	grid-template-columns: 1fr auto auto;
+	align-items: center;
+	gap: 0.35rem;
+	min-width: 0;
+}
+
+.publicWeatherForecastTime {
+	font-size: 0.85rem;
+	color: var(--color-text-secondary);
+}
+
+.publicWeatherForecastTemperature {
 	font-size: 1rem;
 	font-weight: 700;
 	color: var(--color-text-primary);

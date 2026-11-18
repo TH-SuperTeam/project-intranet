@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
 import org.springframework.web.server.ResponseStatusException;
 import com.superteam.intranet.mapper.WeatherCodeMapper;
-import com.superteam.intranet.dto.HourlyWeatherResponse;
 
 import java.time.Instant;
 import java.util.Comparator;
@@ -108,6 +107,8 @@ public class WeatherService {
                 current.data().airTemperature(),
                 condition,
                 current.data().symbolCode(),
+                current.data().windSpeed(),
+                current.data().windDirection(),
                 current.time(),
                 Instant.now(),
                 hourlyForecasts
