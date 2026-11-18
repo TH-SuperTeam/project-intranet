@@ -12,6 +12,8 @@ import { Status, statusLabels } from "../../types/Status";
 import { AccessRole } from "../../types/AccessRole";
 import styles from "./UserProfileCard.module.css";
 import UserBadges from "../common/UserBadges";
+import EditButton from "../common/EditButton";
+import AdminEditUserForm from "./AdminEditUserForm";
 
 interface UserProfileCardProps {
     profile: UserProfile;
@@ -36,6 +38,7 @@ const UserProfileCard = ({ profile }: UserProfileCardProps) => {
     const [pendingRole, setPendingRole] = useState<AccessRole | null>(null);
     const [error, setError] = useState("");
     const [feedback, setFeedback] = useState("");
+    const [isEditing, setIsEditing] = useState(false);
 
     const statusMutation = useUpdateUserStatus();
     const roleMutation = useUpdateUserRole();
@@ -139,6 +142,18 @@ const UserProfileCard = ({ profile }: UserProfileCardProps) => {
                             className={profile.className}
                         />
                     </div>
+
+                    {canEdit && !isEditing && (
+                        <div className={styles.profileEditAction}>
+                            <EditButton
+                                onClick={() => {
+                                    setError("");
+                                    setFeedback("");
+                                    setIsEditing(true);
+                                }}
+                            />
+                        </div>
+                    )}
                 </div>
 
                 {isAdmin && (
@@ -226,31 +241,48 @@ const UserProfileCard = ({ profile }: UserProfileCardProps) => {
                     </div>
                 )}
             </div>
-
-            <div className={styles.profileContent}>
+            {isEditing && canEdit ? (
                 <div className={styles.profileCard}>
-                    <h3>Om mig</h3>
-                    <p className={styles.bio}>
-                        {profile.bio || "Ingen biografi tillgänglig."}
-                    </p>
+                    <h3>Redigera användare</h3>
+
+                    <AdminEditUserForm
+                        key={profile.id}
+                        profile={profile}
+                        onCancel={() => setIsEditing(false)}
+                        onSuccess={() => {
+                            setIsEditing(false);
+                            setFeedback(
+                                "Användarens uppgifter har uppdaterats.",
+                            );
+                        }}
+                    />
                 </div>
+            ) : (
+                <div className={styles.profileContent}>
+                    <div className={styles.profileCard}>
+                        <h3>Om mig</h3>
+                        <p className={styles.bio}>
+                            {profile.bio || "Ingen biografi tillgänglig."}
+                        </p>
+                    </div>
 
-                <div className={styles.profileCard}>
-                    <h3>Kontaktuppgifter</h3>
+                    <div className={styles.profileCard}>
+                        <h3>Kontaktuppgifter</h3>
 
-                    <div className={styles.accountInfo}>
-                        <div className={styles.accountInfoItem}>
-                            <Mail size={19} />
-                            <div>
-                                <span>E-postadress</span>
-                                <a href={`mailto:${profile.email}`}>
-                                    {profile.email}
-                                </a>
+                        <div className={styles.accountInfo}>
+                            <div className={styles.accountInfoItem}>
+                                <Mail size={19} />
+                                <div>
+                                    <span>E-postadress</span>
+                                    <a href={`mailto:${profile.email}`}>
+                                        {profile.email}
+                                    </a>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
+            )}
 
             {canEdit && profile.status && pendingStatus && (
                 <ConfirmDialog

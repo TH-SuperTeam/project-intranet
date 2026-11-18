@@ -227,7 +227,7 @@ const AdminEditUserForm = ({
                     type="button"
                     onClick={onCancel}
                     disabled={mutation.isPending}
-                    className="rounded-lg border border-(--color-border) px-4 py-2"
+                    className={styles.cancelButton}
                 >
                     Avbryt
                 </button>
