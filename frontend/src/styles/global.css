@@ -1,4 +1,8 @@
 :root {
+    /* ===== tillfälligt innan tema för VH är implementerat, för badges i User ===== */
+    --color-th-primary: var(--color-primary);
+    --color-vh-primary: #420b24;
+
     /* ===== PRIMARY - GREEN ===== */
     --color-primary: #00302e;
     --color-primary-light: #004f46;

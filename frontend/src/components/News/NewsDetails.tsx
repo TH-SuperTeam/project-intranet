@@ -6,6 +6,7 @@ import ConfirmDialog from "../common/ConfirmDialog";
 
 import DeleteButton from "../common/DeleteButton";
 import EditButton from "../common/EditButton";
+import NewsImage from "../common/NewsImage";
 import { useState } from "react";
 import { useCanManageNews } from "../../hooks/NewsHooks/useCanManageNews";
 
@@ -42,6 +43,10 @@ const NewsDetails = ({ news }: NewsDetailsProps) => {
                 <BackLink to="/news" />
 
                 <div className={styles.detailsCard}>
+                    <NewsImage
+                        src={news.newsImageUrl}
+                        className={styles.newsDetailsImage}
+                    />
                     <header className={styles.detailsHeader}>
                         <time
                             dateTime={news.createdAt}

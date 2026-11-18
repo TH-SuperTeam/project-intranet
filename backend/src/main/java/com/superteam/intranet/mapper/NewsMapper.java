@@ -15,6 +15,12 @@ public class NewsMapper {
         news.setContent(request.content().trim());
         news.setTargetAudience(request.targetAudience());
 
+        if (request.newsImageUrl() != null) {
+            news.setNewsImageUrl(request.newsImageUrl().trim());
+        } else {
+            news.setNewsImageUrl(null);
+        }
+
         return news;
     }
 
@@ -26,7 +32,8 @@ public class NewsMapper {
                 news.getUserId(),
                 news.isPublished(),
                 news.getTargetAudience(),
-                news.getCreatedAt()
+                news.getCreatedAt(),
+                news.getNewsImageUrl()
         );
     }
 }

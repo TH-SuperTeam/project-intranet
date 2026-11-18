@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import type { News } from "../../types/News";
 import styles from "./News.module.css";
+import NewsImage from "../common/NewsImage";
 
 interface NewsCardProps {
     news: News;
@@ -15,18 +16,21 @@ const NewsCard = ({ news }: NewsCardProps) => {
 
     return (
         <li className={styles.newsCard}>
-            <div className={styles.cardHeader}>
-                <h2 className={styles.title}>{news.title}</h2>
+            <NewsImage src={news.newsImageUrl} className={styles.newsImage} />
+            <div className={styles.newsInfo}>
+                <div className={styles.cardHeader}>
+                    <h2 className={styles.title}>{news.title}</h2>
 
-                <time dateTime={news.createdAt} className={styles.date}>
-                    {formattedDate}
-                </time>
+                    <time dateTime={news.createdAt} className={styles.date}>
+                        {formattedDate}
+                    </time>
+                </div>
+
+                <p className={styles.content}>{news.content}</p>
+                <Link to={`/news/${news.id}`} className={styles.readMore}>
+                    Läs mer...
+                </Link>
             </div>
-
-            <p className={styles.content}>{news.content}</p>
-            <Link to={`/news/${news.id}`} className={styles.readMore}>
-                Läs mer...
-            </Link>
         </li>
     );
 };

@@ -7,4 +7,7 @@ export interface PublicUser {
     email: string;
     profileImageUrl: string | null;
     userType: UserType;
+    school: "TH" | "VH" | null;
+    programName: string | null;
+    className: string | null;
 }

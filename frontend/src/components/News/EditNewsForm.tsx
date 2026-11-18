@@ -11,6 +11,9 @@ const EditNewsForm = ({ news }: { news: News }) => {
     const [targetAudience, setTargetAudience] = useState<TargetAudience[]>(
         news.targetAudience,
     );
+    const [newsImageUrl, setNewsImageUrl] = useState<string | null>(
+        news.newsImageUrl,
+    );
     const [validationError, setValidationError] = useState("");
 
     const mutation = useUpdateNews();
@@ -51,6 +54,7 @@ const EditNewsForm = ({ news }: { news: News }) => {
                 title: title.trim(),
                 content: content.trim(),
                 targetAudience,
+                newsImageUrl: newsImageUrl,
             },
         });
     };
@@ -63,6 +67,8 @@ const EditNewsForm = ({ news }: { news: News }) => {
             setContent={setContent}
             targetAudience={targetAudience}
             setTargetAudience={setTargetAudience}
+            newsImageUrl={newsImageUrl}
+            setNewsImageUrl={setNewsImageUrl}
             validationError={validationError}
             mutation={mutation}
             handleSubmit={handleSubmit}

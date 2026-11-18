@@ -4,4 +4,5 @@ export interface CreateNewsRequest {
     title: string;
     content: string;
     targetAudience: TargetAudience[];
+    newsImageUrl: string | null;
 }

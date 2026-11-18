@@ -8,6 +8,9 @@ public record PublicUserResponse(
         String lastName,
         String email,
         String profileImageUrl,
-        UserType userType
+        UserType userType,
+        SchoolName school,
+        String programName,
+        String className
 ) {
 }
