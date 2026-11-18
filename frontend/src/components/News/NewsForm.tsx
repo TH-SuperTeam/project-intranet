@@ -152,6 +152,19 @@ const NewsForm = ({
                 <label className={styles.label}>Välj en bild:</label>
 
                 <div className={styles.imageGrid}>
+                    <button
+                        type="button"
+                        onClick={() => setNewsImageUrl(null)}
+                        className={
+                            newsImageUrl === null
+                                ? styles.selectedImage
+                                : styles.imageOption
+                        }
+                    >
+                        <div className={styles.noImageOption}>
+                            <span>Ingen bild</span>
+                        </div>
+                    </button>
                     {newsImages.map(image => (
                         <button
                             key={image.id}

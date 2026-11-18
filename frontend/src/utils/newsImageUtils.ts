@@ -78,4 +78,28 @@ export const newsImages: NewsImage[] = [
         alt: "Kollegor som samarbetar runt ett bord",
         category: "general",
     },
+    {
+        id: "general-04",
+        url: "https://images.unsplash.com/photo-1462275646964-a0e3386b89fa?q=80&w=928&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=NHwxMjA3fDA%3D",
+        alt: "Körsbärsträd i blomning",
+        category: "general",
+    },
+    {
+        id: "general-05",
+        url: "https://images.unsplash.com/photo-1519331379826-f10be5486c6f?q=80&w=870&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=NHwxMjA3fDA%3D",
+        alt: "Gröna träd i parken",
+        category: "general",
+    },
+    {
+        id: "general-06",
+        url: "https://images.unsplash.com/photo-1501973801540-537f08ccae7b?q=80&w=869&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=NHwxMjA3fDA%3D",
+        alt: "Höstlöv i fokus",
+        category: "general",
+    },
+    {
+        id: "general-07",
+        url: "https://images.unsplash.com/photo-1457269449834-928af64c684d?q=80&w=774&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=NHwxMjA3fDA%3D",
+        alt: "Närbild på en snöflinga",
+        category: "general",
+    },
 ];

@@ -72,8 +72,7 @@
 
 .newsItem {
     display: flex;
-    align-items: center;
-    justify-content: space-between;
+    align-items: flex-start;
     gap: 1rem;
     padding: 1rem 0.75rem;
     border: 1px solid transparent;
@@ -139,6 +138,8 @@
     flex-shrink: 0;
     color: var(--color-secondary-dark);
     margin: 10px;
+    margin-left: auto;
+    align-self: flex-start;
 }
 
 .publicNewsWidget {
