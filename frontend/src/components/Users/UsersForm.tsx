@@ -1,3 +1,5 @@
+import type { Program } from "../../types/Program";
+import type { SchoolClass } from "../../types/SchoolClass";
 import type { FormEvent, Dispatch, SetStateAction } from "react";
 import SubmitButton from "../common/SubmitButton";
 import styles from "./Users.module.css";
@@ -19,6 +21,17 @@ type UsersFormProps = {
     setUserType: Dispatch<SetStateAction<UserType>>;
     accessRole: AccessRole;
     setAccessRole: Dispatch<SetStateAction<AccessRole>>;
+    programId: number | null;
+    setProgramId: Dispatch<SetStateAction<number | null>>;
+    classId: number | null;
+    setClassId: Dispatch<SetStateAction<number | null>>;
+    programs: Program[];
+    programsLoading: boolean;
+    programsError: boolean;
+
+    classes: SchoolClass[];
+    classesLoading: boolean;
+    classesError: boolean;
     validationError: string;
     mutation: {
         isPending: boolean;
@@ -45,6 +58,10 @@ const UsersForm = ({
     setUserType,
     accessRole,
     setAccessRole,
+    programId,
+    setProgramId,
+    classId,
+    setClassId,
     validationError,
     mutation,
     handleSubmit,
@@ -52,6 +69,12 @@ const UsersForm = ({
     pendingLabel,
     errorMessage,
     successMessage,
+    programs,
+    programsLoading,
+    programsError,
+    classes,
+    classesLoading,
+    classesError,
 }: UsersFormProps) => {
     return (
         <form className={styles.form} onSubmit={handleSubmit} noValidate>
@@ -123,17 +146,113 @@ const UsersForm = ({
                 <label className={styles.label} htmlFor="userType">
                     Användartyp:
                 </label>
-                <select
+               <select
                     className={styles.select}
                     id="userType"
                     name="userType"
                     value={userType}
-                    onChange={(e) => setUserType(e.target.value as UserType)}
+                    onChange={(e) => {
+                        const newUserType = e.target.value as UserType;
+                        setUserType(newUserType);
+
+                        if (newUserType === UserType.TEACHER) {
+                            setClassId(null);
+                        }
+                    }}
                 >
                     <option value={UserType.STUDENT}>Student</option>
                     <option value={UserType.TEACHER}>Personal</option>
                 </select>
             </div>
+
+            <div className={styles.formGroup}>
+                <label className={styles.label} htmlFor="program">
+                    Utbildning:
+                </label>
+
+                <select
+                    className={styles.select}
+                    id="program"
+                    name="program"
+                    value={programId ?? ""}
+                    onChange={(e) => {
+                        setProgramId(
+                            e.target.value ? Number(e.target.value) : null
+                        );
+                        setClassId(null);
+                    }}
+                    disabled={programsLoading || programsError}
+                    required
+                >
+
+                    <option value="" disabled hidden>
+                        {programsLoading
+                            ? "Hämtar utbildningar..."
+                            : "Välj utbildning"}
+                    </option>
+
+                    {programs.map((program) => (
+                        <option key={program.id} value={program.id}>
+                            {program.name}
+                        </option>
+                    ))}
+                </select>
+
+                {programsError && (
+                    <p role="alert">Kunde inte hämta utbildningar.</p>
+                )}
+            </div>
+
+           {userType === UserType.STUDENT && (
+                <div className={styles.formGroup}>
+                    <label className={styles.label} htmlFor="schoolClass">
+                        Klass:
+                    </label>
+
+                    <select
+                        className={styles.select}
+                        id="schoolClass"
+                        name="schoolClass"
+                        value={classId ?? ""}
+                        onChange={(e) =>
+                            setClassId(
+                                e.target.value ? Number(e.target.value) : null
+                            )
+                        }
+                        disabled={
+                            programId === null ||
+                            classesLoading ||
+                            classesError
+                        }
+                        required
+                    >
+                        <option value="" disabled hidden>
+                            {programId === null
+                                ? "Välj utbildning först"
+                                : classesLoading
+                                ? "Hämtar klasser..."
+                                : "Välj klass"}
+                        </option>
+
+                        {classes.map((schoolClass) => (
+                            <option key={schoolClass.id} value={schoolClass.id}>
+                                {schoolClass.name}
+                            </option>
+                        ))}
+                    </select>
+
+                    {classesError && (
+                        <p role="alert">Kunde inte hämta klasser.</p>
+                    )}
+
+                    {!classesLoading &&
+                        !classesError &&
+                        programId !== null &&
+                        classes.length === 0 && (
+                            <p>Det finns inga klasser för denna utbildning.</p>
+                        )}
+                </div>
+            )}
 
             <div className={styles.formGroup}>
                 <label className={styles.label} htmlFor="accessRole">

@@ -8,4 +8,6 @@ export interface CreateUserRequest {
     password: string;
     userType: UserType;
     accessRole: AccessRole;
+    programId: number;
+    classId: number | null;
 }
