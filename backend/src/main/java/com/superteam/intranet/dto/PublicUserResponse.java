@@ -1,5 +1,6 @@
 package com.superteam.intranet.dto;
 
+import com.superteam.intranet.model.SchoolName;
 import com.superteam.intranet.model.UserType;
 
 public record PublicUserResponse(
