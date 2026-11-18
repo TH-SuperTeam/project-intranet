@@ -12,4 +12,9 @@ export interface UserProfile {
     accessRole: AccessRole;
     status: Status | null;
     bio: string | null;
+    school: "TH" | "VH" | null
+    programId: number | null
+    programName: string | null
+    classId: number | null
+    className: string | null
 }

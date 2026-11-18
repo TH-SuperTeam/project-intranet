@@ -11,4 +11,9 @@ export interface User {
   accessRole: AccessRole
   status: Status
   profileImageUrl: string | null
+  school: "TH" | "VH" | null
+  programId: number | null
+  programName: string | null
+  classId: number | null
+  className: string | null
 }
