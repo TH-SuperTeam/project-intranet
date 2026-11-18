@@ -167,8 +167,10 @@
 .userBadges {
     display: flex;
     align-items: center;
-    gap: 0.5rem;
+    justify-content: flex-end;
     flex-wrap: wrap;
+    gap: 0.5rem;
+    flex-shrink: 0;
 }
 
 .adminBadge {
@@ -321,21 +323,24 @@
     .listContainer {
         padding: 1rem;
     }
-
     .userCard {
-        display: grid;
-        grid-template-columns: 44px minmax(0, 1fr);
-        align-items: center;
-        gap: 0.75rem;
-        padding: 1rem;
+        flex-wrap: wrap;
     }
 
-    .userInfo {
-        min-width: 0;
+    .userProfileLink {
+        flex-basis: 100%;
+    }
+
+    .userBadges {
+        width: 100%;
+        justify-content: flex-end;
     }
 
     .statusBadge {
-        margin-left: auto;
+        margin-left: 0;
+    }
+    .userInfo {
+        min-width: 0;
     }
 
     .form {
