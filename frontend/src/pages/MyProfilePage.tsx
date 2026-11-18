@@ -330,6 +330,7 @@ const MyProfilePage = () => {
 
                     <UserBadges
                         userType={profile.userType}
+                        school={profile.school}
                         programName={profile.programName}
                         className={profile.className}
                     />

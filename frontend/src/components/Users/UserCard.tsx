@@ -44,6 +44,7 @@ const UserCard = ({ user }: UserCardProps) => {
 
                     <UserBadges
                         userType={user.userType}
+                        school={user.school}
                         programName={user.programName}
                         className={user.className}
                     />

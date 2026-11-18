@@ -96,6 +96,7 @@ public class UserMapper {
             user.getEmail(),
             user.getProfileImageUrl(),
             user.getUserType(),
+            getSchool(user),
             getProgramName(user),
             getClassName(user)
     );
