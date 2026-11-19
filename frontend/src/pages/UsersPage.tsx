@@ -4,11 +4,41 @@ import SearchInput from "../components/common/SearchInput";
 import UsersList from "../components/Users/UsersList";
 import styles from "../components/Users/Users.module.css";
 import { useAuth } from "../hooks/useAuth";
+import { usePrograms } from "../hooks/usePrograms";
+import { useUsers } from "../hooks/UsersHooks/useUsers";
+import { useUserFilters } from "../hooks/UsersHooks/useUserFilters";
+import { filterUsers } from "../utils/filterUsers";
+import UsersFilterBar from "../components/Users/UsersFilterBar";
+import type { UserFilters } from "../types/UserFilters";
 
 const UsersPage = () => {
     const [search, setSearch] = useState("");
     const { user: currentUser } = useAuth();
     const isAdmin = currentUser?.accessRole === "ADMIN";
+    const { data: programs } = usePrograms();
+    const filters = useUserFilters(programs);
+    const { data: users, isPending, isError } = useUsers(search);
+
+    const activeFilters: UserFilters = {
+        school: filters.school,
+        programId: filters.programId,
+        classId: filters.classId,
+        status: isAdmin ? filters.status : "ALL",
+    };
+
+    const filteredUsers = filterUsers(users ?? [], activeFilters);
+
+    const hasActiveFilters =
+        filters.school !== null ||
+        filters.programId !== null ||
+        filters.classId !== null ||
+        filters.status !== "ALL" ||
+        search.trim() !== "";
+
+    const handleReset = () => {
+        filters.reset();
+        setSearch("");
+    };
 
     return (
         <section className={styles.usersSection}>
@@ -34,9 +64,37 @@ const UsersPage = () => {
                         onChange={setSearch}
                         placeholder="Sök namn eller e-post..."
                     />
+                    <UsersFilterBar
+                        filters={activeFilters}
+                        programs={programs}
+                        isAdmin={isAdmin}
+                        onSchoolChange={filters.changeSchool}
+                        onProgramChange={filters.changeProgram}
+                        onClassChange={filters.changeClass}
+                        onStatusChange={filters.changeStatus}
+                    />
+                </div>
+                <div>
+                    {!isPending && !isError && (
+                        <p role="status">{filteredUsers.length} användare</p>
+                    )}
+
+                    <button
+                        type="button"
+                        onClick={handleReset}
+                        disabled={!hasActiveFilters}
+                    >
+                        Rensa filter
+                    </button>
                 </div>
 
-                <UsersList search={search} />
+                <UsersList
+                    users={filteredUsers}
+                    isPending={isPending}
+                    isError={isError}
+                    hasActiveFilters={hasActiveFilters}
+                    onReset={handleReset}
+                />
             </div>
         </section>
     );
