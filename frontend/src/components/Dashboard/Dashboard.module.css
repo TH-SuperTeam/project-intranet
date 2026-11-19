@@ -52,7 +52,7 @@
     z-index: -1;
     pointer-events: none;
 
-    background-image: url("../../assets/school-building.png");
+    background-image: url("../../assets/red-school-building.png");
     background-repeat: no-repeat;
     background-size: auto 130%;
     background-position: right center;
@@ -67,6 +67,13 @@
             ellipse 65% 85% at bottom right,
             transparent 0%,
             black 100%
+        ),
+        linear-gradient(
+            to right,
+            transparent 0%,
+            black 15%,
+            black 85%,
+            transparent 100%
         );
 
     mask-image:
@@ -79,12 +86,22 @@
             ellipse 65% 85% at bottom right,
             transparent 0%,
             black 100%
+        ),
+        linear-gradient(
+            to right,
+            transparent 0%,
+            black 35%,
+            black 95%,
+            transparent 100%
         );
 
     -webkit-mask-composite: source-in;
     mask-composite: intersect;
 }
 
+:global(.th) .welcomeHeader::before {
+    background-image: url("../../assets/lilac-school-building.png");
+}
 /* ===== GREETING ===== */
 
 .welcomeLeft {
