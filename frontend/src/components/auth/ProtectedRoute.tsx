@@ -1,6 +1,5 @@
 import { Navigate, Outlet, useLocation } from "react-router-dom"
 import { useAuth } from "../../hooks/useAuth"
-import { PacmanLoader } from "react-spinners"
 import { PacmanSpinner } from "../Loaders/Spinners/PacmanSpinner"
 
 const ProtectedRoute = () => {
