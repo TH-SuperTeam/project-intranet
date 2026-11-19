@@ -13,6 +13,7 @@ import com.superteam.intranet.model.OverrideType;
 import java.time.DayOfWeek;
 import java.time.temporal.TemporalAdjusters;
 import java.util.ArrayList;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -42,6 +43,7 @@ public class ScheduleOverrideService {
     }
 
 
+    @Transactional(readOnly = true)
     public List<ScheduleOverrideResponse> getAllOverrides() {
 
         List<ScheduleOverride> overrides = scheduleOverrideRepository.findAll();
@@ -52,6 +54,7 @@ public class ScheduleOverrideService {
     }
 
 
+    @Transactional
     public ScheduleOverrideResponse createOverride(
             ScheduleOverrideRequest request) {
 
@@ -87,6 +90,7 @@ public class ScheduleOverrideService {
     }
 
 
+    @Transactional
     public ScheduleOverrideResponse updateOverride(
             Long id, ScheduleOverrideRequest request) {
 
@@ -119,6 +123,7 @@ public class ScheduleOverrideService {
 
 
     // Ta bort schemaändring
+    @Transactional
     public void deleteOverride(Long id) {
 
         if (!scheduleOverrideRepository.existsById(id)) {
