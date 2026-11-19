@@ -1,52 +1,49 @@
-import { useUsers } from "../../hooks/UsersHooks/useUsers";
-import UserCard from "./UserCard";
-import styles from "./Users.module.css";
+import { useUsers } from "../../hooks/UsersHooks/useUsers"
+import UserCard from "./UserCard"
+import styles from "./Users.module.css"
+import { ListSkeleton } from "../Loaders/Skeletons/ListSkeleton"
 
 interface UserListProps {
-    search: string;
+  search: string
 }
 
 const UsersList = ({ search }: UserListProps) => {
-    const { data: users, isPending, isError } = useUsers(search);
+  const { data: users, isPending, isError } = useUsers(search)
 
-    if (isPending) {
-        return <div className={styles.state}>Laddar användare...</div>;
-    }
+  if (isPending) {
+    return <ListSkeleton variant="user" />
+  }
 
-    if (isError) {
-        return (
-            <div className={styles.errorState} role="alert">
-                Det gick inte att ladda användarna.
-            </div>
-        );
-    }
+  if (isError) {
+    return (
+      <div className={styles.errorState} role="alert">
+        Det gick inte att ladda användarna.
+      </div>
+    )
+  }
 
-    if (!users || users.length === 0) {
-        const hasSearch = search.trim().length > 0;
-
-        return (
-            <div className={styles.emptyState}>
-                <h3>
-                    {hasSearch
-                        ? "Inga matchande användare"
-                        : "Inga användare att visa"}
-                </h3>
-                <p>
-                    {hasSearch
-                        ? "Det finns inga användare som matchar din sökning."
-                        : "Det finns inga användare att visa just nu."}
-                </p>
-            </div>
-        );
-    }
+  if (!users || users.length === 0) {
+    const hasSearch = search.trim().length > 0
 
     return (
-        <ul className={styles.usersList}>
-            {users.map((user) => (
-                <UserCard key={user.id} user={user} />
-            ))}
-        </ul>
-    );
-};
+      <div className={styles.emptyState}>
+        <h3>{hasSearch ? "Inga matchande användare" : "Inga användare att visa"}</h3>
+        <p>
+          {hasSearch
+            ? "Det finns inga användare som matchar din sökning."
+            : "Det finns inga användare att visa just nu."}
+        </p>
+      </div>
+    )
+  }
 
-export default UsersList;
+  return (
+    <ul className={styles.usersList}>
+      {users.map((user) => (
+        <UserCard key={user.id} user={user} />
+      ))}
+    </ul>
+  )
+}
+
+export default UsersList

@@ -3,7 +3,7 @@ import { Newspaper, ArrowRight } from "lucide-react"
 import { useNews } from "../../hooks/NewsHooks/useNews"
 import type { TargetAudience } from "../../types/TargetAudience"
 import styles from "./Widgets.module.css"
-import Skeleton from "react-loading-skeleton"
+import { ListSkeleton } from "../Loaders/Skeletons/ListSkeleton"
 
 interface NewsWidgetProps {
   audience: TargetAudience
@@ -12,54 +12,8 @@ interface NewsWidgetProps {
 const NewsWidget = ({ audience }: NewsWidgetProps) => {
   const { data: news, isPending, isError } = useNews({ audience })
 
-  // if (isPending) {
-  // 	return (
-  // 		<section className={styles.newsWidget}>
-  // 			<p>Laddar nyheter...</p>
-  // 		</section>
-  // 	)
-  // }
-
   if (isPending) {
-    return (
-      <section className={styles.newsWidget}>
-        <div className={styles.widgetHeader}>
-          <div className={styles.widgetTitle}>
-            <Skeleton circle width={30} height={30} />
-            <Skeleton width={130} />
-          </div>
-
-          <Skeleton width={90} />
-        </div>
-
-        <div>
-          <ul className={styles.newsList}>
-            <li>
-              <div className={styles.newsContent}>
-                <Skeleton width="75%" />
-                <Skeleton count={3} width="100%" />
-              </div>
-            </li>
-          </ul>
-          <ul className={styles.newsList}>
-            <li>
-              <div className={styles.newsContent}>
-                <Skeleton width="75%" />
-                <Skeleton count={3} width="100%" />
-              </div>
-            </li>
-          </ul>
-          <ul className={styles.newsList}>
-            <li>
-              <div className={styles.newsContent}>
-                <Skeleton width="75%" />
-                <Skeleton count={3} width="100%" />
-              </div>
-            </li>
-          </ul>
-        </div>
-      </section>
-    )
+    return <ListSkeleton variant="news" />
   }
 
   if (isError) {

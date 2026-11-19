@@ -8,7 +8,6 @@ import DeleteButton from "../common/DeleteButton"
 import EditButton from "../common/EditButton"
 import { useState } from "react"
 import { useCanManageNews } from "../../hooks/NewsHooks/useCanManageNews"
-import Skeleton from "react-loading-skeleton"
 
 interface NewsDetailsProps {
   news: News
@@ -47,7 +46,7 @@ const NewsDetails = ({ news }: NewsDetailsProps) => {
             <time dateTime={news.createdAt} className={styles.detailsDate}>
               {formattedDate}
             </time>
-            <h1 className={styles.detailsTitle}>{news.title || <Skeleton />}</h1>
+            <h1 className={styles.detailsTitle}>{news.title}</h1>
           </header>
 
           <div className={styles.detailsDivider} />

@@ -3,7 +3,7 @@ import type { TargetAudience } from "../../types/TargetAudience"
 import styles from "./News.module.css"
 import { useNews } from "../../hooks/NewsHooks/useNews"
 import { useState } from "react"
-import Skeleton from "react-loading-skeleton"
+import { ListSkeleton } from "../Loaders/Skeletons/ListSkeleton"
 
 type NewsListProps = {
   audience: TargetAudience
@@ -19,34 +19,8 @@ const PaginatedNewsList = ({ audience, search }: NewsListProps) => {
 
   const { data: news, isPending, isError } = useNews({ audience, page, search })
 
-  // if (isPending) {
-  // 	return <div className={styles.state}>Laddar nyheter...</div>
-  // }
   if (isPending) {
-    return (
-      <>
-        <ul className={styles.newsList}>
-          <li className={styles.newsCard}>
-            <div>
-              <Skeleton width="75%" />
-            </div>
-            <Skeleton count={4} />
-          </li>
-          <li className={styles.newsCard}>
-            <div>
-              <Skeleton width="75%" />
-            </div>
-            <Skeleton count={4} />
-          </li>
-          <li className={styles.newsCard}>
-            <div>
-              <Skeleton width="75%" />
-            </div>
-            <Skeleton count={4} />
-          </li>
-        </ul>
-      </>
-    )
+    return <ListSkeleton variant="news" />
   }
 
   if (isError) {

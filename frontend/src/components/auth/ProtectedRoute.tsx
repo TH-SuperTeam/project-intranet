@@ -1,26 +1,24 @@
-
-import { Navigate, Outlet, useLocation } from "react-router-dom";
-import { useAuth } from "../../hooks/useAuth";
+import { Navigate, Outlet, useLocation } from "react-router-dom"
+import { useAuth } from "../../hooks/useAuth"
+import { PacmanLoader } from "react-spinners"
 
 const ProtectedRoute = () => {
-    const { isAuthenticated, isLoading } = useAuth();
-    const location = useLocation();
+  const { isAuthenticated, isLoading } = useAuth()
+  const location = useLocation()
 
-    if (isLoading) {
-        return <p>Kontrollerar inloggning...</p>;
-    }
+  if (isLoading) {
+    return (
+      <div className="grid min-h-screen place-items-center" role="status" aria-label="Laddar">
+        <PacmanLoader color="#006057" />
+      </div>
+    )
+  }
 
-    if (!isAuthenticated) {
-        return (
-            <Navigate
-                to="/login"
-                state={{ from: location }}
-                replace
-            />
-        );
-    }
+  if (!isAuthenticated) {
+    return <Navigate to="/login" state={{ from: location }} replace />
+  }
 
-    return <Outlet />;
-};
+  return <Outlet />
+}
 
-export default ProtectedRoute;
+export default ProtectedRoute

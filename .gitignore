@@ -24,3 +24,6 @@ Thumbs.db
 
 # Local database configuration
 application-local.properties
+
+# Personliga Codex-instruktioner (lokala, ska inte delas via Git)
+/AGENTS.md
