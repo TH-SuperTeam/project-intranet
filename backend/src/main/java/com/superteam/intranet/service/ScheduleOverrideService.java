@@ -87,6 +87,36 @@ public class ScheduleOverrideService {
     }
 
 
+    public ScheduleOverrideResponse updateOverride(
+            Long id, ScheduleOverrideRequest request) {
+
+        // Kontrollera att schemaändringen finns
+        if (!scheduleOverrideRepository.existsById(id)) {
+            throw new RuntimeException("Schemaändringen hittades inte");
+        }
+
+        validateOverrideRequest(request);
+
+        WeeklySchedule weeklySchedule =
+                getWeeklySchedule(request.weeklyScheduleId());
+
+        Classroom classroom = getClassroom(request.classroomId());
+
+        validateNoWeeklyScheduleConflict(
+                request, weeklySchedule, classroom, id);
+
+        ScheduleOverride updatedOverride =
+                scheduleOverrideMapper.toEntity(
+                        request, weeklySchedule, classroom);
+
+        updatedOverride.setId(id);
+
+        ScheduleOverride savedOverride =
+                scheduleOverrideRepository.save(updatedOverride);
+
+        return scheduleOverrideMapper.toResponse(savedOverride);
+    }
+
 
     // ==================== HELPER METHODS ====================
 

@@ -31,4 +31,13 @@ public class ScheduleOverrideController {
 
         return scheduleOverrideService.createOverride(request);
     }
+
+
+    // Uppdatera schemaändring
+    @PutMapping("/{id}")
+    public ScheduleOverrideResponse updateOverride(
+            @PathVariable Long id,
+            @Valid @RequestBody ScheduleOverrideRequest request) {
+        return scheduleOverrideService.updateOverride(id, request);
+    }
 }
