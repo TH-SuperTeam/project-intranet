@@ -1,6 +1,10 @@
 :root {
+    /* ===== SCHOOL BADGES ===== */
     --color-th-primary: #00302e;
+    --color-th-primary-light: #004f46;
+
     --color-vh-primary: #420b24;
+    --color-vh-primary-light: #732e4a;
 
     /* ===== PRIMARY - PLUSHÖGSKOLAN ===== */
     --color-primary: #7f1d3e;
