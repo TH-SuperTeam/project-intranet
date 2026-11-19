@@ -31,4 +31,11 @@ public interface WeeklyScheduleRepository extends JpaRepository<WeeklySchedule, 
             @Param("validUntil") LocalDate validUntil,
             @Param("excludeId") Long excludeId
     );
+
+    // Hämtar grundscheman som kan påverkas av en avvikelse under en viss period.
+    List<WeeklySchedule> findByWeekdayAndValidFromLessThanEqualAndValidUntilGreaterThanEqual(
+            Integer weekday,
+            LocalDate validUntil,
+            LocalDate validFrom
+    );
 }
