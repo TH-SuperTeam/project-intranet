@@ -4,13 +4,22 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public record SmhiWeatherData (
 
-        // Kopplar JSON-fältet air_temperature till airTemperature
+        // Temperatur i grader Celsius
         @JsonProperty("air_temperature")
         Double airTemperature,
 
-        // Kopplar JSON-fältet symbol_code till symbolCode
+        // Väderkod för att välja rätt ikon
         @JsonProperty("symbol_code")
-        Integer symbolCode
+        Integer symbolCode,
+
+        //Vindhastighet i meter per sekund
+        @JsonProperty("wind_speed")
+        Double windSpeed,
+
+        // Vindriktning i grader
+        @JsonProperty("wind_from_direction")
+        Double windDirection
+
 ) {
 
 }

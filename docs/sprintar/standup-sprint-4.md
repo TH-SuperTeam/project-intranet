@@ -30,14 +30,15 @@
 | Caroline |   Ja  | #132 |  #132   | Behöver ta beslut kring väder-widget   |
 | Inna |   Ja   |  #131  | #131  |        |
 
-## Torsdag 2026-11-DD
+## Torsdag 2026-11-19
 
 | Namn | Närvaro | Igår | Idag | Hinder |
 | ---- | ------- | ---- | ---- | ------ |
-|      |         |      |      |        |
-|      |         |      |      |        |
-|      |         |      |      |        |
-|      |         |      |      |        |
+| Josefine | Ja |  #142 #75    | #132,  #90    |        |
+| Sofie | Ja | #102   |  #102    |        |
+| Mette | Ja |  #57   |  #151    |        |
+| Caroline | Ja |  #132  |  #132  |  Svårt med väder-widget på public dashboard, Josefine hjälper    |
+| Inna | Ja |  #131  |  #131  |        |
 
 ## Fredag ÅÅÅÅ-MM-DD
 
