@@ -1,11 +1,10 @@
 package com.superteam.intranet.controller;
 
+import com.superteam.intranet.dto.ScheduleOverrideRequest;
 import com.superteam.intranet.dto.ScheduleOverrideResponse;
-import com.superteam.intranet.dto.WeeklyScheduleResponse;
 import com.superteam.intranet.service.ScheduleOverrideService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import jakarta.validation.Valid;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -23,5 +22,13 @@ public class ScheduleOverrideController {
     @GetMapping
     public List<ScheduleOverrideResponse> getAllOverrides() {
         return scheduleOverrideService.getAllOverrides();
+    }
+
+    // Skapa schemaändring
+    @PostMapping
+    public ScheduleOverrideResponse createOverride(
+            @Valid @RequestBody ScheduleOverrideRequest request) {
+
+        return scheduleOverrideService.createOverride(request);
     }
 }
