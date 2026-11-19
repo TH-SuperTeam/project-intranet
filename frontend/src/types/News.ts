@@ -8,4 +8,5 @@ export interface News {
     isPublished: boolean;
     targetAudience: TargetAudience[];
     createdAt: string;
+    newsImageUrl: string | null;
 }

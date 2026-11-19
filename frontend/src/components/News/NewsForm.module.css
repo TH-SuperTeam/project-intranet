@@ -156,6 +156,99 @@ fieldset.formGroup {
     line-height: 1.5;
 }
 
+.imageGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 12px;
+    margin-top: 10px;
+}
+
+.imageOption,
+.selectedImage {
+    padding: 4px;
+    border: 2px solid transparent;
+    border-radius: 8px;
+    background: none;
+    cursor: pointer;
+    overflow: hidden;
+}
+
+.imageOption img,
+.selectedImage img {
+    display: block;
+    width: 100%;
+    height: 110px;
+    object-fit: cover;
+    border-radius: 4px;
+}
+
+.imageOption:hover {
+    border-color: #999;
+}
+
+.selectedImage {
+    border-color: #2563eb;
+}
+
+.noImageOption {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 110px;
+    border-radius: 4px;
+    background-color: var(--color-surface);
+    color: var(--color-text-secondary);
+    font-size: 0.9rem;
+}
+
+.imagePickerToggle {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border: 1px solid var(--color-border);
+    border-radius: 8px;
+    background-color: var(--color-surface);
+    color: var(--color-text-primary);
+    font: inherit;
+    cursor: pointer;
+    transition:
+        border-color 0.2s ease,
+        background-color 0.2s ease;
+}
+
+.imagePickerToggle:hover {
+    border-color: var(--color-border-hover);
+    background-color: var(--color-primary-soft);
+}
+
+.imagePickerToggle:focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
+}
+
+.selectedImagePreview {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    color: var(--color-text-secondary);
+    font-size: 0.875rem;
+}
+
+.selectedImagePreview img {
+    width: 80px;
+    height: 60px;
+    object-fit: cover;
+    border-radius: 6px;
+}
+
+.noImageSelected {
+    color: var(--color-text-muted);
+    font-size: 0.875rem;
+}
+
 @media (max-width: 600px) {
     .container {
         padding: 1rem;

@@ -6,18 +6,13 @@ import { useMyProfile } from "../hooks/useMyProfile"
 import useUpdateMyProfile from "../hooks/UsersHooks/useUpdateMyProfile"
 import useChangePassword from "../hooks/UsersHooks/useChangePassword"
 import type { UpdateProfileRequest } from "../types/UpdateProfileRequest"
-import { UserType } from "../types/UserType"
 import { AccessRole } from "../types/AccessRole"
 import AvatarPicker from "../components/common/AvatarPicker"
 import { AVATAR_IDS, getAvatarDataUri } from "../utils/avatarUtils"
 import type { AvatarId } from "../utils/avatarUtils"
 import styles from "./MyProfilePage.module.css"
+import UserBadges from "../components/common/UserBadges"
 import { ProfileSkeleton } from "../components/Loaders/Skeletons/ProfileSkeleton"
-
-const userTypeLabels: Record<UserType, string> = {
-  [UserType.TEACHER]: "Personal",
-  [UserType.STUDENT]: "Student",
-}
 
 // Reusable password visibility button
 type PasswordToggleProps = {
@@ -292,7 +287,12 @@ const MyProfilePage = () => {
               : `${profile.firstName} ${profile.lastName}`}
           </h2>
 
-          <span className={styles.userType}>{userTypeLabels[profile.userType]}</span>
+          <UserBadges
+            userType={profile.userType}
+            school={profile.school}
+            programName={profile.programName}
+            className={profile.className}
+          />
         </div>
 
         {!isEditingProfile && (

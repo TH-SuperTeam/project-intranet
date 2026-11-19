@@ -3,6 +3,7 @@ import { Newspaper, ArrowRight } from "lucide-react"
 import { useNews } from "../../hooks/NewsHooks/useNews"
 import type { TargetAudience } from "../../types/TargetAudience"
 import styles from "./Widgets.module.css"
+import NewsImage from "../common/NewsImage"
 import { ListSkeleton } from "../Loaders/Skeletons/ListSkeleton"
 
 interface NewsWidgetProps {
@@ -47,6 +48,7 @@ const NewsWidget = ({ audience }: NewsWidgetProps) => {
           {latestNews.map((item) => (
             <li key={item.id}>
               <Link to={`/news/${item.id}`} className={styles.newsItem}>
+                <NewsImage src={item.newsImageUrl} className={styles.newsWidgetImage} />
                 <div className={styles.newsContent}>
                   <h3>{item.title}</h3>
 

@@ -183,6 +183,12 @@ public NewsResponse publishNews(
         news.setContent(request.content().trim());
         news.setTargetAudience(request.targetAudience());
 
+        if (request.newsImageUrl() != null) {
+            news.setNewsImageUrl(request.newsImageUrl().trim());
+        } else {
+            news.setNewsImageUrl(null);
+        }
+
         News updatedNews = newsRepository.save(news);
 
         return newsMapper.toResponse(updatedNews);

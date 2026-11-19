@@ -56,6 +56,23 @@ public class UserController {
         return ResponseEntity.ok(updatedProfile);
     }
 
+    @PatchMapping("/{id}")
+    public ResponseEntity<UserResponse> updateUserByAdmin(
+            @PathVariable Long id,
+            @Valid @RequestBody AdminUpdateUserRequest request,
+            Authentication authentication) {
+
+        Long currentUserId = (Long) authentication.getPrincipal();
+
+        UserResponse updatedUser = userService.updateUserByAdmin(
+                id,
+                request,
+                currentUserId
+        );
+
+        return ResponseEntity.ok(updatedUser);
+    }
+
     @PatchMapping("/me/password")
     public ResponseEntity<Void> changePassword(
             Authentication authentication,

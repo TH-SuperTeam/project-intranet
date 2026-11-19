@@ -52,6 +52,9 @@ private Set<TargetAudience> targetAudience = new HashSet<>();
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
+    @Column(name= "news_image_url")
+    private String newsImageUrl;
+
     // JPA behöver en konstruktor som är åtkomlig för ORM-ramverket.
    public News() {
     }
@@ -95,4 +98,12 @@ private Set<TargetAudience> targetAudience = new HashSet<>();
 
     public LocalDateTime getCreatedAt() { return createdAt; }
     public LocalDateTime getUpdatedAt() { return updatedAt; }
+
+    public String getNewsImageUrl() {
+        return newsImageUrl;
+    }
+
+    public void setNewsImageUrl(String newsImageUrl) {
+        this.newsImageUrl = newsImageUrl;
+    }
 }

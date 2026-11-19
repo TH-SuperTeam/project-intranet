@@ -144,11 +144,6 @@
   overflow-wrap: anywhere;
 }
 
-.userType {
-  color: var(--color-text-secondary);
-  font-size: 0.8rem;
-}
-
 /* ===== USER STATUS ===== */
 
 .statusBadge {
@@ -172,8 +167,10 @@
 .userBadges {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  justify-content: flex-end;
   flex-wrap: wrap;
+  gap: 0.5rem;
+  flex-shrink: 0;
 }
 
 .adminBadge {
@@ -292,6 +289,37 @@
   color: var(--color-success);
   font-size: 0.875rem;
 }
+/* ===== CANCEL BUTTON ===== */
+.cancelButton {
+  padding: 0.5rem 1rem;
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  background-color: var(--color-primary-soft);
+  color: var(--color-primary);
+  font: inherit;
+  font-size: 0.875rem;
+  font-weight: 600;
+  line-height: 1.25rem;
+  cursor: pointer;
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease;
+}
+
+.cancelButton:hover:not(:disabled) {
+  background-color: var(--color-primary-light);
+  color: var(--color-text-white);
+}
+
+.cancelButton:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 3px;
+}
+
+.cancelButton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
 
 /* ===== RESPONSIVE ===== */
 
@@ -326,21 +354,24 @@
   .listContainer {
     padding: 1rem;
   }
-
   .userCard {
-    display: grid;
-    /* grid-template-columns: 44px minmax(0, 1fr); */
-    align-items: center;
-    gap: 0.75rem;
-    padding: 1rem;
+    flex-wrap: wrap;
   }
 
-  .userInfo {
-    min-width: 0;
+  .userProfileLink {
+    flex-basis: 100%;
+  }
+
+  .userBadges {
+    width: 100%;
+    justify-content: flex-end;
   }
 
   .statusBadge {
-    margin-left: auto;
+    margin-left: 0;
+  }
+  .userInfo {
+    min-width: 0;
   }
 
   .form {
