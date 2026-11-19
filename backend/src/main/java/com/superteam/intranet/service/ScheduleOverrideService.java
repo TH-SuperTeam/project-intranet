@@ -227,6 +227,25 @@ public class ScheduleOverrideService {
     ) {}
 
 
+    // Kontrollerar att avvikelsen innehåller minst en faktisk lektionsdag.
+    private void validateContainsLessonDate(
+            ScheduleOverrideRequest request,
+            WeeklySchedule weeklySchedule) {
+
+        LocalDate firstLessonDate = request.validFrom().with(
+                TemporalAdjusters.nextOrSame(
+                        DayOfWeek.of(weeklySchedule.getWeekday())
+                )
+        );
+
+        if (firstLessonDate.isAfter(request.validUntil())) {
+            throw new IllegalArgumentException(
+                    "Det finns ingen schemalagd lektion under den valda perioden"
+            );
+        }
+    }
+
+
     // Kontrollerar att avvikelsen inte överlappar en annan avvikelse
     // för samma grundschema på något faktiskt lektionsdatum.
     private void validateNoOverlappingOverride(
@@ -453,6 +472,9 @@ public class ScheduleOverrideService {
                     "Avvikelsens giltighetsperiod måste ligga inom grundschemats giltighetsperiod"
             );
         }
+
+        // Kontrollera att det finns minst en faktisk lektionsdag.
+        validateContainsLessonDate(request, weeklySchedule);
 
         // Kontrollera att samma grundschema inte redan har en avvikelse
         // som påverkar något av samma lektionsdatum.
