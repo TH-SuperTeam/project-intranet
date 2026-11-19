@@ -40,4 +40,11 @@ public class ScheduleOverrideController {
             @Valid @RequestBody ScheduleOverrideRequest request) {
         return scheduleOverrideService.updateOverride(id, request);
     }
+
+
+    // Ta bort schemaändring
+    @DeleteMapping("/{id}")
+    public void deleteOverride(@PathVariable Long id) {
+        scheduleOverrideService.deleteOverride(id);
+    }
 }

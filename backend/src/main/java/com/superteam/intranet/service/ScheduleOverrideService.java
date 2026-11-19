@@ -118,6 +118,17 @@ public class ScheduleOverrideService {
     }
 
 
+    // Ta bort schemaändring
+    public void deleteOverride(Long id) {
+
+        if (!scheduleOverrideRepository.existsById(id)) {
+            throw new RuntimeException("Schemaändringen hittades inte");
+        }
+
+        scheduleOverrideRepository.deleteById(id);
+    }
+
+
     // ==================== HELPER METHODS ====================
 
     // Hämtar grundschemat som avvikelsen ska tillhöra
