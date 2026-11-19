@@ -1,5 +1,6 @@
 package com.superteam.intranet.dto;
 
+import com.superteam.intranet.model.SchoolName;
 import com.superteam.intranet.model.UserType;
 
 public record PublicUserResponse(
@@ -8,6 +9,9 @@ public record PublicUserResponse(
         String lastName,
         String email,
         String profileImageUrl,
-        UserType userType
+        UserType userType,
+        SchoolName school,
+        String programName,
+        String className
 ) {
 }

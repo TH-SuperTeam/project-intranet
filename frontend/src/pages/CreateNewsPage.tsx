@@ -13,6 +13,7 @@ const CreateNewsPage = () => {
     const [content, setContent] = useState("");
     const [targetAudience, setTargetAudience] = useState<TargetAudience[]>([]);
     const [validationError, setValidationError] = useState("");
+    const [newsImageUrl, setNewsImageUrl] = useState<string | null>(null);
 
     const queryClient = useQueryClient();
 
@@ -29,6 +30,7 @@ const CreateNewsPage = () => {
             setContent("");
             setTargetAudience([]);
             setValidationError("");
+            setNewsImageUrl(null);
         },
     });
 
@@ -67,6 +69,7 @@ const CreateNewsPage = () => {
             title: title.trim(),
             content: content.trim(),
             targetAudience,
+            newsImageUrl: newsImageUrl,
         });
     };
     return (
@@ -81,6 +84,8 @@ const CreateNewsPage = () => {
                 setContent={setContent}
                 targetAudience={targetAudience}
                 setTargetAudience={setTargetAudience}
+                newsImageUrl={newsImageUrl}
+                setNewsImageUrl={setNewsImageUrl}
                 validationError={validationError}
                 mutation={mutation}
                 handleSubmit={handleSubmit}

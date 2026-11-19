@@ -1,4 +1,4 @@
-# Daily standup: sprint N
+# Daily standup: sprint 4
 
 <!--
   INSTRUKTION
@@ -20,14 +20,15 @@
 |  Caroline |   Ja  | LIA-jobb | #132  |        |
 |  Inna |   Ja   |  #130  | #131  |        |
 
-## Onsdag 2026-11-DD
+## Onsdag 2026-11-18
 
 | Namn | Närvaro | Igår | Idag | Hinder |
 | ---- | ------- | ---- | ---- | ------ |
-|      |         |      |      |        |
-|      |         |      |      |        |
-|      |         |      |      |        |
-|      |         |      |      |        |
+| Josefine  |     Ja    | Ändringar i DB, #136  | #142, #75    |        |
+| Sofie |     Ja    | Ändringar i DB, #136  | #102   |        |
+| Mette |   Ja   | #57  |  #57    | Hjälp med hur bilder till nyheter ska lagras   |
+| Caroline |   Ja  | #132 |  #132   | Behöver ta beslut kring väder-widget   |
+| Inna |   Ja   |  #131  | #131  |        |
 
 ## Torsdag 2026-11-DD
 

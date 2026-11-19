@@ -83,6 +83,12 @@ public class SecurityConfig {
 
                         .requestMatchers(HttpMethod.PATCH, "/api/users/*/role").hasRole("ADMIN")
 
+                                // Användare får fortfarande redigera sin egen profil
+                                .requestMatchers(HttpMethod.PATCH, "/api/users/me").authenticated()
+
+                                // Endast administratörer får redigera andra användare
+                                .requestMatchers(HttpMethod.PATCH, "/api/users/*").hasRole("ADMIN")
+
                         .requestMatchers(HttpMethod.POST, "/api/users")
                         .hasRole("ADMIN")
 
@@ -96,7 +102,7 @@ public class SecurityConfig {
                         .hasRole("ADMIN")
 
                                 // Programs, Classes & Classrooms
-// Alla inloggade får läsa
+                                // Alla inloggade får läsa
                                 .requestMatchers(
                                         HttpMethod.GET,
                                         "/api/programs", "/api/programs/**",
@@ -105,7 +111,7 @@ public class SecurityConfig {
                                 )
                                 .authenticated()
 
-// Endast ADMIN får skapa, uppdatera och ta bort
+                               // Endast ADMIN får skapa, uppdatera och ta bort
                                 .requestMatchers(
                                         "/api/programs", "/api/programs/**",
                                         "/api/classes", "/api/classes/**",
