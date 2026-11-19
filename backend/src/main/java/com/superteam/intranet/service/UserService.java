@@ -54,35 +54,11 @@ public class UserService {
 
         validateAccessRole(request.userType(), request.accessRole());
 
-        Program program = programRepository.findById(request.programId())
-                .orElseThrow(() -> new ResponseStatusException(
-                        HttpStatus.NOT_FOUND,
-                        "Programmet kunde inte hittas."
-                ));
-        SchoolClass schoolClass = null;
-
-        if (request.userType() == UserType.STUDENT) {
-
-            if (request.classId() == null) {
-                throw new ResponseStatusException(
-                        HttpStatus.BAD_REQUEST,
-                        "Studenter måste tilldelas en klass."
-                );
-            }
-
-            schoolClass = schoolClassRepository.findById(request.classId())
-                    .orElseThrow(() -> new ResponseStatusException(
-                            HttpStatus.NOT_FOUND,
-                            "Klassen kunde inte hittas."
-                    ));
-
-            if (!schoolClass.getProgram().getId().equals(program.getId())) {
-                throw new ResponseStatusException(
-                        HttpStatus.BAD_REQUEST,
-                        "Klassen tillhör inte det valda programmet."
-                );
-            }
-        }
+        EducationSelection education = validateEducation(
+                request.userType(),
+                request.programId(),
+                request.classId()
+        );
 
         User user = new User();
 
@@ -93,8 +69,8 @@ public class UserService {
         user.setUserType(request.userType());
         user.setAccessRole(request.accessRole());
         user.setStatus(UserStatus.ACTIVE);
-        user.setProgram(program);
-        user.setSchoolClass(schoolClass);
+        user.setProgram(education.program());
+        user.setSchoolClass(education.schoolClass());
 
         User savedUser = userRepository.save(user);
 
@@ -152,6 +128,66 @@ public class UserService {
         User updatedUser = userRepository.save(user);
 
         return userMapper.toMyProfileResponse(updatedUser);
+    }
+
+    @Transactional
+    public UserResponse updateUserByAdmin(
+            Long userId,
+            AdminUpdateUserRequest request,
+            Long currentUserId) {
+
+        // Kontrollera att admin inte redigerar sig själv
+        if (userId.equals(currentUserId)) {
+            throw new ResponseStatusException(
+                    HttpStatus.BAD_REQUEST,
+                    "Du kan inte redigera ditt eget konto här."
+            );
+        }
+
+        // Hämta användaren som ska redigeras
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND,
+                        "Användaren kunde inte hittas."
+                ));
+
+        // Kontrollera att e-postadressen är ledig
+        String email = request.email().trim().toLowerCase();
+
+        if (userRepository.existsByEmailIgnoreCaseAndIdNot(email, userId)) {
+            throw new DuplicateEmailException("E-postadressen används redan.");
+        }
+
+        // Uppdatera personuppgifter
+        user.setFirstName(request.firstName().trim());
+        user.setLastName(request.lastName().trim());
+        user.setEmail(email);
+
+        // Uppdatera lösenord endast om ett nytt har angetts
+        if (request.password() != null && !request.password().isBlank()) {
+
+            if (request.password().length() < 12) {
+                throw new ResponseStatusException(
+                        HttpStatus.BAD_REQUEST,
+                        "Lösenordet måste innehålla minst 12 tecken."
+                );
+            }
+
+            user.setPasswordHash(passwordEncoder.encode(request.password()));
+        }
+
+        EducationSelection education = validateEducation(
+                user.getUserType(),
+                request.programId(),
+                request.classId()
+        );
+
+        user.setProgram(education.program());
+        user.setSchoolClass(education.schoolClass());
+
+        User updatedUser = userRepository.save(user);
+
+        return userMapper.toResponse(updatedUser);
     }
 
     @Transactional
@@ -312,4 +348,54 @@ public class UserService {
         );
     }
 }
+
+    private record EducationSelection(
+            Program program,
+            SchoolClass schoolClass
+    ) {}
+
+    private EducationSelection validateEducation(
+            UserType userType,
+            Long programId,
+            Long classId) {
+
+        Program program = programRepository.findById(programId)
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND,
+                        "Programmet kunde inte hittas."
+                ));
+
+        SchoolClass schoolClass = null;
+
+        if (userType == UserType.STUDENT) {
+
+            if (classId == null) {
+                throw new ResponseStatusException(
+                        HttpStatus.BAD_REQUEST,
+                        "Studenter måste tilldelas en klass."
+                );
+            }
+
+            schoolClass = schoolClassRepository.findById(classId)
+                    .orElseThrow(() -> new ResponseStatusException(
+                            HttpStatus.NOT_FOUND,
+                            "Klassen kunde inte hittas."
+                    ));
+
+            if (!schoolClass.getProgram().getId().equals(program.getId())) {
+                throw new ResponseStatusException(
+                        HttpStatus.BAD_REQUEST,
+                        "Klassen tillhör inte det valda programmet."
+                );
+            }
+
+        } else if (classId != null) {
+            throw new ResponseStatusException(
+                    HttpStatus.BAD_REQUEST,
+                    "Lärare kan inte tilldelas en klass."
+            );
+        }
+
+        return new EducationSelection(program, schoolClass);
+    }
 }
