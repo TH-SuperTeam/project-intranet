@@ -28,33 +28,18 @@ type WeatherWidgetProps = {
 const WeatherWidget = ({ variant = "default" }: WeatherWidgetProps) => {
     const { data, isPending, isError } = useWeather();
 
-    // Publika dashboarden visar två prognoser med två timmars mellanrum
     const publicForecasts = (() => {
         if (!data || variant !== "public") return [];
 
         const now = new Date();
 
-        // Hämta endast framtida prognoser
-        const upcoming = data.hourlyForecasts
+        return data.hourlyForecasts
             .filter((forecast) => new Date(forecast.time) > now)
             .sort(
                 (a, b) =>
                     new Date(a.time).getTime() - new Date(b.time).getTime(),
-            );
-
-        // Välj första prognosen och den som ligger två timmar senare
-        const first = upcoming[0];
-
-        if (!first) return [];
-
-        const twoHoursLater =
-            new Date(first.time).getTime() + 2 * 60 * 60 * 1000;
-
-        const second = upcoming.find(
-            (forecast) => new Date(forecast.time).getTime() >= twoHoursLater,
-        );
-
-        return second ? [first, second] : [first];
+            )
+            .slice(0, 4);
     })();
 
     return (
@@ -103,13 +88,13 @@ const WeatherWidget = ({ variant = "default" }: WeatherWidgetProps) => {
                                 <p className={styles.weatherCondition}>
                                     {data.condition}
                                 </p>
-
-                                <p className={styles.weatherWind}>
-                                    <Wind size={16} aria-hidden="true" />
-                                    {Math.round(data.windSpeed)} m/s (
-                                    {getWindDirection(data.windDirection)})
-                                </p>
                             </div>
+
+                            <p className={styles.weatherWind}>
+                                <Wind size={16} aria-hidden="true" />
+                                {Math.round(data.windSpeed)} m/s (
+                                {getWindDirection(data.windDirection)})
+                            </p>
                         </div>
 
                         {/* Två utvalda prognoser */}

@@ -315,17 +315,18 @@
 }
 
 .publicWeatherWidget .infoWidgetHeader {
-    margin-bottom: 0.25rem;
+    margin-bottom: 0.5rem;
 }
 
 .publicWeatherWidget .infoWidgetContent {
     min-height: 0;
 }
 
-/* Aktuellt väder till vänster, prognoser till höger */
+/* Vänster: aktuellt väder | Höger: fyra prognoser */
+
 .publicWeatherContent {
     display: grid;
-    grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr);
     align-items: center;
     gap: 1rem;
     width: 100%;
@@ -333,67 +334,97 @@
     height: 100%;
 }
 
-/* Aktuellt väder */
+/* ===== AKTUELLT VÄDER ===== */
+
 .publicWeatherCurrent {
-    display: flex;
+    display: grid;
+    grid-template-columns: 90px max-content;
+    grid-template-rows: auto auto;
     align-items: center;
-    gap: 0.75rem;
+    align-content: center;
+    justify-content: start;
+    column-gap: 1rem;
     min-width: 0;
 }
 
-.publicWeatherCurrent > svg {
-    flex-shrink: 0;
+.publicWeatherCurrent > img {
+    grid-column: 1;
+    grid-row: 1;
+    width: 80px;
+    height: 80px;
+    object-fit: contain;
 }
 
 .publicWeatherCurrentDetails {
-    display: flex;
-    flex-direction: column;
-    gap: 0.25rem;
-    min-width: 0;
+    display: contents;
 }
 
 .publicWeatherWidget .weatherTemperature {
+    grid-column: 2;
+    grid-row: 1;
     font-size: clamp(2rem, 2.5vw, 3rem);
+    font-weight: 700;
+    white-space: nowrap;
 }
 
 .publicWeatherWidget .weatherCondition {
+    grid-column: 1;
+    grid-row: 2;
     font-size: 0.95rem;
+    text-align: center;
 }
 
-.publicWeatherWidget .weatherWind {
+.publicWeatherCurrent > .weatherWind {
+    grid-column: 2;
+    grid-row: 2;
+    justify-self: start;
     font-size: 0.75rem;
+    white-space: nowrap;
 }
 
-/* Två prognoser till höger */
+/* ===== FYRA PROGNOSER ===== */
+
 .publicWeatherForecasts {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    gap: 0.25rem;
+    display: grid;
+    grid-template-columns: repeat(2, max-content);
+    grid-template-rows: repeat(2, auto);
+    grid-auto-flow: column;
+    align-content: center;
+    justify-content: space-evenly;
+    gap: 0.75rem 1rem;
     min-width: 0;
-    padding-left: 0.75rem;
+    padding-left: 1rem;
     border-left: 1px solid var(--color-border);
 }
 
 .publicWeatherForecastItem {
     display: grid;
-    grid-template-columns: 1fr auto auto;
+    grid-template-columns: auto 36px auto;
     align-items: center;
-    gap: 0.35rem;
+    justify-content: start;
+    column-gap: 0.5rem;
     min-width: 0;
 }
 
 .publicWeatherForecastTime {
     font-size: 0.85rem;
+    white-space: nowrap;
     color: var(--color-text-secondary);
+}
+
+.publicWeatherForecastItem img {
+    width: 36px;
+    height: 36px;
+    justify-self: center;
+    object-fit: contain;
 }
 
 .publicWeatherForecastTemperature {
     font-size: 1rem;
     font-weight: 700;
+    white-space: nowrap;
     color: var(--color-text-primary);
 }
-
 /* ===== TRANSPORT WIDGET ===== */
 
 .departureList {
@@ -546,6 +577,66 @@
 
     .emptyState {
         font-size: 1.25rem;
+    }
+
+    .publicWeatherWidget {
+        padding: 1.25rem 1.5rem;
+    }
+
+    /* Fördelning mellan aktuellt väder och prognoser */
+    .publicWeatherContent {
+        grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr);
+        gap: 1.5rem;
+    }
+
+    /* Vänstersidan */
+    .publicWeatherCurrent {
+        grid-template-columns: 110px max-content;
+        column-gap: 1.25rem;
+        row-gap: 0.25rem;
+        align-content: center;
+    }
+
+    .publicWeatherCurrent > img {
+        width: 115px;
+        height: 115px;
+    }
+
+    .publicWeatherWidget .weatherTemperature {
+        font-size: clamp(3.5rem, 3.5vw, 4.5rem);
+    }
+
+    .publicWeatherWidget .weatherCondition {
+        font-size: 1.3rem;
+    }
+
+    .publicWeatherCurrent > .weatherWind {
+        font-size: 0.95rem;
+    }
+
+    /* Högersidan */
+    .publicWeatherForecasts {
+        column-gap: 1.5rem;
+        row-gap: 1rem;
+        padding-left: 1.5rem;
+    }
+
+    .publicWeatherForecastItem {
+        grid-template-columns: auto 52px auto;
+        column-gap: 0.75rem;
+    }
+
+    .publicWeatherForecastTime {
+        font-size: 1.1rem;
+    }
+
+    .publicWeatherForecastItem img {
+        width: 52px;
+        height: 52px;
+    }
+
+    .publicWeatherForecastTemperature {
+        font-size: 1.35rem;
     }
 }
 
