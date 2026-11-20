@@ -100,7 +100,7 @@
     mask-composite: intersect;
 }
 
-:global(.th) .welcomeHeader::before {
+.thHeader::before {
     background-image: url("../../assets/lilac-school-building.png");
     opacity: 1;
 }
