@@ -43,16 +43,14 @@ export default function Logo({ variant = "stacked", className }: LogoProps) {
     }
 
     return (
-        <div
-            className={`flex items-center justify-center gap-6 ${className ?? ""}`}
-        >
+        <div className={`flex items-center gap-6 ${className ?? ""}`}>
             <THLogo
-                className="h-auto w-1/2 min-w-0"
+                className="h-10 min-[1600px]:h-14 w-auto"
                 role="img"
                 aria-label="Teknikhögskolan"
             />
             <VHLogo
-                className="h-auto w-1/2 min-w-0"
+                className="h-10 min-[1600px]:h-14 w-auto"
                 role="img"
                 aria-label="Vårdyrkeshögskolan"
             />

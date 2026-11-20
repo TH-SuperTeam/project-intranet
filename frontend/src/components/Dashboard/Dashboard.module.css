@@ -216,11 +216,18 @@
 }
 
 .publicHeaderLogo {
-    display: block;
-    width: 280px;
+    display: flex;
+    width: fit-content;
     max-width: 100%;
     height: auto;
-    color: var(--color-primary-light);
+}
+
+.publicHeaderLogo svg:first-child {
+    color: var(--color-th-primary);
+}
+
+.publicHeaderLogo svg:last-child {
+    color: var(--color-vh-primary);
 }
 
 .publicWelcomeText h1 {
@@ -327,10 +334,6 @@
 }
 
 @media (min-width: 1600px) {
-    .publicHeaderLogo {
-        width: 340px;
-    }
-
     .publicWelcomeText h1 {
         font-size: 3rem;
     }
