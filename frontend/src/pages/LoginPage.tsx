@@ -52,21 +52,36 @@ const LoginPage = () => {
         <main className={styles.loginPage}>
             {/* Welcome section */}
             <section className={styles.welcomeSection}>
-                <div className={styles.brand}>
-                    <Logo variant="horizontal" className={styles.logoWhite} />
+                <div className={styles.welcomeLogos}>
+                    <Logo
+                        school="TH"
+                        variant="horizontal"
+                        className={styles.thLogo}
+                    />
+                    <Logo
+                        school="VH"
+                        variant="horizontal"
+                        className={styles.vhLogo}
+                    />
+                    <div
+                        className={styles.welcomeDecoration}
+                        aria-hidden="true"
+                    >
+                        {Array.from({ length: 36 }, (_, index) => (
+                            <span key={index} />
+                        ))}
+                    </div>
                 </div>
 
                 <div className={styles.welcomeContent}>
                     <h1 className={styles.welcomeTitle}>
-                        Välkommen till Teknikhögskolans intranät
+                        Välkommen till ditt skolintranät
                     </h1>
                     <p className={styles.welcomeText}>
                         Här hittar du nyheter, information och smarta verktyg
                         som förenklar din vardag på skolan.
                     </p>
                 </div>
-
-                <div className={styles.welcomeDecoration} aria-hidden="true" />
             </section>
 
             {/* Login section */}

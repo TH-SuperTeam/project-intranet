@@ -17,29 +17,12 @@
     justify-content: space-between;
     overflow: hidden;
     padding: 3.5rem;
-    background-color: var(--color-primary);
-    color: var(--color-text-white);
-}
-
-.welcomeSection::after {
-    content: "";
-    position: absolute;
-    top: -5rem;
-    right: -5rem;
-
-    width: 12rem;
-    height: 12rem;
-
-    background: repeating-conic-gradient(
-        var(--color-primary-light) 0% 25%,
-        transparent 0% 50%
+    background: linear-gradient(
+        135deg,
+        var(--color-th-primary) 50%,
+        var(--color-vh-primary) 50%
     );
-
-    background-size: 4rem 4rem;
-
-    transform: rotate(-25deg);
-    opacity: 0.6;
-    pointer-events: none;
+    color: var(--color-text-white);
 }
 
 .brand {
@@ -48,18 +31,6 @@
     display: flex;
     align-items: center;
     gap: 1rem;
-}
-
-.logoWhite {
-    width: 20rem;
-    height: auto;
-    color: var(--color-text-white);
-}
-
-.logoGreen {
-    width: 7rem;
-    height: auto;
-    color: var(--color-primary);
 }
 
 .brandName {
@@ -72,6 +43,7 @@
     position: relative;
     z-index: 1;
     max-width: 28rem;
+    margin-top: auto;
 }
 
 .welcomeTitle {
@@ -88,26 +60,62 @@
     opacity: 0.85;
 }
 
+/* ===== WELCOME LOGOS ===== */
+
+.welcomeLogos {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    transform: translateY(-50%);
+    z-index: 1;
+}
+
+.thLogo,
+.vhLogo {
+    width: 38%;
+    height: auto;
+    color: var(--color-text-white);
+}
+
 /* Decorative shapes */
 
 .welcomeDecoration {
     position: absolute;
-    bottom: -7rem;
-    left: -7rem;
+    top: -27rem;
+    left: -2rem;
 
-    width: 20rem;
-    height: 20rem;
-
-    background: repeating-conic-gradient(
-        var(--color-primary-light) 0% 25%,
-        transparent 0% 50%
-    );
-
-    background-size: 5rem 5rem;
+    display: grid;
+    grid-template-columns: repeat(6, 3.5rem);
+    grid-template-rows: repeat(6, 3.5rem);
 
     transform: rotate(-25deg);
-    opacity: 0.7;
+    opacity: 0.35;
     pointer-events: none;
+    z-index: 0;
+}
+
+.welcomeDecoration span {
+    background-color: #4d8f80;
+}
+
+/* Schackmönster för 6×6 */
+.welcomeDecoration span:nth-child(12n + 2),
+.welcomeDecoration span:nth-child(12n + 4),
+.welcomeDecoration span:nth-child(12n + 6),
+.welcomeDecoration span:nth-child(12n + 7),
+.welcomeDecoration span:nth-child(12n + 9),
+.welcomeDecoration span:nth-child(12n + 11) {
+    background-color: transparent;
+}
+
+/* Ta bort utvalda rutor */
+.welcomeDecoration span:nth-child(34),
+.welcomeDecoration span:nth-child(36) {
+    background-color: transparent;
 }
 
 /* ===== FORM SECTION ===== */
@@ -120,26 +128,6 @@
     overflow: hidden;
     padding: 3rem 2rem;
     background-color: var(--color-background);
-}
-
-.formDecoration {
-    position: absolute;
-    top: -5rem;
-    right: -5rem;
-
-    width: 15rem;
-    height: 15rem;
-
-    background: repeating-conic-gradient(
-        var(--color-primary-soft) 0% 25%,
-        transparent 0% 50%
-    );
-
-    background-size: 4rem 4rem;
-
-    transform: rotate(-25deg);
-    opacity: 0.8;
-    pointer-events: none;
 }
 
 /* ===== LOGIN CARD ===== */
@@ -338,12 +326,43 @@
     }
 }
 
-@media (max-width: 400px) {
+@media (max-width: 768px) {
     .welcomeSection {
         padding: 1.5rem;
     }
 
+    .welcomeLogos {
+        top: 48%;
+    }
+
+    .thLogo,
+    .vhLogo {
+        width: 42%;
+    }
+
     .loginCard {
         padding: 1.5rem 1rem;
+    }
+
+    .welcomeDecoration {
+        top: -13rem;
+        left: -2rem;
+
+        grid-template-columns: repeat(6, 2rem);
+        grid-template-rows: repeat(6, 2rem);
+    }
+}
+
+@media (max-width: 400px) {
+    .welcomeTitle {
+        font-size: 1.25rem;
+        margin-bottom: 0.25rem;
+    }
+    .welcomeLogos {
+        top: 48%;
+    }
+
+    .welcomeContent {
+        margin-top: auto;
     }
 }

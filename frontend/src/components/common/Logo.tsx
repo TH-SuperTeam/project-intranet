@@ -9,15 +9,20 @@ import VHHorizontal from "../../assets/logo-vh-horizontal.svg?react";
 type LogoProps = {
     variant?: "stacked" | "horizontal";
     className?: string;
+    school?: "TH" | "VH";
 };
 
-export default function Logo({ variant = "stacked", className }: LogoProps) {
+export default function Logo({
+    variant = "stacked",
+    className,
+    school: selectedSchool,
+}: LogoProps) {
     const { user } = useAuth();
     const { pathname } = useLocation();
 
     const isPublicPage = pathname === "/login" || pathname === "/public";
 
-    const school = isPublicPage ? null : user?.school;
+    const school = selectedSchool ?? (isPublicPage ? null : user?.school);
 
     const THLogo = variant === "horizontal" ? THHorizontal : THStacked;
     const VHLogo = variant === "horizontal" ? VHHorizontal : VHStacked;
