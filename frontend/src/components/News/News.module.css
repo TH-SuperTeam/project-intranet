@@ -212,6 +212,47 @@
     min-height: 250px;
 }
 
+.detailsSkeleton ul {
+    gap: 0;
+}
+
+.detailsSkeleton li {
+    gap: 0;
+    min-height: 0;
+    padding: 0;
+    border: 0;
+    background: transparent;
+}
+
+.detailsSkeleton li::before {
+    display: block;
+    width: 100%;
+    height: clamp(12rem, 40vw, 28rem);
+    margin-bottom: 1.5rem;
+    border-radius: 10px;
+    background: #e5e7eb;
+    content: "";
+}
+
+.detailsSkeleton li > div {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.detailsSkeleton li > div > span {
+    order: -1;
+}
+
+.detailsSkeleton li > p {
+    margin-top: 1.5rem;
+    line-height: 1.8;
+}
+
+.detailsSkeleton li > span {
+    display: none;
+}
+
 .detailsHeader {
     display: flex;
     flex-direction: column;

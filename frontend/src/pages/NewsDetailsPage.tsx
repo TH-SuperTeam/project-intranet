@@ -3,6 +3,7 @@ import styles from "../components/News/News.module.css"
 import NewsDetails from "../components/News/NewsDetails"
 import { useAudience } from "../hooks/useAudience"
 import { useNewsById } from "../hooks/NewsHooks/useNewsById"
+import { ListSkeleton } from "../components/Loaders/Skeletons/ListSkeleton"
 
 const NewsDetailsPage = () => {
   // useParams returns the :id from the URL, always as a string (or undefined)
@@ -15,7 +16,14 @@ const NewsDetailsPage = () => {
 
   const { data: news, isPending, isError } = useNewsById(newsId, audience)
 
-  if (isPending) return <p className={styles.state}>Laddar nyhet...</p>
+  if (isPending)
+    return (
+      <div className={styles.newsDetails}>
+        <div className={`${styles.detailsCard} ${styles.detailsSkeleton}`}>
+          <ListSkeleton variant="news" count={1} />
+        </div>
+      </div>
+    )
 
   if (isError)
     return (
