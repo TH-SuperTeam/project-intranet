@@ -3,6 +3,7 @@ import { useClasses } from "../../hooks/useClasses";
 import type { Program } from "../../types/Program";
 import type { UserFilters } from "../../types/UserFilters";
 import type { StatusFilter } from "../../types/StatusFilter";
+import styles from "./UsersFilterBar.module.css";
 
 type School = "TH" | "VH";
 
@@ -57,7 +58,7 @@ const UsersFilterBar = ({
     }));
 
     return (
-        <div>
+        <div className={styles.filterBar}>
             {/* Skola: null visas som "Alla skolor" (""), och "" blir null igen vid val */}
             <FilterSelect
                 label="Skola"

@@ -74,15 +74,18 @@ const UsersPage = () => {
                         onStatusChange={filters.changeStatus}
                     />
                 </div>
-                <div>
+                <div className={styles.resultsBar}>
                     {!isPending && !isError && (
-                        <p role="status">{filteredUsers.length} användare</p>
+                        <p role="status" className={styles.resultsCount}>
+                            {filteredUsers.length} användare
+                        </p>
                     )}
 
                     <button
                         type="button"
                         onClick={handleReset}
                         disabled={!hasActiveFilters}
+                        className={styles.clearButton}
                     >
                         Rensa filter
                     </button>
@@ -93,7 +96,6 @@ const UsersPage = () => {
                     isPending={isPending}
                     isError={isError}
                     hasActiveFilters={hasActiveFilters}
-                    onReset={handleReset}
                 />
             </div>
         </section>

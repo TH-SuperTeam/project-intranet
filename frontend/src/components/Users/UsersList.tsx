@@ -8,7 +8,6 @@ interface UserListProps {
     isPending: boolean;
     isError: boolean;
     hasActiveFilters: boolean;
-    onReset: () => void;
 }
 
 const UsersList = ({
@@ -16,7 +15,6 @@ const UsersList = ({
     isPending,
     isError,
     hasActiveFilters,
-    onReset,
 }: UserListProps) => {
     if (isPending) {
         return <div className={styles.state}>Laddar användare...</div>;
@@ -43,11 +41,6 @@ const UsersList = ({
                         ? "Det finns inga användare som matchar din sökning."
                         : "Det finns inga användare att visa just nu."}
                 </p>
-                {hasActiveFilters && (
-                    <button type="button" onClick={onReset}>
-                        Rensa filter
-                    </button>
-                )}
             </div>
         );
     }
