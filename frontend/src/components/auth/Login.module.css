@@ -70,28 +70,58 @@
     display: flex;
     align-items: center;
     justify-content: space-around;
+    gap: 1rem;
     transform: translateY(-50%);
     z-index: 1;
 }
 
-.thLogo,
+/* TH logo */
+
+.thLogo {
+    display: block;
+    width: 40%;
+    height: auto;
+    min-width: 0;
+    flex-shrink: 1;
+    color: var(--color-text-white);
+}
+
+/* VH logo and underline */
+
+.vhBrand {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 40%;
+    min-width: 0;
+    flex-shrink: 1;
+    transform: translateY(0.7rem);
+}
+
 .vhLogo {
-    width: 38%;
+    display: block;
+    width: 110%;
     height: auto;
     color: var(--color-text-white);
 }
 
-/* Decorative shapes */
+.vhUnderline {
+    display: block;
+    width: 120%;
+    height: auto;
+    margin-top: 0.5rem;
+    color: #3869a3;
+}
+
+/* ===== TH DECORATION ===== */
 
 .welcomeDecoration {
     position: absolute;
     top: -27rem;
     left: -2rem;
-
     display: grid;
     grid-template-columns: repeat(6, 3.5rem);
     grid-template-rows: repeat(6, 3.5rem);
-
     transform: rotate(-25deg);
     opacity: 0.35;
     pointer-events: none;
@@ -102,7 +132,8 @@
     background-color: #4d8f80;
 }
 
-/* Schackmönster för 6×6 */
+/* Checkerboard pattern */
+
 .welcomeDecoration span:nth-child(12n + 2),
 .welcomeDecoration span:nth-child(12n + 4),
 .welcomeDecoration span:nth-child(12n + 6),
@@ -112,7 +143,8 @@
     background-color: transparent;
 }
 
-/* Ta bort utvalda rutor */
+/* Irregular edges */
+
 .welcomeDecoration span:nth-child(34),
 .welcomeDecoration span:nth-child(36) {
     background-color: transparent;
@@ -145,23 +177,7 @@
     transform: rotate(12deg);
 }
 
-.vhBrand {
-    width: 38%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-.vhBrand .vhLogo {
-    width: 100%;
-}
-
-.vhUnderline {
-    width: 120%;
-    height: auto;
-    margin-top: 0.5rem;
-    color: #3869a3;
-}
+/* ===== HIGHLIGHTED WORD ===== */
 
 .highlightWord {
     position: relative;
@@ -179,6 +195,7 @@
     color: #3869a3;
     pointer-events: none;
 }
+
 /* ===== FORM SECTION ===== */
 
 .formSection {
@@ -205,6 +222,8 @@
     box-shadow: 0 4px 20px rgb(0 0 0 / 3%);
 }
 
+/* ===== LOGIN CARD LOGOS ===== */
+
 .loginLogos {
     display: flex;
     justify-content: center;
@@ -217,6 +236,8 @@
 .loginVhLogo {
     height: 4rem;
     width: auto;
+    max-width: 45%;
+    flex-shrink: 1;
 }
 
 .loginThLogo {
@@ -226,6 +247,9 @@
 .loginVhLogo {
     color: var(--color-vh-primary);
 }
+
+/* ===== CARD HEADER ===== */
+
 .cardHeader {
     margin-bottom: 2rem;
 }
@@ -386,7 +410,7 @@
     .welcomeSection {
         min-height: 15rem;
         gap: 2rem;
-        padding: 2rem;
+        padding: 1.5rem;
     }
 
     .welcomeTitle {
@@ -397,6 +421,31 @@
         font-size: 0.875rem;
     }
 
+    .welcomeLogos {
+        top: 48%;
+        gap: 0.5rem;
+    }
+
+    .thLogo,
+    .vhBrand {
+        width: 42%;
+    }
+
+    .vhLogo {
+        width: 100%;
+    }
+
+    .welcomeDecoration {
+        top: -13rem;
+        left: -2rem;
+        grid-template-columns: repeat(6, 2rem);
+        grid-template-rows: repeat(6, 2rem);
+    }
+
+    .vhDecorations {
+        display: none;
+    }
+
     .formSection {
         min-height: auto;
         padding: 2rem 1rem;
@@ -404,37 +453,7 @@
 
     .loginCard {
         max-width: 28rem;
-        padding: 2rem 1.5rem;
-    }
-}
-
-@media (max-width: 768px) {
-    .welcomeSection {
-        padding: 1.5rem;
-    }
-
-    .welcomeLogos {
-        top: 48%;
-    }
-
-    .thLogo,
-    .vhLogo {
-        width: 42%;
-    }
-
-    .loginCard {
         padding: 1.5rem 1rem;
-    }
-
-    .welcomeDecoration {
-        top: -13rem;
-        left: -2rem;
-
-        grid-template-columns: repeat(6, 2rem);
-        grid-template-rows: repeat(6, 2rem);
-    }
-    .vhDecorations {
-        display: none;
     }
 }
 
@@ -443,11 +462,16 @@
         font-size: 1.25rem;
         margin-bottom: 0.25rem;
     }
+
     .welcomeLogos {
         top: 48%;
     }
 
     .welcomeContent {
         margin-top: auto;
+    }
+
+    .loginLogos {
+        gap: 1rem;
     }
 }
