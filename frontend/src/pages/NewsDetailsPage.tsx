@@ -15,7 +15,7 @@ const NewsDetailsPage = () => {
 
   const { data: news, isPending, isError } = useNewsById(newsId, audience)
 
-  //   if (isPending) return <p className={styles.state}>Laddar nyhet...</p>
+  if (isPending) return <p className={styles.state}>Laddar nyhet...</p>
 
   if (isError)
     return (
