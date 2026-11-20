@@ -11,7 +11,9 @@ public record PublicUserResponse(
         String profileImageUrl,
         UserType userType,
         SchoolName school,
+        Long programId,
         String programName,
+        Long classId,
         String className
 ) {
 }
