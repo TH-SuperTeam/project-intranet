@@ -1,15 +1,17 @@
-import { useUsers } from "../../hooks/UsersHooks/useUsers"
+import type { PublicUser } from "../../types/PublicUser"
+import type { User } from "../../types/User"
 import UserCard from "./UserCard"
 import styles from "./Users.module.css"
 import { ListSkeleton } from "../Loaders/Skeletons/ListSkeleton"
 
 interface UserListProps {
-  search: string
+  users: (User | PublicUser)[]
+  isPending: boolean
+  isError: boolean
+  hasActiveFilters: boolean
 }
 
-const UsersList = ({ search }: UserListProps) => {
-  const { data: users, isPending, isError } = useUsers(search)
-
+const UsersList = ({ users, isPending, isError, hasActiveFilters }: UserListProps) => {
   if (isPending) {
     return <ListSkeleton variant="user" />
   }
@@ -22,14 +24,12 @@ const UsersList = ({ search }: UserListProps) => {
     )
   }
 
-  if (!users || users.length === 0) {
-    const hasSearch = search.trim().length > 0
-
+  if (users.length === 0) {
     return (
       <div className={styles.emptyState}>
-        <h3>{hasSearch ? "Inga matchande användare" : "Inga användare att visa"}</h3>
+        <h3>{hasActiveFilters ? "Inga matchande användare" : "Inga användare att visa"}</h3>
         <p>
-          {hasSearch
+          {hasActiveFilters
             ? "Det finns inga användare som matchar din sökning."
             : "Det finns inga användare att visa just nu."}
         </p>

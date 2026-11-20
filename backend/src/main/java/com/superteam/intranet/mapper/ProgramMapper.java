@@ -11,7 +11,8 @@ public class ProgramMapper {
         return new ProgramResponse(
                 program.getId(),
                 program.getName(),
-                program.getSchool().getId()
+                program.getSchool().getId(),
+                program.getSchool().getName()
         );
     }
 
