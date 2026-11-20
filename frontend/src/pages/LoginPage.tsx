@@ -113,7 +113,18 @@ const LoginPage = () => {
 
                 <div className={styles.loginCard}>
                     <div className={styles.cardHeader}>
-                        <Logo variant="stacked" className={styles.logoGreen} />
+                        <div className={styles.loginLogos}>
+                            <Logo
+                                school="TH"
+                                variant="stacked"
+                                className={styles.loginThLogo}
+                            />
+                            <Logo
+                                school="VH"
+                                variant="stacked"
+                                className={styles.loginVhLogo}
+                            />
+                        </div>
 
                         <h2 className={styles.formTitle}>Logga in</h2>
                         <p className={styles.formDescription}>

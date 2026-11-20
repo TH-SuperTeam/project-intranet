@@ -205,6 +205,27 @@
     box-shadow: 0 4px 20px rgb(0 0 0 / 3%);
 }
 
+.loginLogos {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1.5rem;
+    margin-bottom: 1rem;
+}
+
+.loginThLogo,
+.loginVhLogo {
+    height: 4rem;
+    width: auto;
+}
+
+.loginThLogo {
+    color: var(--color-th-primary);
+}
+
+.loginVhLogo {
+    color: var(--color-vh-primary);
+}
 .cardHeader {
     margin-bottom: 2rem;
 }
