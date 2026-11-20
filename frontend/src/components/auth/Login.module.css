@@ -118,6 +118,67 @@
     background-color: transparent;
 }
 
+/* ===== VH DECORATIONS ===== */
+
+.vhDecorations {
+    position: absolute;
+    right: 2rem;
+    bottom: 2rem;
+    display: flex;
+    align-items: flex-end;
+    gap: 1rem;
+    z-index: 0;
+    pointer-events: none;
+}
+
+.vhNotes {
+    width: 5.5rem;
+    height: auto;
+    color: #3869a3;
+    transform: rotate(-12deg);
+}
+
+.vhHeart {
+    width: 4rem;
+    height: auto;
+    color: #3869a3;
+    transform: rotate(12deg);
+}
+
+.vhBrand {
+    width: 38%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.vhBrand .vhLogo {
+    width: 100%;
+}
+
+.vhUnderline {
+    width: 120%;
+    height: auto;
+    margin-top: 0.5rem;
+    color: #3869a3;
+}
+
+.highlightWord {
+    position: relative;
+    display: inline-block;
+    white-space: nowrap;
+}
+
+.wordCircle {
+    position: absolute;
+    width: 140%;
+    height: 145%;
+    top: 60%;
+    left: 55%;
+    transform: translate(-50%, -50%);
+    color: #3869a3;
+    pointer-events: none;
+}
 /* ===== FORM SECTION ===== */
 
 .formSection {
@@ -350,6 +411,9 @@
 
         grid-template-columns: repeat(6, 2rem);
         grid-template-rows: repeat(6, 2rem);
+    }
+    .vhDecorations {
+        display: none;
     }
 }
 

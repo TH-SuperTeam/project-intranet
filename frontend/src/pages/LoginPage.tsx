@@ -5,6 +5,10 @@ import { useAuth } from "../hooks/useAuth";
 import SubmitButton from "../components/common/SubmitButton";
 import styles from "../components/auth/Login.module.css";
 import Logo from "../components/common/Logo";
+import VHUnderline from "../assets/vh-underline.svg?react";
+import VHCircle from "../assets/vh-circle.svg?react";
+import VHNotes from "../assets/vh-notes.svg?react";
+import VHHeart from "../assets/vh-heart.svg?react";
 
 const LoginPage = () => {
     const [email, setEmail] = useState("");
@@ -58,11 +62,17 @@ const LoginPage = () => {
                         variant="horizontal"
                         className={styles.thLogo}
                     />
-                    <Logo
-                        school="VH"
-                        variant="horizontal"
-                        className={styles.vhLogo}
-                    />
+                    <div className={styles.vhBrand}>
+                        <Logo
+                            school="VH"
+                            variant="horizontal"
+                            className={styles.vhLogo}
+                        />
+                        <VHUnderline
+                            className={styles.vhUnderline}
+                            aria-hidden="true"
+                        />
+                    </div>
                     <div
                         className={styles.welcomeDecoration}
                         aria-hidden="true"
@@ -75,12 +85,25 @@ const LoginPage = () => {
 
                 <div className={styles.welcomeContent}>
                     <h1 className={styles.welcomeTitle}>
-                        Välkommen till ditt skolintranät
+                        Välkommen till{" "}
+                        <span className={styles.highlightWord}>
+                            ditt
+                            <VHCircle
+                                className={styles.wordCircle}
+                                aria-hidden="true"
+                                preserveAspectRatio="none"
+                            />
+                        </span>{" "}
+                        skolintranät
                     </h1>
                     <p className={styles.welcomeText}>
                         Här hittar du nyheter, information och smarta verktyg
                         som förenklar din vardag på skolan.
                     </p>
+                </div>
+                <div className={styles.vhDecorations} aria-hidden="true">
+                    <VHNotes className={styles.vhNotes} />
+                    <VHHeart className={styles.vhHeart} />
                 </div>
             </section>
 
