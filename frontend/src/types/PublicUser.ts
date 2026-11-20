@@ -8,6 +8,8 @@ export interface PublicUser {
     profileImageUrl: string | null;
     userType: UserType;
     school: "TH" | "VH" | null;
+    programId: number | null;
     programName: string | null;
+    classId: number | null;
     className: string | null;
 }

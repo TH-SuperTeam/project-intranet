@@ -1,14 +1,21 @@
-import { useUsers } from "../../hooks/UsersHooks/useUsers";
+import type { PublicUser } from "../../types/PublicUser";
+import type { User } from "../../types/User";
 import UserCard from "./UserCard";
 import styles from "./Users.module.css";
 
 interface UserListProps {
-    search: string;
+    users: (User | PublicUser)[];
+    isPending: boolean;
+    isError: boolean;
+    hasActiveFilters: boolean;
 }
 
-const UsersList = ({ search }: UserListProps) => {
-    const { data: users, isPending, isError } = useUsers(search);
-
+const UsersList = ({
+    users,
+    isPending,
+    isError,
+    hasActiveFilters,
+}: UserListProps) => {
     if (isPending) {
         return <div className={styles.state}>Laddar användare...</div>;
     }
@@ -21,18 +28,16 @@ const UsersList = ({ search }: UserListProps) => {
         );
     }
 
-    if (!users || users.length === 0) {
-        const hasSearch = search.trim().length > 0;
-
+    if (users.length === 0) {
         return (
             <div className={styles.emptyState}>
                 <h3>
-                    {hasSearch
+                    {hasActiveFilters
                         ? "Inga matchande användare"
                         : "Inga användare att visa"}
                 </h3>
                 <p>
-                    {hasSearch
+                    {hasActiveFilters
                         ? "Det finns inga användare som matchar din sökning."
                         : "Det finns inga användare att visa just nu."}
                 </p>
@@ -42,7 +47,7 @@ const UsersList = ({ search }: UserListProps) => {
 
     return (
         <ul className={styles.usersList}>
-            {users.map((user) => (
+            {users.map(user => (
                 <UserCard key={user.id} user={user} />
             ))}
         </ul>

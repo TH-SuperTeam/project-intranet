@@ -40,11 +40,18 @@
 | Caroline | Ja |  #132  |  #132  |  Svårt med väder-widget på public dashboard, Josefine hjälper    |
 | Inna | Ja |  #131  |  #131  |        |
 
-## Fredag ÅÅÅÅ-MM-DD
+## Fredag 2026-11-20
 
 | Namn | Närvaro | Igår | Idag | Hinder |
 | ---- | ------- | ---- | ---- | ------ |
-|      |         |      |      |        |
-|      |         |      |      |        |
-|      |         |      |      |        |
-|      |         |      |      |        |
+| Josefine | Ja |  #90  |  #90   |        |
+| Sofie | Ja | #102  | #102  |        |
+| Mette | Ja | #151 | #151 |        |
+| Caroline | Ja | #132 |  Se över nuvarande app och lägga till storys där det behövs |        |
+| Inna | Ja | #131 | Se över databas server |        |
+
+
+
+
+
+
