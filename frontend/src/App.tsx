@@ -16,6 +16,7 @@ import MainLayout from "./layouts/MainLayout"
 import PublicDashboardPage from "./pages/PublicDashboardPage"
 import MyProfilePage from "./pages/MyProfilePage"
 import UserProfilePage from "./pages/UserProfilePage"
+import "react-loading-skeleton/dist/skeleton.css"
 
 function App() {
   return (
