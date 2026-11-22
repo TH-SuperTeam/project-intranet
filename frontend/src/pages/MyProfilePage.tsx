@@ -12,6 +12,7 @@ import { AVATAR_IDS } from "../utils/avatarUtils";
 import type { AvatarId } from "../utils/avatarUtils";
 import styles from "./MyProfilePage.module.css";
 import UserBadges from "../components/common/UserBadges";
+import { ProfileSkeleton } from "../components/Loaders/Skeletons/ProfileSkeleton";
 import UserAvatar from "../components/common/UserAvatar";
 
 // Reusable password visibility button
@@ -243,7 +244,7 @@ const MyProfilePage = () => {
     };
 
     if (isLoading) {
-        return <p>Laddar din profil...</p>;
+        return <ProfileSkeleton />;
     }
 
     if (isError || !profile) {

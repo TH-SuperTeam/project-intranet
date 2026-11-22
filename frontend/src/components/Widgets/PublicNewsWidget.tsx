@@ -1,67 +1,57 @@
-import { Megaphone } from "lucide-react";
-import { usePublicNews } from "../../hooks/NewsHooks/usePublicNews";
-import styles from "./Widgets.module.css";
-import NewsImage from "../common/NewsImage";
+import { Megaphone } from "lucide-react"
+import { usePublicNews } from "../../hooks/NewsHooks/usePublicNews"
+import styles from "./Widgets.module.css"
+import NewsImage from "../common/NewsImage"
+import { ListSkeleton } from "../Loaders/Skeletons/ListSkeleton"
 
 const PublicNewsWidget = () => {
-    const { data: news, isPending, isError } = usePublicNews();
+  const { data: news, isPending, isError } = usePublicNews()
 
-    if (isPending) {
-        return (
-            <section className={styles.infoWidget}>
-                <p>Laddar nyheter...</p>
-            </section>
-        );
-    }
+  if (isPending) {
+    return <ListSkeleton variant="news" count={1} />
+  }
 
-    if (isError) {
-        return (
-            <section className={styles.infoWidget}>
-                <p role="alert">Det gick inte att ladda nyheterna.</p>
-            </section>
-        );
-    }
-
+  if (isError) {
     return (
-        <section className={`${styles.infoWidget} ${styles.publicNewsWidget}`}>
-            <div className={styles.infoWidgetHeader}>
-                <Megaphone size={24} />
-                <h2>Aktuellt på skolan</h2>
-            </div>
+      <section className={styles.infoWidget}>
+        <p role="alert">Det gick inte att ladda nyheterna.</p>
+      </section>
+    )
+  }
 
-            {news.content.length === 0 ? (
-                <p className={styles.emptyState}>
-                    Det finns inga aktuella nyheter just nu.
-                </p>
-            ) : (
-                <ul className={styles.newsList}>
-                    {news.content.slice(0, 2).map(item => (
-                        <li key={item.id} className={styles.publicNewsItem}>
-                            <NewsImage
-                                src={item.newsImageUrl}
-                                className={styles.newsWidgetImage}
-                            />
-                            <div className={styles.newsContent}>
-                                <h3>{item.title}</h3>
+  return (
+    <section className={`${styles.infoWidget} ${styles.publicNewsWidget}`}>
+      <div className={styles.infoWidgetHeader}>
+        <Megaphone size={24} />
+        <h2>Aktuellt på skolan</h2>
+      </div>
 
-                                <p>{item.content}</p>
+      {news.content.length === 0 ? (
+        <p className={styles.emptyState}>Det finns inga aktuella nyheter just nu.</p>
+      ) : (
+        <ul className={styles.newsList}>
+          {news.content.slice(0, 2).map((item) => (
+            <li key={item.id} className={styles.publicNewsItem}>
+              <NewsImage src={item.newsImageUrl} className={styles.newsWidgetImage} />
+              <div className={styles.newsContent}>
+                <h3>{item.title}</h3>
 
-                                <time dateTime={item.createdAt}>
-                                    {new Date(
-                                        item.createdAt,
-                                    ).toLocaleDateString("sv-SE", {
-                                        day: "numeric",
-                                        month: "short",
-                                        year: "numeric",
-                                    })}
-                                </time>
-                            </div>
-                        </li>
-                    ))}
-                </ul>
-            )}
-        </section>
-    );
-};
+                <p>{item.content}</p>
 
-export default PublicNewsWidget;
+                <time dateTime={item.createdAt}>
+                  {new Date(item.createdAt).toLocaleDateString("sv-SE", {
+                    day: "numeric",
+                    month: "short",
+                    year: "numeric",
+                  })}
+                </time>
+              </div>
+            </li>
+          ))}
+        </ul>
+      )}
+    </section>
+  )
+}
+
+export default PublicNewsWidget

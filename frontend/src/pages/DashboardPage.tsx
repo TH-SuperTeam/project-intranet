@@ -5,13 +5,14 @@ import { useAuth } from "../hooks/useAuth";
 import { useAudience } from "../hooks/useAudience";
 import WeatherWidget from "../components/Widgets/WeatherWidget";
 import TransportWidget from "../components/Widgets/TransportWidget";
+import { PacmanSpinner } from "../components/Loaders/Spinners/PacmanSpinner";
 
 const DashboardPage = () => {
     const { user, isLoading } = useAuth();
     const { audience } = useAudience();
 
     if (isLoading) {
-        return <p>Laddar dashboard...</p>;
+        return <PacmanSpinner />;
     }
 
     if (!user) {
