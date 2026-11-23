@@ -31,8 +31,13 @@ public interface UserRepository extends JpaRepository<User, Long> {
         )
         AND (:programId IS NULL OR u.program.id = :programId)
         AND (:classId IS NULL OR u.schoolClass.id = :classId)
-        AND (:status IS NULL OR u.status = :status)
-        ORDER BY
+        AND (:school IS NULL OR u.program.school.name = :school)
+        AND (:statusFilter = 'ALL'
+             OR (:statusFilter = 'ACTIVE'
+        AND u.status = com.superteam.intranet.model.UserStatus.ACTIVE)
+             OR (:statusFilter = 'INACTIVE'
+        AND u.status <> com.superteam.intranet.model.UserStatus.ACTIVE)
+        )ORDER BY
             CASE WHEN u.status = com.superteam.intranet.model.UserStatus.ACTIVE
                 THEN 0 ELSE 1 END,
             u.lastName,
@@ -61,14 +66,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
         AND (:programId IS NULL OR u.program.id = :programId)
         AND (:classId IS NULL OR u.schoolClass.id = :classId)
         AND (:school IS NULL OR u.program.school.name = :school)
-        AND (
-             :statusFilter = 'ALL'
-             OR (:statusFilter = 'ACTIVE'
-        AND u.status = com.superteam.intranet.model.UserStatus.ACTIVE)
-             OR (:statusFilter = 'INACTIVE'
-        AND u.status <> com.superteam.intranet.model.UserStatus.ACTIVE)
-                )
-        ORDER BY
+                ORDER BY
             u.lastName,
             u.firstName,
             u.id
