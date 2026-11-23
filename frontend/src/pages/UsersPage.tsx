@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import CreateButton from "../components/common/CreateButton";
 import SearchInput from "../components/common/SearchInput";
 import UsersList from "../components/Users/UsersList";
@@ -15,7 +15,16 @@ const PAGE_SIZE = 10;
 
 const UsersPage = () => {
     const [search, setSearch] = useState("");
+    const [debouncedSearch, setDebouncedSearch] = useState(search);
     const [page, setPage] = useState(0);
+
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            setDebouncedSearch(search);
+        }, 300);
+
+        return () => clearTimeout(timer);
+    }, [search]);
 
     const { user: currentUser } = useAuth();
     const isAdmin = currentUser?.accessRole === "ADMIN";
@@ -35,7 +44,7 @@ const UsersPage = () => {
         isPending,
         isError,
     } = useUsers({
-        search,
+        search: debouncedSearch,
         page,
         size: PAGE_SIZE,
         school: activeFilters.school ?? undefined,
@@ -132,12 +141,6 @@ const UsersPage = () => {
                     </button>
                 </div>
 
-                <UsersList
-                    users={users?.content ?? []}
-                    isPending={isPending}
-                    isError={isError}
-                    hasActiveFilters={hasActiveFilters}
-                />
                 <UsersList
                     users={users?.content ?? []}
                     isPending={isPending}
