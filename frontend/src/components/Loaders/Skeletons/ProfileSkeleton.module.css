@@ -1,0 +1,110 @@
+.profilePage {
+  width: 100%;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 1.5rem 1rem 2.5rem;
+  box-sizing: border-box;
+}
+
+.pageHeader {
+  margin: 1.5rem 0;
+}
+
+.profileHeader {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  padding: 2rem;
+  margin-bottom: 1.25rem;
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+  background-color: var(--color-surface);
+}
+
+.avatarSection {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 130px;
+}
+
+.profileInfo {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.6rem;
+  min-width: 0;
+  flex: 1;
+}
+
+.profileContent {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap: 1.25rem;
+  align-items: stretch;
+}
+
+.profileCard {
+  min-width: 0;
+  padding: 1.5rem;
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+  background-color: var(--color-surface);
+}
+
+.cardHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1.25rem;
+}
+
+.accountInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.accountInfoItem {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.85rem;
+  min-width: 0;
+}
+
+.accountInfoItem > :first-child {
+  flex: 0 0 20px;
+}
+
+.accountInfoItem > :last-child {
+  flex: 1;
+  min-width: 0;
+}
+
+@media (max-width: 800px) {
+  .profileHeader {
+    padding: 1.5rem;
+  }
+}
+
+@media (max-width: 600px) {
+  .profilePage {
+    padding: 1.25rem 0.75rem 2rem;
+  }
+
+  .profileHeader {
+    flex-wrap: wrap;
+    gap: 1rem;
+    padding: 1.25rem;
+  }
+
+  .profileContent {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .profileCard {
+    padding: 1.25rem;
+  }
+}

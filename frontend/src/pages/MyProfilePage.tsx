@@ -1,12 +1,6 @@
 import { useState } from "react";
 import type { ChangeEvent, FormEvent } from "react";
-import {
-    UserRound,
-    Mail,
-    CalendarDays,
-    ShieldCheck,
-    Pencil,
-} from "lucide-react";
+import { Mail, CalendarDays, ShieldCheck, Pencil } from "lucide-react";
 
 import { useMyProfile } from "../hooks/useMyProfile";
 import useUpdateMyProfile from "../hooks/UsersHooks/useUpdateMyProfile";
@@ -14,10 +8,12 @@ import useChangePassword from "../hooks/UsersHooks/useChangePassword";
 import type { UpdateProfileRequest } from "../types/UpdateProfileRequest";
 import { AccessRole } from "../types/AccessRole";
 import AvatarPicker from "../components/common/AvatarPicker";
-import { AVATAR_IDS, getAvatarDataUri } from "../utils/avatarUtils";
+import { AVATAR_IDS } from "../utils/avatarUtils";
 import type { AvatarId } from "../utils/avatarUtils";
 import styles from "./MyProfilePage.module.css";
 import UserBadges from "../components/common/UserBadges";
+import { ProfileSkeleton } from "../components/Loaders/Skeletons/ProfileSkeleton";
+import UserAvatar from "../components/common/UserAvatar";
 
 // Reusable password visibility button
 type PasswordToggleProps = {
@@ -248,7 +244,7 @@ const MyProfilePage = () => {
     };
 
     if (isLoading) {
-        return <p>Laddar din profil...</p>;
+        return <ProfileSkeleton />;
     }
 
     if (isError || !profile) {
@@ -267,16 +263,6 @@ const MyProfilePage = () => {
         day: "numeric",
     });
 
-    const displayedAvatarId = isEditingProfile
-        ? selectedAvatarId
-        : (AVATAR_IDS.find(
-              (avatarId) => profile.profileImageUrl === `dicebear:${avatarId}`,
-          ) ?? null);
-
-    const hasExistingImage =
-        profile.profileImageUrl !== null &&
-        !profile.profileImageUrl.startsWith("dicebear:");
-
     return (
         <section className={styles.profilePage}>
             <header className={styles.pageHeader}>
@@ -287,23 +273,14 @@ const MyProfilePage = () => {
             {/* Profile header */}
             <div className={styles.profileHeader}>
                 <div className={styles.avatarSection}>
-                    {displayedAvatarId ? (
-                        <img
-                            src={getAvatarDataUri(displayedAvatarId)}
-                            alt={`${profile.firstName} ${profile.lastName}`}
-                            className={styles.profileImage}
-                        />
-                    ) : hasExistingImage ? (
-                        <img
-                            src={profile.profileImageUrl!}
-                            alt={`${profile.firstName} ${profile.lastName}`}
-                            className={styles.profileImage}
-                        />
-                    ) : (
-                        <div className={styles.profileImagePlaceholder}>
-                            <UserRound size={48} />
-                        </div>
-                    )}
+                    <UserAvatar
+                        size={96}
+                        profileImageUrl={
+                            isEditingProfile && selectedAvatarId
+                                ? `dicebear:${selectedAvatarId}`
+                                : profile.profileImageUrl
+                        }
+                    />
 
                     {isEditingProfile && (
                         <button

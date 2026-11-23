@@ -40,26 +40,6 @@
     background-color: var(--color-surface);
 }
 
-.profileImage,
-.profileImagePlaceholder {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-    width: 130px;
-    height: 130px;
-    border-radius: 50%;
-}
-
-.profileImage {
-    object-fit: cover;
-}
-
-.profileImagePlaceholder {
-    background-color: var(--color-primary-soft);
-    color: var(--color-primary);
-}
-
 .profileInfo {
     display: flex;
     flex-direction: column;
@@ -432,12 +412,6 @@
         padding: 1.5rem;
     }
 
-    .profileImage,
-    .profileImagePlaceholder {
-        width: 100px;
-        height: 100px;
-    }
-
     .profileInfo h2 {
         font-size: 1.3rem;
     }
@@ -462,12 +436,6 @@
         flex-wrap: wrap;
         gap: 1rem;
         padding: 1.25rem;
-    }
-
-    .profileImage,
-    .profileImagePlaceholder {
-        width: 80px;
-        height: 80px;
     }
 
     .profileInfo h2 {

@@ -17,6 +17,11 @@ export default function UserBadges({
     const schoolColor =
         school === "VH" ? "bg-(--color-vh-primary)" : "bg-(--color-th-primary)";
 
+    const programColor =
+        school === "VH"
+            ? "bg-(--color-vh-primary-light)"
+            : "bg-(--color-th-primary-light)";
+
     return (
         <div className="flex flex-wrap items-center gap-2">
             {/* Användartyp */}
@@ -27,9 +32,11 @@ export default function UserBadges({
             {/* Skoltillhörighet */}
             {school && (
                 <span
-                    className={`inline-flex w-fit rounded-full px-3 py-1 text-sm font-semibold text-(--color-text-white) ${schoolColor}`}
+                    className={`inline-flex w-fit rounded-full px-3 py-1 text-sm font-semibold text-white ${schoolColor}`}
                     title={
-                        school === "TH" ? "Teknikhögskolan" : "Vårdhögskolan"
+                        school === "TH"
+                            ? "Teknikhögskolan"
+                            : "Vårdyrkeshögskolan"
                     }
                 >
                     {school}
@@ -38,7 +45,9 @@ export default function UserBadges({
 
             {/* Utbildning och klass */}
             {programName && (
-                <span className="inline-flex w-fit max-w-full rounded-full bg-(--color-primary-light) px-3 py-1 text-sm font-semibold text-(--color-text-white) wrap-break-word">
+                <span
+                    className={`inline-flex w-fit max-w-full rounded-full px-3 py-1 text-sm font-semibold text-white wrap-break-word ${programColor}`}
+                >
                     {formatEducation(programName, className)}
                 </span>
             )}

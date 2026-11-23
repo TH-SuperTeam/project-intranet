@@ -1,8 +1,71 @@
-:root {
-    /* ===== tillfälligt innan tema för VH är implementerat, för badges i User ===== */
-    --color-th-primary: var(--color-primary);
-    --color-vh-primary: #420b24;
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&display=swap");
+body {
+    font-family: "Inter", "Segoe UI", sans-serif;
+    font-weight: 300;
+}
 
+button,
+input,
+textarea,
+select {
+    font: inherit;
+}
+
+:root {
+    /* ===== SCHOOL BADGES ===== */
+    --color-th-primary: #00302e;
+    --color-th-primary-light: #004f46;
+
+    --color-vh-primary: #420b24;
+    --color-vh-primary-light: #732e4a;
+
+    /* ===== PRIMARY - PLUSHÖGSKOLAN ===== */
+    --color-primary: #7f1d3e;
+    --color-primary-light: #963354;
+    --color-primary-hover: #681731;
+    --color-primary-soft: #f4e8ed;
+
+    /* ===== SECONDARY - GRAY ===== */
+    --color-secondary: #404040;
+    --color-secondary-hover: #303030;
+    --color-secondary-light: #666666;
+    --color-secondary-soft: #efefef;
+    --color-secondary-dark: #292929;
+
+    /* ===== BACKGROUNDS ===== */
+    --color-background: #efefef;
+    --color-surface: #ffffff;
+    --color-surface-hover: #e5e5e5;
+    --color-sidebar: #404040;
+
+    /* ===== TEXT ===== */
+    --color-text-primary: #0c0c0c;
+    --color-text-secondary: #404040;
+    --color-text-muted: #64748b;
+    --color-text-white: #ffffff;
+    --color-text-accent: #7f1d3e;
+
+    /* ===== BORDERS ===== */
+    --color-border: #dedede;
+    --color-border-hover: #7f1d3e;
+
+    /* ===== STATUS ===== */
+    --color-success: #16a34a;
+    --color-success-light: #dcfce7;
+
+    --color-warning: #d97706;
+    --color-warning-light: #fef3c7;
+
+    --color-error: #dc2626;
+    --color-error-light: #fee2e2;
+
+    --color-info: #0284c7;
+    --color-info-light: #e0f2fe;
+}
+
+/* ===== TEKNIKHÖGSKOLAN ===== */
+
+:root[data-theme="TH"] {
     /* ===== PRIMARY - GREEN ===== */
     --color-primary: #00302e;
     --color-primary-light: #004f46;
@@ -32,17 +95,38 @@
     /* ===== BORDERS ===== */
     --color-border: #deeae8;
     --color-border-hover: #004f46;
+}
 
-    /* ===== STATUS ===== */
-    --color-success: #16a34a;
-    --color-success-light: #dcfce7;
+/* ===== VÅRDHÖGSKOLAN ===== */
 
-    --color-warning: #d97706;
-    --color-warning-light: #fef3c7;
+:root[data-theme="VH"] {
+    /* ===== PRIMARY - BURGUNDY ===== */
+    --color-primary: #420b24;
+    --color-primary-light: #67213f;
+    --color-primary-hover: #5a1735;
+    --color-primary-soft: #f5e8ee;
 
-    --color-error: #dc2626;
-    --color-error-light: #fee2e2;
+    /* ===== SECONDARY - BLUE ===== */
+    --color-secondary: #3869a3;
+    --color-secondary-hover: #254e7d;
+    --color-secondary-light: #79a6d4;
+    --color-secondary-soft: #e7f0fa;
+    --color-secondary-dark: #254e7d;
 
-    --color-info: #0284c7;
-    --color-info-light: #e0f2fe;
+    /* ===== BACKGROUNDS ===== */
+    --color-background: #faf5f7;
+    --color-surface: #ffffff;
+    --color-surface-hover: #f5e8ee;
+    --color-sidebar: #420b24;
+
+    /* ===== TEXT ===== */
+    --color-text-primary: #420b24;
+    --color-text-secondary: #67213f;
+    --color-text-muted: #64748b;
+    --color-text-white: #ffffff;
+    --color-text-accent: #254e7d;
+
+    /* ===== BORDERS ===== */
+    --color-border: #ead7df;
+    --color-border-hover: #67213f;
 }
