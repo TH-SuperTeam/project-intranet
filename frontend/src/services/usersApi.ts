@@ -9,6 +9,7 @@ import type { UserProfile } from "../types/UserProfile";
 import type { AccessRole } from "../types/AccessRole";
 import type { ChangePasswordRequest } from "../types/ChangePasswordRequest";
 import type { AdminUpdateUserRequest } from "../types/AdminUpdateUserRequest";
+import type { GetUsersParams } from "../types/GetUsersParams";
 
 export const createUser = async (user: CreateUserRequest) => {
     const res = await apiFetch("/api/users", {
@@ -44,8 +45,25 @@ export interface PaginatedUsers {
     last: boolean;
 }
 
-export const getUsers = async (search: string): Promise<PaginatedUsers> => {
-    const params = new URLSearchParams({ search });
+export const getUsers = async ({
+    search,
+    page,
+    size,
+    school,
+    programId,
+    classId,
+    status,
+}: GetUsersParams): Promise<PaginatedUsers> => {
+    const params = new URLSearchParams({
+        search,
+        page: page.toString(),
+        size: size.toString(),
+    });
+
+    if (school) params.set("school", school);
+    if (programId != null) params.set("programId", programId.toString());
+    if (classId != null) params.set("classId", classId.toString());
+    if (status && status !== "ALL") params.set("status", status);
 
     const res = await apiFetch(`/api/users?${params.toString()}`);
 
