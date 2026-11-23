@@ -67,16 +67,8 @@ Vi önskar allmän feedback
 ## Del 2: Efter reviewn
 
 ### Feedback
+- Lägg till en glömt lösenordsknapp
+- Deploy:a
+- Genomtänkt projekt, bra helhet.
 
-> **Exempel:** Läraren frågade hur man vet vem som ska göra nästa disk. I deras kollektiv turas man om varje vecka i stället för att tilldela.
 
--
--
-
-### Ändringar i backloggen
-
-<!-- Nya stories, ändrad prioritet, stories som tagits bort. Länka issues. -->
-
-> **Exempel:** Ny story #15 "Turordning per vecka" som Must. "Tilldela en syssla" (#5) sänks till Should.
-
--
