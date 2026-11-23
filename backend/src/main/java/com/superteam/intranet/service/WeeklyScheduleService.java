@@ -1,18 +1,21 @@
 package com.superteam.intranet.service;
 
-import com.superteam.intranet.mapper.WeeklyScheduleMapper;
-import com.superteam.intranet.repository.ClassroomRepository;
-import com.superteam.intranet.repository.SchoolClassRepository;
-import com.superteam.intranet.repository.WeeklyScheduleRepository;
 import com.superteam.intranet.dto.WeeklyScheduleRequest;
 import com.superteam.intranet.dto.WeeklyScheduleResponse;
+import com.superteam.intranet.mapper.WeeklyScheduleMapper;
 import com.superteam.intranet.model.Classroom;
 import com.superteam.intranet.model.SchoolClass;
 import com.superteam.intranet.model.WeeklySchedule;
+import com.superteam.intranet.repository.ClassroomRepository;
+import com.superteam.intranet.repository.SchoolClassRepository;
+import com.superteam.intranet.repository.WeeklyScheduleRepository;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.server.ResponseStatusException;
 
+import java.util.Comparator;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class WeeklyScheduleService {
@@ -23,116 +26,91 @@ public class WeeklyScheduleService {
     private final WeeklyScheduleMapper weeklyScheduleMapper;
 
     public WeeklyScheduleService(WeeklyScheduleRepository weeklyScheduleRepository,
-            SchoolClassRepository schoolClassRepository,
-             ClassroomRepository classroomRepository,
-             WeeklyScheduleMapper weeklyScheduleMapper) {
+                                 SchoolClassRepository schoolClassRepository,
+                                 ClassroomRepository classroomRepository,
+                                 WeeklyScheduleMapper weeklyScheduleMapper) {
         this.weeklyScheduleRepository = weeklyScheduleRepository;
         this.schoolClassRepository = schoolClassRepository;
         this.classroomRepository = classroomRepository;
         this.weeklyScheduleMapper = weeklyScheduleMapper;
     }
 
-    public List<WeeklyScheduleResponse> getAllSchedules() {
+    // Hämta scheman, valfritt filtrerade på klass och/eller klassrum
+    @Transactional(readOnly = true)
+    public List<WeeklyScheduleResponse> getSchedules(Long classId, Long classroomId) {
 
-        List<WeeklySchedule> schedules = weeklyScheduleRepository.findAll();
+        if (classId != null) {
+            if (classId <= 0) {
+                throw new ResponseStatusException(
+                        HttpStatus.BAD_REQUEST, "classId måste vara ett positivt tal");
+            }
+            if (!schoolClassRepository.existsById(classId)) {
+                throw new ResponseStatusException(
+                        HttpStatus.NOT_FOUND, "Klassen kunde inte hittas");
+            }
+        }
+
+        if (classroomId != null) {
+            if (classroomId <= 0) {
+                throw new ResponseStatusException(
+                        HttpStatus.BAD_REQUEST, "classroomId måste vara ett positivt tal");
+            }
+            if (!classroomRepository.existsById(classroomId)) {
+                throw new ResponseStatusException(
+                        HttpStatus.NOT_FOUND, "Klassrummet kunde inte hittas");
+            }
+        }
+
+        List<WeeklySchedule> schedules;
+
+        if (classId != null && classroomId != null) {
+            schedules = weeklyScheduleRepository
+                    .findBySchoolClass_IdAndClassroom_Id(classId, classroomId);
+        } else if (classId != null) {
+            schedules = weeklyScheduleRepository.findBySchoolClass_Id(classId);
+        } else if (classroomId != null) {
+            schedules = weeklyScheduleRepository.findByClassroom_Id(classroomId);
+        } else {
+            schedules = weeklyScheduleRepository.findAll();
+        }
 
         return schedules.stream()
+                .sorted(Comparator.comparing(WeeklySchedule::getWeekday)
+                        .thenComparing(WeeklySchedule::getStartTime))
                 .map(weeklyScheduleMapper::toResponse)
-                .collect(Collectors.toList());
+                .toList();
     }
 
+    @Transactional
     public WeeklyScheduleResponse createSchedule(WeeklyScheduleRequest request) {
 
-        // Kontrollera att sluttiden är efter starttiden
-        if (!request.endTime().isAfter(request.startTime())) {
-            throw new IllegalArgumentException(
-                    "Sluttiden måste vara efter starttiden"
-            );
-        }
+        validateRequest(request);
 
-        // Kontrollera giltighetsperioden
-        if (request.validUntil().isBefore(request.validFrom())) {
-            throw new IllegalArgumentException(
-                    "Slutdatumet måste vara samma som eller senare än startdatumet"
-            );
-        }
+        SchoolClass schoolClass = findClass(request.classId());
+        Classroom classroom = findClassroom(request.classroomId());
 
-        // Hämta klassen från databasen
-        SchoolClass schoolClass = schoolClassRepository.findById(request.classId())
-                .orElseThrow(() -> new RuntimeException("Klassen kunde inte hittas"));
+        checkClassroomIsFree(request, classroom, null);
 
-        // Hämta klassrummet från databasen
-        Classroom classroom = classroomRepository.findById(request.classroomId())
-                .orElseThrow(() -> new RuntimeException("Klassrum kunde inte hittas"));
+        WeeklySchedule schedule =
+                weeklyScheduleMapper.toEntity(request, schoolClass, classroom);
 
-        // Kontrollera om klassrummet redan är bokat
-        boolean classroomBooked = !weeklyScheduleRepository.findOverlapping(
-                classroom.getId(),
-                request.weekday(),
-                request.startTime(),
-                request.endTime(),
-                request.validFrom(),
-                request.validUntil(),
-                null
-        ).isEmpty();
-
-        if (classroomBooked) {
-            throw new IllegalArgumentException(
-                    "Klassrummet är redan bokat under den valda tiden"
-            );
-        }
-
-        // Omvandla request till entity
-        WeeklySchedule schedule = weeklyScheduleMapper.toEntity(
-                request,
-                schoolClass,
-                classroom
-        );
-
-        // Spara schemat i databasen
-        WeeklySchedule savedSchedule = weeklyScheduleRepository.save(schedule);
-
-        // Omvandla entity till response och returnera
-        return weeklyScheduleMapper.toResponse(savedSchedule);
+        return weeklyScheduleMapper.toResponse(
+                weeklyScheduleRepository.save(schedule));
     }
 
-
+    @Transactional
     public WeeklyScheduleResponse updateSchedule(Long id, WeeklyScheduleRequest request) {
 
         WeeklySchedule schedule = weeklyScheduleRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Schemaposten kunde inte hittas"));
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND, "Schemaposten kunde inte hittas"));
 
-        if (!request.endTime().isAfter(request.startTime())) {
-            throw new IllegalArgumentException("Sluttiden måste vara efter starttiden");
-        }
+        validateRequest(request);
 
-        if (request.validUntil().isBefore(request.validFrom())) {
-            throw new IllegalArgumentException(
-                    "Slutdatumet måste vara samma som eller senare än startdatumet"
-            );
-        }
+        SchoolClass schoolClass = findClass(request.classId());
+        Classroom classroom = findClassroom(request.classroomId());
 
-        SchoolClass schoolClass = schoolClassRepository.findById(request.classId())
-                .orElseThrow(() -> new RuntimeException("Klassen kunde inte hittas"));
-
-        Classroom classroom = classroomRepository.findById(request.classroomId())
-                .orElseThrow(() -> new RuntimeException("Klassrum kunde inte hittas"));
-
-        boolean classroomBooked = !weeklyScheduleRepository.findOverlapping(
-                classroom.getId(),
-                request.weekday(),
-                request.startTime(),
-                request.endTime(),
-                request.validFrom(),
-                request.validUntil(),
-                id
-        ).isEmpty();
-
-        if (classroomBooked) {
-            throw new IllegalArgumentException(
-                    "Klassrummet är redan bokat under den valda tiden"
-            );
-        }
+        checkClassroomIsFree(request, classroom, id);
 
         schedule.setSchoolClass(schoolClass);
         schedule.setClassroom(classroom);
@@ -142,18 +120,60 @@ public class WeeklyScheduleService {
         schedule.setValidFrom(request.validFrom());
         schedule.setValidUntil(request.validUntil());
 
-        WeeklySchedule updatedSchedule = weeklyScheduleRepository.save(schedule);
-
-        return weeklyScheduleMapper.toResponse(updatedSchedule);
+        return weeklyScheduleMapper.toResponse(
+                weeklyScheduleRepository.save(schedule));
     }
 
-
+    @Transactional
     public void deleteSchedule(Long id) {
         if (!weeklyScheduleRepository.existsById(id)) {
-            throw new RuntimeException("Schemaposten kunde inte hittas");
+            throw new ResponseStatusException(
+                    HttpStatus.NOT_FOUND, "Schemaposten kunde inte hittas");
         }
-
         weeklyScheduleRepository.deleteById(id);
     }
 
+    // ==================== HELPERS ====================
+
+    private void validateRequest(WeeklyScheduleRequest request) {
+        if (!request.endTime().isAfter(request.startTime())) {
+            throw new IllegalArgumentException("Sluttiden måste vara efter starttiden");
+        }
+        if (request.validUntil().isBefore(request.validFrom())) {
+            throw new IllegalArgumentException(
+                    "Slutdatumet måste vara samma som eller senare än startdatumet");
+        }
+    }
+
+    private SchoolClass findClass(Long id) {
+        return schoolClassRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND, "Klassen kunde inte hittas"));
+    }
+
+    private Classroom findClassroom(Long id) {
+        return classroomRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND, "Klassrummet kunde inte hittas"));
+    }
+
+    private void checkClassroomIsFree(WeeklyScheduleRequest request,
+                                      Classroom classroom,
+                                      Long excludeId) {
+        boolean booked = !weeklyScheduleRepository.findOverlapping(
+                classroom.getId(),
+                request.weekday(),
+                request.startTime(),
+                request.endTime(),
+                request.validFrom(),
+                request.validUntil(),
+                excludeId
+        ).isEmpty();
+
+        if (booked) {
+            throw new ResponseStatusException(
+                    HttpStatus.CONFLICT,
+                    "Klassrummet är redan bokat under den valda tiden");
+        }
+    }
 }
