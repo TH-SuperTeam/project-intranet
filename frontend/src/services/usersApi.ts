@@ -63,7 +63,7 @@ export const getUsers = async ({
     if (school) params.set("school", school);
     if (programId != null) params.set("programId", programId.toString());
     if (classId != null) params.set("classId", classId.toString());
-    if (status && status !== "ALL") params.set("status", status);
+    if (status && status !== "ALL") params.set("statusFilter", status);
 
     const res = await apiFetch(`/api/users?${params.toString()}`);
 

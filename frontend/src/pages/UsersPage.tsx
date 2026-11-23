@@ -7,17 +7,20 @@ import { useAuth } from "../hooks/useAuth";
 import { usePrograms } from "../hooks/usePrograms";
 import { useUsers } from "../hooks/UsersHooks/useUsers";
 import { useUserFilters } from "../hooks/UsersHooks/useUserFilters";
-import { filterUsers } from "../utils/filterUsers";
 import UsersFilterBar from "../components/Users/UsersFilterBar";
 import type { UserFilters } from "../types/UserFilters";
 
+const PAGE_SIZE = 10;
+
 const UsersPage = () => {
     const [search, setSearch] = useState("");
+    const [page, setPage] = useState(0);
+
     const { user: currentUser } = useAuth();
     const isAdmin = currentUser?.accessRole === "ADMIN";
+
     const { data: programs } = usePrograms();
     const filters = useUserFilters(programs);
-    const { data: users, isPending, isError } = useUsers(search);
 
     const activeFilters: UserFilters = {
         school: filters.school,
@@ -26,18 +29,36 @@ const UsersPage = () => {
         status: isAdmin ? filters.status : "ALL",
     };
 
-    const filteredUsers = filterUsers(users ?? [], activeFilters);
+    const {
+        data: users,
+        isPending,
+        isError,
+    } = useUsers({
+        search,
+        page,
+        size: PAGE_SIZE,
+        school: activeFilters.school ?? undefined,
+        programId: activeFilters.programId ?? undefined,
+        classId: activeFilters.classId ?? undefined,
+        status: activeFilters.status,
+    });
 
     const hasActiveFilters =
         filters.school !== null ||
         filters.programId !== null ||
         filters.classId !== null ||
-        filters.status !== "ALL" ||
+        (isAdmin && filters.status !== "ALL") ||
         search.trim() !== "";
+
+    const handleSearchChange = (value: string) => {
+        setSearch(value);
+        setPage(0);
+    };
 
     const handleReset = () => {
         filters.reset();
         setSearch("");
+        setPage(0);
     };
 
     return (
@@ -61,23 +82,37 @@ const UsersPage = () => {
 
                     <SearchInput
                         value={search}
-                        onChange={setSearch}
+                        onChange={handleSearchChange}
                         placeholder="Sök namn eller e-post..."
                     />
+
                     <UsersFilterBar
                         filters={activeFilters}
                         programs={programs}
                         isAdmin={isAdmin}
-                        onSchoolChange={filters.changeSchool}
-                        onProgramChange={filters.changeProgram}
-                        onClassChange={filters.changeClass}
-                        onStatusChange={filters.changeStatus}
+                        onSchoolChange={(value) => {
+                            filters.changeSchool(value);
+                            setPage(0);
+                        }}
+                        onProgramChange={(value) => {
+                            filters.changeProgram(value);
+                            setPage(0);
+                        }}
+                        onClassChange={(value) => {
+                            filters.changeClass(value);
+                            setPage(0);
+                        }}
+                        onStatusChange={(value) => {
+                            filters.changeStatus(value);
+                            setPage(0);
+                        }}
                     />
                 </div>
+
                 <div className={styles.resultsBar}>
-                    {!isPending && !isError && (
+                    {!isPending && !isError && users && (
                         <p role="status" className={styles.resultsCount}>
-                            {filteredUsers.length} användare
+                            {users.totalElements} användare
                         </p>
                     )}
 
@@ -92,7 +127,7 @@ const UsersPage = () => {
                 </div>
 
                 <UsersList
-                    users={filteredUsers}
+                    users={users?.content ?? []}
                     isPending={isPending}
                     isError={isError}
                     hasActiveFilters={hasActiveFilters}
