@@ -78,6 +78,8 @@ public class SecurityConfig {
 
                         .requestMatchers(HttpMethod.GET, "/api/public/news").permitAll()
 
+                        .requestMatchers(HttpMethod.GET, "/api/classrooms/today").permitAll()
+
                         .requestMatchers(HttpMethod.PATCH, "/api/users/*/status")
                         .hasRole("ADMIN")
 
@@ -100,6 +102,22 @@ public class SecurityConfig {
 
                         .requestMatchers(HttpMethod.DELETE, "/api/news/**")
                         .hasRole("ADMIN")
+
+                        // Scheman och avvikelser
+                        // Alla inloggade får läsa
+                        .requestMatchers(
+                                HttpMethod.GET,
+                                "/api/weekly-schedules", "/api/weekly-schedules/**",
+                                "/api/schedule-overrides", "/api/schedule-overrides/**"
+                        )
+                        .authenticated()
+
+                        // Endast lärare och administratörer får skapa, ändra och ta bort
+                        .requestMatchers(
+                                "/api/weekly-schedules", "/api/weekly-schedules/**",
+                                "/api/schedule-overrides", "/api/schedule-overrides/**"
+                        )
+                        .hasAnyRole("ADMIN", "TEACHER")
 
                                 // Programs, Classes & Classrooms
                                 // Alla inloggade får läsa

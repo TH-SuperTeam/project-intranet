@@ -18,6 +18,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import com.superteam.intranet.model.SchoolName;
 
 import java.util.List;
 
@@ -315,29 +319,55 @@ public class UserService {
     return userMapper.toResponse(updatedUser);
  }
 
+
     @Transactional(readOnly = true)
-    public List<?> getUsers(String search, Long userId) {
+    public Page<?> getUsers(
+            String search,
+            SchoolName school,
+            Long programId,
+            Long classId,
+            String statusFilter,
+            int page,
+            int size,
+            Long userId) {
+
         String term = (search == null) ? "" : search.trim();
 
         User currentUser = userRepository.findById(userId)
-                .orElseThrow(() -> new RuntimeException(
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND,
                         "Användaren hittades inte."
                 ));
 
-        List<User> users = currentUser.getAccessRole() == AccessRole.ADMIN
-                ? userRepository.searchUsers(term)
-                : userRepository.searchActiveUsers(term);
+        // Begränsa sidnummer och sidstorlek
+        int safePage = Math.max(page, 0);
+        int safeSize = Math.clamp(size, 1, 100);
 
-        if (currentUser.getAccessRole() == AccessRole.ADMIN) {
-            return users.stream()
-                    .map(userMapper::toListResponse)
-                    .toList();
-        } else {
-            return users.stream()
-                    .map(userMapper::toPublicUserResponse)
-                    .toList();
+        Pageable pageable = PageRequest.of(safePage, safeSize);
+
+        boolean isAdmin =
+                currentUser.getAccessRole() == AccessRole.ADMIN;
+
+        if (isAdmin) {
+            return userRepository.searchUsers(
+                    term,
+                    school,
+                    programId,
+                    classId,
+                    statusFilter,
+                    pageable
+            ).map(userMapper::toListResponse);
         }
+
+        return userRepository.searchActiveUsers(
+                term,
+                school,
+                programId,
+                classId,
+                pageable
+        ).map(userMapper::toPublicUserResponse);
     }
+
 
     private void validateAccessRole(UserType userType, AccessRole accessRole) {
     if (userType == UserType.STUDENT

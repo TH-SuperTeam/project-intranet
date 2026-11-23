@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import CreateButton from "../components/common/CreateButton";
 import SearchInput from "../components/common/SearchInput";
 import UsersList from "../components/Users/UsersList";
@@ -7,17 +7,30 @@ import { useAuth } from "../hooks/useAuth";
 import { usePrograms } from "../hooks/usePrograms";
 import { useUsers } from "../hooks/UsersHooks/useUsers";
 import { useUserFilters } from "../hooks/UsersHooks/useUserFilters";
-import { filterUsers } from "../utils/filterUsers";
 import UsersFilterBar from "../components/Users/UsersFilterBar";
 import type { UserFilters } from "../types/UserFilters";
+import Pagination from "../components/common/Pagination";
+
+const PAGE_SIZE = 10;
 
 const UsersPage = () => {
     const [search, setSearch] = useState("");
+    const [debouncedSearch, setDebouncedSearch] = useState(search);
+    const [page, setPage] = useState(0);
+
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            setDebouncedSearch(search);
+        }, 300);
+
+        return () => clearTimeout(timer);
+    }, [search]);
+
     const { user: currentUser } = useAuth();
     const isAdmin = currentUser?.accessRole === "ADMIN";
+
     const { data: programs } = usePrograms();
     const filters = useUserFilters(programs);
-    const { data: users, isPending, isError } = useUsers(search);
 
     const activeFilters: UserFilters = {
         school: filters.school,
@@ -26,18 +39,36 @@ const UsersPage = () => {
         status: isAdmin ? filters.status : "ALL",
     };
 
-    const filteredUsers = filterUsers(users ?? [], activeFilters);
+    const {
+        data: users,
+        isPending,
+        isError,
+    } = useUsers({
+        search: debouncedSearch,
+        page,
+        size: PAGE_SIZE,
+        school: activeFilters.school ?? undefined,
+        programId: activeFilters.programId ?? undefined,
+        classId: activeFilters.classId ?? undefined,
+        status: activeFilters.status,
+    });
 
     const hasActiveFilters =
         filters.school !== null ||
         filters.programId !== null ||
         filters.classId !== null ||
-        filters.status !== "ALL" ||
+        (isAdmin && filters.status !== "ALL") ||
         search.trim() !== "";
+
+    const handleSearchChange = (value: string) => {
+        setSearch(value);
+        setPage(0);
+    };
 
     const handleReset = () => {
         filters.reset();
         setSearch("");
+        setPage(0);
     };
 
     return (
@@ -61,23 +92,42 @@ const UsersPage = () => {
 
                     <SearchInput
                         value={search}
-                        onChange={setSearch}
+                        onChange={handleSearchChange}
                         placeholder="Sök namn eller e-post..."
                     />
+
                     <UsersFilterBar
                         filters={activeFilters}
                         programs={programs}
                         isAdmin={isAdmin}
-                        onSchoolChange={filters.changeSchool}
-                        onProgramChange={filters.changeProgram}
-                        onClassChange={filters.changeClass}
-                        onStatusChange={filters.changeStatus}
+                        onSchoolChange={(value) => {
+                            filters.changeSchool(value);
+                            setPage(0);
+                        }}
+                        onProgramChange={(value) => {
+                            filters.changeProgram(value);
+                            setPage(0);
+                        }}
+                        onClassChange={(value) => {
+                            filters.changeClass(value);
+                            setPage(0);
+                        }}
+                        onStatusChange={(value) => {
+                            filters.changeStatus(value);
+                            setPage(0);
+                        }}
                     />
                 </div>
+
                 <div className={styles.resultsBar}>
-                    {!isPending && !isError && (
+                    {!isPending && !isError && users && (
                         <p role="status" className={styles.resultsCount}>
-                            {filteredUsers.length} användare
+                            {users.totalElements === 0
+                                ? "Visar 0 av 0 användare"
+                                : `Visar ${users.number * PAGE_SIZE + 1}–${Math.min(
+                                      (users.number + 1) * PAGE_SIZE,
+                                      users.totalElements,
+                                  )} av ${users.totalElements} användare`}
                         </p>
                     )}
 
@@ -92,11 +142,20 @@ const UsersPage = () => {
                 </div>
 
                 <UsersList
-                    users={filteredUsers}
+                    users={users?.content ?? []}
                     isPending={isPending}
                     isError={isError}
                     hasActiveFilters={hasActiveFilters}
                 />
+
+                {users && (
+                    <Pagination
+                        currentPage={users.number}
+                        totalPages={users.totalPages}
+                        onPageChange={setPage}
+                        ariaLabel="Användarsidor"
+                    />
+                )}
             </div>
         </section>
     );
