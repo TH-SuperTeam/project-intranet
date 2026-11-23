@@ -4,6 +4,7 @@ import com.superteam.intranet.dto.ScheduleOverrideRequest;
 import com.superteam.intranet.dto.ScheduleOverrideResponse;
 import com.superteam.intranet.service.ScheduleOverrideService;
 import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -26,6 +27,7 @@ public class ScheduleOverrideController {
 
     // Skapa schemaändring
     @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
     public ScheduleOverrideResponse createOverride(
             @Valid @RequestBody ScheduleOverrideRequest request) {
 
@@ -44,6 +46,7 @@ public class ScheduleOverrideController {
 
     // Ta bort schemaändring
     @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteOverride(@PathVariable Long id) {
         scheduleOverrideService.deleteOverride(id);
     }

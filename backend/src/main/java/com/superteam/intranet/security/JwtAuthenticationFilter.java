@@ -1,6 +1,7 @@
 package com.superteam.intranet.security;
 
 import com.superteam.intranet.model.User;
+import com.superteam.intranet.model.UserType;
 import com.superteam.intranet.repository.UserRepository;
 import io.jsonwebtoken.JwtException;
 import jakarta.servlet.FilterChain;
@@ -14,6 +15,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
@@ -67,12 +69,18 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 return;
             }
 
+
             // Hämta aktuell behörighet från databasen.
-            var authorities = List.of(
-                    new SimpleGrantedAuthority(
-                            "ROLE_" + user.getAccessRole().name()
-                    )
-            );
+            List<SimpleGrantedAuthority> authorities = new ArrayList<>();
+
+            authorities.add(new SimpleGrantedAuthority(
+                    "ROLE_" + user.getAccessRole().name()));
+
+            // Lärare får en egen roll så att säkerhetskonfigurationen kan använda den
+            if (user.getUserType() == UserType.TEACHER) {
+                authorities.add(new SimpleGrantedAuthority("ROLE_TEACHER"));
+            }
+
 
             // Skapa en autentiserad användare för Spring Security.
             UsernamePasswordAuthenticationToken authentication =

@@ -41,11 +41,13 @@ public class WeeklyScheduleController {
     }
 
 
-    // Hämta alla schemaposter
+    // Hämta schemaposter, valfritt filtrerade på klass och/eller klassrum
     @GetMapping
-    public List<WeeklyScheduleResponse> getAllSchedules() {
+    public List<WeeklyScheduleResponse> getSchedules(
+            @RequestParam(required = false) Long classId,
+            @RequestParam(required = false) Long classroomId) {
 
-        return weeklyScheduleService.getAllSchedules();
+        return weeklyScheduleService.getSchedules(classId, classroomId);
     }
 
 

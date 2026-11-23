@@ -3,8 +3,10 @@ package com.superteam.intranet.controller;
 
 import com.superteam.intranet.dto.ClassroomRequest;
 import com.superteam.intranet.dto.ClassroomResponse;
+import com.superteam.intranet.dto.ClassroomTodayResponse;
 import com.superteam.intranet.service.ClassroomService;
 
+import com.superteam.intranet.service.ClassroomTodayService;
 import jakarta.validation.Valid;
 
 import org.springframework.http.HttpStatus;
@@ -17,9 +19,19 @@ import java.util.List;
 public class ClassroomController {
 
     private final ClassroomService classroomService;
+    private final ClassroomTodayService classroomTodayService;
 
-    public ClassroomController(ClassroomService classroomService) {
+    public ClassroomController(
+            ClassroomService classroomService,
+            ClassroomTodayService classroomTodayService) {
         this.classroomService = classroomService;
+        this.classroomTodayService = classroomTodayService;
+    }
+
+    // Dagens klassrumsfördelning (publik endpoint)
+    @GetMapping("/today")
+    public ClassroomTodayResponse getToday() {
+        return classroomTodayService.getToday();
     }
 
     // Hämta alla klassrum

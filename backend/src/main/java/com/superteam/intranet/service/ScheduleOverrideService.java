@@ -15,6 +15,9 @@ import java.time.temporal.TemporalAdjusters;
 import java.util.ArrayList;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.stereotype.Service;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.server.ResponseStatusException;
+
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -96,7 +99,8 @@ public class ScheduleOverrideService {
 
         // Kontrollera att schemaändringen finns
         if (!scheduleOverrideRepository.existsById(id)) {
-            throw new RuntimeException("Schemaändringen hittades inte");
+            throw new ResponseStatusException(
+                    HttpStatus.NOT_FOUND, "Schemaändringen hittades inte");
         }
 
         validateOverrideRequest(request);
@@ -127,7 +131,8 @@ public class ScheduleOverrideService {
     public void deleteOverride(Long id) {
 
         if (!scheduleOverrideRepository.existsById(id)) {
-            throw new RuntimeException("Schemaändringen hittades inte");
+            throw new ResponseStatusException(
+                    HttpStatus.NOT_FOUND, "Schemaändringen hittades inte");
         }
 
         scheduleOverrideRepository.deleteById(id);
@@ -140,7 +145,8 @@ public class ScheduleOverrideService {
     private WeeklySchedule getWeeklySchedule(Long id) {
 
         return weeklyScheduleRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException(
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND,
                         "Grundschemat kunde inte hittas"
                 ));
     }
@@ -154,7 +160,8 @@ public class ScheduleOverrideService {
         }
 
         return classroomRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException(
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND,
                         "Klassrummet kunde inte hittas"
                 ));
     }
@@ -291,7 +298,8 @@ public class ScheduleOverrideService {
                 });
 
         if (hasConflict) {
-            throw new IllegalArgumentException(
+            throw new ResponseStatusException(
+                    HttpStatus.CONFLICT,
                     "Det finns redan en avvikelse för grundschemat under den valda perioden"
             );
         }
@@ -377,7 +385,8 @@ public class ScheduleOverrideService {
                 .collect(Collectors.toList());
 
         if (applicableOverrides.size() > 1) {
-            throw new IllegalStateException(
+            throw new ResponseStatusException(
+                    HttpStatus.CONFLICT,
                     "Flera avvikelser påverkar samma lektionsdatum"
             );
         }
@@ -558,7 +567,8 @@ public class ScheduleOverrideService {
                     for (RoomBooking existing : existingBookings) {
 
                         if (bookingsOverlap(candidate, existing)) {
-                            throw new IllegalArgumentException(
+                            throw new ResponseStatusException(
+                                    HttpStatus.CONFLICT,
                                     "Klassrummet är redan bokat under den valda tiden"
                             );
                         }
