@@ -9,6 +9,7 @@ import { useUsers } from "../hooks/UsersHooks/useUsers";
 import { useUserFilters } from "../hooks/UsersHooks/useUserFilters";
 import UsersFilterBar from "../components/Users/UsersFilterBar";
 import type { UserFilters } from "../types/UserFilters";
+import Pagination from "../components/common/Pagination";
 
 const PAGE_SIZE = 10;
 
@@ -112,7 +113,12 @@ const UsersPage = () => {
                 <div className={styles.resultsBar}>
                     {!isPending && !isError && users && (
                         <p role="status" className={styles.resultsCount}>
-                            {users.totalElements} användare
+                            {users.totalElements === 0
+                                ? "Visar 0 av 0 användare"
+                                : `Visar ${users.number * PAGE_SIZE + 1}–${Math.min(
+                                      (users.number + 1) * PAGE_SIZE,
+                                      users.totalElements,
+                                  )} av ${users.totalElements} användare`}
                         </p>
                     )}
 
@@ -132,6 +138,21 @@ const UsersPage = () => {
                     isError={isError}
                     hasActiveFilters={hasActiveFilters}
                 />
+                <UsersList
+                    users={users?.content ?? []}
+                    isPending={isPending}
+                    isError={isError}
+                    hasActiveFilters={hasActiveFilters}
+                />
+
+                {users && (
+                    <Pagination
+                        currentPage={users.number}
+                        totalPages={users.totalPages}
+                        onPageChange={setPage}
+                        ariaLabel="Användarsidor"
+                    />
+                )}
             </div>
         </section>
     );
