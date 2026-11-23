@@ -28,6 +28,11 @@
 	outline-offset: 2px;
 }
 
+.feedback {
+	color: var(--color-text-primary);
+	font-size: 0.8rem;
+}
+
 @media (prefers-reduced-motion: reduce) {
 	.copyButton {
 		transition: none;
@@ -46,7 +51,7 @@
 
 	.feedback {
 		position: absolute;
-		margin-top: calc(100% + 4px);
+		top: calc(100% + 4px);
 		right: 0;
 		transform: none;
 

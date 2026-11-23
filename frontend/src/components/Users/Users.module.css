@@ -158,6 +158,19 @@
 	overflow-wrap: anywhere;
 }
 
+.emailRow {
+	display: flex;
+	align-items: center;
+	gap: 0.25rem;
+	margin-left: 60px;
+	min-width: 0;
+}
+
+.emailRow .userEmail {
+	overflow-wrap: anywhere;
+}
+
+
 /* ===== USER PROFILE LINK ===== */
 
 .userProfileLink {
