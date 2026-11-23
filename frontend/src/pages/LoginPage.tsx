@@ -5,6 +5,10 @@ import { useAuth } from "../hooks/useAuth";
 import SubmitButton from "../components/common/SubmitButton";
 import styles from "../components/auth/Login.module.css";
 import Logo from "../components/common/Logo";
+import VHUnderline from "../assets/vh-underline.svg?react";
+import VHCircle from "../assets/vh-circle.svg?react";
+import VHNotes from "../assets/vh-notes.svg?react";
+import VHHeart from "../assets/vh-heart.svg?react";
 
 const LoginPage = () => {
     const [email, setEmail] = useState("");
@@ -52,21 +56,55 @@ const LoginPage = () => {
         <main className={styles.loginPage}>
             {/* Welcome section */}
             <section className={styles.welcomeSection}>
-                <div className={styles.brand}>
-                    <Logo variant="horizontal" className={styles.logoWhite} />
+                <div className={styles.welcomeLogos}>
+                    <Logo
+                        school="TH"
+                        variant="horizontal"
+                        className={styles.thLogo}
+                    />
+                    <div className={styles.vhBrand}>
+                        <Logo
+                            school="VH"
+                            variant="horizontal"
+                            className={styles.vhLogo}
+                        />
+                        <VHUnderline
+                            className={styles.vhUnderline}
+                            aria-hidden="true"
+                        />
+                    </div>
+                    <div
+                        className={styles.welcomeDecoration}
+                        aria-hidden="true"
+                    >
+                        {Array.from({ length: 36 }, (_, index) => (
+                            <span key={index} />
+                        ))}
+                    </div>
                 </div>
 
                 <div className={styles.welcomeContent}>
                     <h1 className={styles.welcomeTitle}>
-                        Välkommen till Teknikhögskolans intranät
+                        Välkommen till{" "}
+                        <span className={styles.highlightWord}>
+                            ditt
+                            <VHCircle
+                                className={styles.wordCircle}
+                                aria-hidden="true"
+                                preserveAspectRatio="none"
+                            />
+                        </span>{" "}
+                        skolintranät
                     </h1>
                     <p className={styles.welcomeText}>
                         Här hittar du nyheter, information och smarta verktyg
                         som förenklar din vardag på skolan.
                     </p>
                 </div>
-
-                <div className={styles.welcomeDecoration} aria-hidden="true" />
+                <div className={styles.vhDecorations} aria-hidden="true">
+                    <VHNotes className={styles.vhNotes} />
+                    <VHHeart className={styles.vhHeart} />
+                </div>
             </section>
 
             {/* Login section */}
@@ -75,7 +113,18 @@ const LoginPage = () => {
 
                 <div className={styles.loginCard}>
                     <div className={styles.cardHeader}>
-                        <Logo variant="stacked" className={styles.logoGreen} />
+                        <div className={styles.loginLogos}>
+                            <Logo
+                                school="TH"
+                                variant="stacked"
+                                className={styles.loginThLogo}
+                            />
+                            <Logo
+                                school="VH"
+                                variant="stacked"
+                                className={styles.loginVhLogo}
+                            />
+                        </div>
 
                         <h2 className={styles.formTitle}>Logga in</h2>
                         <p className={styles.formDescription}>

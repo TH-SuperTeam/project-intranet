@@ -17,29 +17,12 @@
     justify-content: space-between;
     overflow: hidden;
     padding: 3.5rem;
-    background-color: var(--color-primary);
-    color: var(--color-text-white);
-}
-
-.welcomeSection::after {
-    content: "";
-    position: absolute;
-    top: -5rem;
-    right: -5rem;
-
-    width: 12rem;
-    height: 12rem;
-
-    background: repeating-conic-gradient(
-        var(--color-primary-light) 0% 25%,
-        transparent 0% 50%
+    background: linear-gradient(
+        135deg,
+        var(--color-th-primary) 50%,
+        var(--color-vh-primary) 50%
     );
-
-    background-size: 4rem 4rem;
-
-    transform: rotate(-25deg);
-    opacity: 0.6;
-    pointer-events: none;
+    color: var(--color-text-white);
 }
 
 .brand {
@@ -48,18 +31,6 @@
     display: flex;
     align-items: center;
     gap: 1rem;
-}
-
-.logoWhite {
-    width: 20rem;
-    height: auto;
-    color: var(--color-text-white);
-}
-
-.logoGreen {
-    width: 7rem;
-    height: auto;
-    color: var(--color-primary);
 }
 
 .brandName {
@@ -72,6 +43,7 @@
     position: relative;
     z-index: 1;
     max-width: 28rem;
+    margin-top: auto;
 }
 
 .welcomeTitle {
@@ -88,25 +60,139 @@
     opacity: 0.85;
 }
 
-/* Decorative shapes */
+/* ===== WELCOME LOGOS ===== */
+
+.welcomeLogos {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    gap: 1rem;
+    transform: translateY(-50%);
+    z-index: 1;
+}
+
+/* TH logo */
+
+.thLogo {
+    display: block;
+    width: 40%;
+    height: auto;
+    min-width: 0;
+    flex-shrink: 1;
+    color: var(--color-text-white);
+}
+
+/* VH logo and underline */
+
+.vhBrand {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 40%;
+    min-width: 0;
+    flex-shrink: 1;
+    transform: translateY(0.7rem);
+}
+
+.vhLogo {
+    display: block;
+    width: 110%;
+    height: auto;
+    color: var(--color-text-white);
+}
+
+.vhUnderline {
+    display: block;
+    width: 120%;
+    height: auto;
+    margin-top: 0.5rem;
+    color: #3869a3;
+}
+
+/* ===== TH DECORATION ===== */
 
 .welcomeDecoration {
     position: absolute;
-    bottom: -7rem;
-    left: -7rem;
-
-    width: 20rem;
-    height: 20rem;
-
-    background: repeating-conic-gradient(
-        var(--color-primary-light) 0% 25%,
-        transparent 0% 50%
-    );
-
-    background-size: 5rem 5rem;
-
+    top: -27rem;
+    left: -2rem;
+    display: grid;
+    grid-template-columns: repeat(6, 3.5rem);
+    grid-template-rows: repeat(6, 3.5rem);
     transform: rotate(-25deg);
-    opacity: 0.7;
+    opacity: 0.35;
+    pointer-events: none;
+    z-index: 0;
+}
+
+.welcomeDecoration span {
+    background-color: #4d8f80;
+}
+
+/* Checkerboard pattern */
+
+.welcomeDecoration span:nth-child(12n + 2),
+.welcomeDecoration span:nth-child(12n + 4),
+.welcomeDecoration span:nth-child(12n + 6),
+.welcomeDecoration span:nth-child(12n + 7),
+.welcomeDecoration span:nth-child(12n + 9),
+.welcomeDecoration span:nth-child(12n + 11) {
+    background-color: transparent;
+}
+
+/* Irregular edges */
+
+.welcomeDecoration span:nth-child(34),
+.welcomeDecoration span:nth-child(36) {
+    background-color: transparent;
+}
+
+/* ===== VH DECORATIONS ===== */
+
+.vhDecorations {
+    position: absolute;
+    right: 2rem;
+    bottom: 2rem;
+    display: flex;
+    align-items: flex-end;
+    gap: 1rem;
+    z-index: 0;
+    pointer-events: none;
+}
+
+.vhNotes {
+    width: 5.5rem;
+    height: auto;
+    color: #3869a3;
+    transform: rotate(-12deg);
+}
+
+.vhHeart {
+    width: 4rem;
+    height: auto;
+    color: #3869a3;
+    transform: rotate(12deg);
+}
+
+/* ===== HIGHLIGHTED WORD ===== */
+
+.highlightWord {
+    position: relative;
+    display: inline-block;
+    white-space: nowrap;
+}
+
+.wordCircle {
+    position: absolute;
+    width: 140%;
+    height: 145%;
+    top: 60%;
+    left: 55%;
+    transform: translate(-50%, -50%);
+    color: #3869a3;
     pointer-events: none;
 }
 
@@ -122,26 +208,6 @@
     background-color: var(--color-background);
 }
 
-.formDecoration {
-    position: absolute;
-    top: -5rem;
-    right: -5rem;
-
-    width: 15rem;
-    height: 15rem;
-
-    background: repeating-conic-gradient(
-        var(--color-primary-soft) 0% 25%,
-        transparent 0% 50%
-    );
-
-    background-size: 4rem 4rem;
-
-    transform: rotate(-25deg);
-    opacity: 0.8;
-    pointer-events: none;
-}
-
 /* ===== LOGIN CARD ===== */
 
 .loginCard {
@@ -155,6 +221,34 @@
     background-color: var(--color-surface);
     box-shadow: 0 4px 20px rgb(0 0 0 / 3%);
 }
+
+/* ===== LOGIN CARD LOGOS ===== */
+
+.loginLogos {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1.5rem;
+    margin-bottom: 1rem;
+}
+
+.loginThLogo,
+.loginVhLogo {
+    height: 4rem;
+    width: auto;
+    max-width: 45%;
+    flex-shrink: 1;
+}
+
+.loginThLogo {
+    color: var(--color-th-primary);
+}
+
+.loginVhLogo {
+    color: var(--color-vh-primary);
+}
+
+/* ===== CARD HEADER ===== */
 
 .cardHeader {
     margin-bottom: 2rem;
@@ -316,7 +410,7 @@
     .welcomeSection {
         min-height: 15rem;
         gap: 2rem;
-        padding: 2rem;
+        padding: 1.5rem;
     }
 
     .welcomeTitle {
@@ -327,6 +421,31 @@
         font-size: 0.875rem;
     }
 
+    .welcomeLogos {
+        top: 48%;
+        gap: 0.5rem;
+    }
+
+    .thLogo,
+    .vhBrand {
+        width: 42%;
+    }
+
+    .vhLogo {
+        width: 100%;
+    }
+
+    .welcomeDecoration {
+        top: -13rem;
+        left: -2rem;
+        grid-template-columns: repeat(6, 2rem);
+        grid-template-rows: repeat(6, 2rem);
+    }
+
+    .vhDecorations {
+        display: none;
+    }
+
     .formSection {
         min-height: auto;
         padding: 2rem 1rem;
@@ -334,16 +453,25 @@
 
     .loginCard {
         max-width: 28rem;
-        padding: 2rem 1.5rem;
+        padding: 1.5rem 1rem;
     }
 }
 
 @media (max-width: 400px) {
-    .welcomeSection {
-        padding: 1.5rem;
+    .welcomeTitle {
+        font-size: 1.25rem;
+        margin-bottom: 0.25rem;
     }
 
-    .loginCard {
-        padding: 1.5rem 1rem;
+    .welcomeLogos {
+        top: 48%;
+    }
+
+    .welcomeContent {
+        margin-top: auto;
+    }
+
+    .loginLogos {
+        gap: 1rem;
     }
 }

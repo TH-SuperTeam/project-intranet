@@ -72,10 +72,9 @@
 
 .newsItem {
     display: flex;
-    align-items: center;
-    justify-content: space-between;
+    align-items: flex-start;
     gap: 1rem;
-    padding: 1rem 0;
+    padding: 1rem 0.75rem;
     border: 1px solid transparent;
     border-radius: 8px;
     color: inherit;
@@ -93,6 +92,14 @@
 .newsItem:focus-visible {
     outline: 2px solid var(--color-secondary);
     outline-offset: 2px;
+}
+
+.newsWidgetImage {
+    width: 10rem;
+    height: 9rem;
+    flex-shrink: 0;
+    object-fit: cover;
+    border-radius: 8px;
 }
 
 .newsContent {
@@ -131,6 +138,8 @@
     flex-shrink: 0;
     color: var(--color-secondary-dark);
     margin: 10px;
+    margin-left: auto;
+    align-self: flex-start;
 }
 
 .publicNewsWidget {
@@ -149,7 +158,11 @@
 }
 
 .publicNewsItem {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
     min-height: 0;
+    padding: 0 0.75rem;
 }
 
 .publicNewsItem .newsContent {
@@ -175,6 +188,11 @@
     line-height: 1.4;
 }
 
+.publicNewsItem .newsWidgetImage {
+    width: 20rem;
+    height: 13rem;
+}
+
 /* ===== EMPTY STATE ===== */
 
 .emptyState {
@@ -191,6 +209,12 @@
 }
 
 /* ===== WEATHER WIDGET ===== */
+.weatherWidget .infoWidgetHeader {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: start;
+    gap: 0.75rem;
+}
 
 .weatherWidget {
     display: flex;
@@ -211,11 +235,23 @@
 }
 
 .weatherMain {
-    display: flex;
+    display: grid;
+    grid-template-columns: 1fr 1.5fr 1fr;
     align-items: center;
-    justify-content: center;
-    gap: 1.5rem;
+    gap: 1rem;
+    width: 100%;
     flex: 1;
+}
+
+.weatherDetails {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    min-width: 0;
+    gap: 0.5rem;
+    padding-left: 1rem;
+    border-left: 2px solid var(--color-border);
 }
 
 .weatherMain svg {
@@ -224,25 +260,189 @@
 
 .weatherTemperature {
     margin: 0;
-    font-size: 2.5rem;
+    font-size: clamp(3.5rem, 4vw, 4.5rem);
     font-weight: 700;
-    line-height: 1.2;
+    line-height: 1.1;
     color: var(--color-text-primary);
+    white-space: nowrap;
 }
 
 .weatherCondition {
-    margin: 0.25rem 0 0;
-    font-size: 1.1rem;
+    margin: 0;
+    font-size: 1.15rem;
     color: var(--color-text-secondary);
 }
 
+.weatherWind {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    margin: 0;
+    font-size: 0.8rem;
+    color: var(--color-text-secondary);
+    white-space: nowrap;
+}
+
+.weatherWind svg {
+    flex-shrink: 0;
+}
+
 .weatherUpdated {
-    align-self: flex-end;
     margin: 0;
     font-size: 0.8rem;
     color: var(--color-text-muted);
+    white-space: nowrap;
 }
 
+/* Timprognoser */
+.weatherHourly {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 0.5rem;
+    border-top: 1px solid var(--color-border);
+    padding-top: 1rem;
+    margin-top: 1rem;
+}
+
+.weatherHourlyItem {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    min-width: 0;
+}
+
+.weatherHourlyTime {
+    margin: 0;
+    font-size: 0.85rem;
+    color: var(--color-text-secondary);
+}
+
+.weatherHourlyTemperature {
+    margin: 0;
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--color-text-primary);
+}
+
+/* ===== PUBLIC WEATHER WIDGET ===== */
+
+.publicWeatherWidget {
+    padding: 0.75rem 1rem;
+    overflow: hidden;
+}
+
+.publicWeatherWidget .infoWidgetHeader {
+    margin-bottom: 0.5rem;
+}
+
+.publicWeatherWidget .infoWidgetContent {
+    min-height: 0;
+}
+
+/* Vänster: aktuellt väder | Höger: fyra prognoser */
+
+.publicWeatherContent {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr);
+    align-items: center;
+    gap: 1rem;
+    width: 100%;
+    min-width: 0;
+    height: 100%;
+}
+
+/* ===== AKTUELLT VÄDER ===== */
+
+.publicWeatherCurrent {
+    display: grid;
+    grid-template-columns: 90px max-content;
+    grid-template-rows: auto auto;
+    align-items: center;
+    align-content: center;
+    justify-content: start;
+    column-gap: 1rem;
+    min-width: 0;
+}
+
+.publicWeatherCurrent > img {
+    grid-column: 1;
+    grid-row: 1;
+    width: 80px;
+    height: 80px;
+    object-fit: contain;
+}
+
+.publicWeatherCurrentDetails {
+    display: contents;
+}
+
+.publicWeatherWidget .weatherTemperature {
+    grid-column: 2;
+    grid-row: 1;
+    font-size: clamp(2rem, 2.5vw, 3rem);
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.publicWeatherWidget .weatherCondition {
+    grid-column: 1;
+    grid-row: 2;
+    font-size: 0.95rem;
+    text-align: center;
+}
+
+.publicWeatherCurrent > .weatherWind {
+    grid-column: 2;
+    grid-row: 2;
+    justify-self: start;
+    font-size: 0.75rem;
+    white-space: nowrap;
+}
+
+/* ===== FYRA PROGNOSER ===== */
+
+.publicWeatherForecasts {
+    display: grid;
+    grid-template-columns: repeat(2, max-content);
+    grid-template-rows: repeat(2, auto);
+    grid-auto-flow: column;
+    align-content: center;
+    justify-content: space-evenly;
+    gap: 0.75rem 1rem;
+    min-width: 0;
+    padding-left: 1rem;
+    border-left: 1px solid var(--color-border);
+}
+
+.publicWeatherForecastItem {
+    display: grid;
+    grid-template-columns: auto 36px auto;
+    align-items: center;
+    justify-content: start;
+    column-gap: 0.5rem;
+    min-width: 0;
+}
+
+.publicWeatherForecastTime {
+    font-size: 0.85rem;
+    white-space: nowrap;
+    color: var(--color-text-secondary);
+}
+
+.publicWeatherForecastItem img {
+    width: 36px;
+    height: 36px;
+    justify-self: center;
+    object-fit: contain;
+}
+
+.publicWeatherForecastTemperature {
+    font-size: 1rem;
+    font-weight: 700;
+    white-space: nowrap;
+    color: var(--color-text-primary);
+}
 /* ===== TRANSPORT WIDGET ===== */
 
 .departureList {
@@ -395,5 +595,71 @@
 
     .emptyState {
         font-size: 1.25rem;
+    }
+
+    .publicWeatherWidget {
+        padding: 1.25rem 1.5rem;
+    }
+
+    /* Fördelning mellan aktuellt väder och prognoser */
+    .publicWeatherContent {
+        grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr);
+        gap: 1.5rem;
+    }
+
+    /* Vänstersidan */
+    .publicWeatherCurrent {
+        grid-template-columns: 110px max-content;
+        column-gap: 1.25rem;
+        row-gap: 0.25rem;
+        align-content: center;
+    }
+
+    .publicWeatherCurrent > img {
+        width: 115px;
+        height: 115px;
+    }
+
+    .publicWeatherWidget .weatherTemperature {
+        font-size: clamp(3.5rem, 3.5vw, 4.5rem);
+    }
+
+    .publicWeatherWidget .weatherCondition {
+        font-size: 1.3rem;
+    }
+
+    .publicWeatherCurrent > .weatherWind {
+        font-size: 0.95rem;
+    }
+
+    /* Högersidan */
+    .publicWeatherForecasts {
+        column-gap: 1.5rem;
+        row-gap: 1rem;
+        padding-left: 1.5rem;
+    }
+
+    .publicWeatherForecastItem {
+        grid-template-columns: auto 52px auto;
+        column-gap: 0.75rem;
+    }
+
+    .publicWeatherForecastTime {
+        font-size: 1.1rem;
+    }
+
+    .publicWeatherForecastItem img {
+        width: 52px;
+        height: 52px;
+    }
+
+    .publicWeatherForecastTemperature {
+        font-size: 1.35rem;
+    }
+}
+
+@media (max-height: 1050px) {
+    .departureList > li:nth-child(n + 4) {
+        display: none;
     }
 }

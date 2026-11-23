@@ -7,6 +7,8 @@ import type { MyProfile } from "../types/MyProfile";
 import type { UpdateProfileRequest } from "../types/UpdateProfileRequest";
 import type { UserProfile } from "../types/UserProfile";
 import type { AccessRole } from "../types/AccessRole";
+import type { ChangePasswordRequest } from "../types/ChangePasswordRequest";
+import type { AdminUpdateUserRequest } from "../types/AdminUpdateUserRequest";
 
 export const createUser = async (user: CreateUserRequest) => {
     const res = await apiFetch("/api/users", {
@@ -140,6 +142,33 @@ export const updateMyProfile = async (
     return res.json();
 };
 
+export const changePassword = async (
+    request: ChangePasswordRequest,
+): Promise<void> => {
+    const res = await apiFetch("/api/users/me/password", {
+        method: "PATCH",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(request),
+    });
+
+    if (res.status === 400) {
+        const error = await res.json();
+        throw new Error(
+            error.message || "Kontrollera dina lösenordsuppgifter.",
+        );
+    }
+
+    if (res.status === 401) {
+        throw new Error("Din session har gått ut. Logga in igen.");
+    }
+
+    if (!res.ok) {
+        throw new Error("Kunde inte ändra lösenordet.");
+    }
+};
+
 export const getUserProfile = async (userId: number): Promise<UserProfile> => {
     const res = await apiFetch(`/api/users/${userId}`);
 
@@ -149,6 +178,41 @@ export const getUserProfile = async (userId: number): Promise<UserProfile> => {
 
     if (!res.ok) {
         throw new Error("Kunde inte hämta användarens profil.");
+    }
+
+    return res.json();
+};
+
+export const updateUserByAdmin = async (
+    userId: number,
+    user: AdminUpdateUserRequest,
+): Promise<User> => {
+    const res = await apiFetch(`/api/users/${userId}`, {
+        method: "PATCH",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(user),
+    });
+
+    if (res.status === 403) {
+        throw new Error("Du saknar behörighet att redigera användaren.");
+    }
+
+    if (res.status === 404) {
+        throw new Error("Användaren kunde inte hittas.");
+    }
+
+    if (res.status === 409) {
+        throw new Error("E-postadressen används redan av ett annat konto.");
+    }
+
+    if (res.status === 400) {
+        throw new Error("Kontrollera att alla uppgifter är korrekt ifyllda.");
+    }
+
+    if (!res.ok) {
+        throw new Error("Kunde inte uppdatera användaren.");
     }
 
     return res.json();

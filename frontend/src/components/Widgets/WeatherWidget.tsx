@@ -1,80 +1,138 @@
-import {
-	CloudSun,
-	Cloud,
-	CloudRain,
-	CloudSnow,
-	CloudFog,
-	Sun,
-	CloudLightning,
-} from "lucide-react"
-
+import WeatherIcon from "./WeatherIcon"
 import { useWeather } from "../../hooks/useWeather"
 import styles from "./Widgets.module.css"
+import { Wind } from "lucide-react"
+import { ListSkeleton } from "../Loaders/Skeletons/ListSkeleton"
 
-// Väljer väderikon utifrån SMHI:s väderkod
-function getWeatherIcon(code: number) {
-	if (code === 1) return Sun
-	if (code <= 3) return CloudSun
-	if (code <= 6) return Cloud
-	if (code === 7) return CloudFog
-	if (code === 11 || code === 21) return CloudLightning
-	if (code >= 15 && code <= 17) return CloudSnow
-	if (code >= 25 && code <= 27) return CloudSnow
+// Omvandlar vindriktning i grader till väderstreck
+function getWindDirection(degrees: number): string {
+  const directions = ["N", "NO", "Ö", "SO", "S", "SV", "V", "NV"]
 
-	return CloudRain
+  const index = Math.round(degrees / 45) % 8
+
+  return directions[index]
 }
 
-const WeatherWidget = () => {
-	const { data, isPending, isError } = useWeather()
+// Formaterar prognostiden till svensk tid
+function formatWeatherTime(time: string): string {
+  return new Date(time).toLocaleTimeString("sv-SE", {
+    hour: "2-digit",
+    minute: "2-digit",
+    timeZone: "Europe/Stockholm",
+  })
+}
 
-	// Väljer ikon när väderinformationen har hämtats
-	const WeatherIcon = data ? getWeatherIcon(data.weatherCode) : CloudSun
+type WeatherWidgetProps = {
+  variant?: "default" | "public"
+}
 
-	return (
-		<section className={`${styles.infoWidget} ${styles.weatherWidget}`}>
-			<header className={styles.infoWidgetHeader}>
-				<CloudSun size={24} aria-hidden="true" />
-				<h2>Vädret i Lund</h2>
-			</header>
+const WeatherWidget = ({ variant = "default" }: WeatherWidgetProps) => {
+  const { data, isPending, isError } = useWeather()
 
-			<div className={styles.infoWidgetContent}>
-				{isPending ? (
-					<p role="status">Hämtar väder...</p>
-				) : isError ? (
-					<p role="alert">Kunde inte hämta väderinformationen.</p>
-				) : (
-					<div className={styles.weatherContent}>
-						{/* Visar väderikon, temperatur och beskrivning tillsammans */}
-						<div className={styles.weatherMain}>
-							<WeatherIcon size={56} aria-hidden="true" />
+  const publicForecasts = (() => {
+    if (!data || variant !== "public") return []
 
-							<div>
-								<p className={styles.weatherTemperature}>
-									{Math.round(data.temperature)} °C
-								</p>
-								<p className={styles.weatherCondition}>
-									{data.condition}
-								</p>
-							</div>
-						</div>
+    const now = new Date()
 
-						{/* Visar när väderinformationen senast hämtades */}
-						<p className={styles.weatherUpdated}>
-							Uppdaterad{" "}
-							{new Date(data.updatedAt).toLocaleTimeString(
-								"sv-SE",
-								{
-									hour: "2-digit",
-									minute: "2-digit",
-									timeZone: "Europe/Stockholm",
-								},
-							)}
-						</p>
-					</div>
-				)}
-			</div>
-		</section>
-	)
+    return data.hourlyForecasts
+      .filter((forecast) => new Date(forecast.time) > now)
+      .sort((a, b) => new Date(a.time).getTime() - new Date(b.time).getTime())
+      .slice(0, 4)
+  })()
+
+  return (
+    <section
+      className={`${styles.infoWidget} ${styles.weatherWidget} ${
+        variant === "public" ? styles.publicWeatherWidget : ""
+      }`}>
+      <header className={styles.infoWidgetHeader}>
+        <div>
+          <h2>Vädret på Kalkstensvägen 3A</h2>
+        </div>
+
+        {/* Visar när väderinformationen senast hämtades */}
+        {data && (
+          <p className={styles.weatherUpdated}>
+            Uppdaterad{" "}
+            {new Date(data.updatedAt).toLocaleTimeString("sv-SE", {
+              hour: "2-digit",
+              minute: "2-digit",
+              timeZone: "Europe/Stockholm",
+            })}
+          </p>
+        )}
+      </header>
+
+      <div className={styles.infoWidgetContent}>
+        {isPending ? (
+          <ListSkeleton variant="list" count={2} />
+        ) : isError ? (
+          <p role="alert">Kunde inte hämta väderinformationen.</p>
+        ) : variant === "public" ? (
+          /* Kompakt väderwidget för publik TV-skärm */
+          <div className={styles.publicWeatherContent}>
+            <div className={styles.publicWeatherCurrent}>
+              <WeatherIcon weatherCode={data.weatherCode} size={60} />
+
+              <div className={styles.publicWeatherCurrentDetails}>
+                <p className={styles.weatherTemperature}>{Math.round(data.temperature)} °C</p>
+
+                <p className={styles.weatherCondition}>{data.condition}</p>
+              </div>
+
+              <p className={styles.weatherWind}>
+                <Wind size={16} aria-hidden="true" />
+                {Math.round(data.windSpeed)} m/s ({getWindDirection(data.windDirection)})
+              </p>
+            </div>
+
+            {/* Två utvalda prognoser */}
+            <div className={styles.publicWeatherForecasts}>
+              {publicForecasts.map((forecast) => (
+                <div key={forecast.time} className={styles.publicWeatherForecastItem}>
+                  <span className={styles.publicWeatherForecastTime}>{formatWeatherTime(forecast.time)}</span>
+
+                  <WeatherIcon weatherCode={forecast.weatherCode} size={42} />
+
+                  <span className={styles.publicWeatherForecastTemperature}>{Math.round(forecast.temperature)}°</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        ) : (
+          /* Befintlig väderwidget för inloggad dashboard */
+          <div className={styles.weatherContent}>
+            <div className={styles.weatherMain}>
+              <p className={styles.weatherTemperature}>{Math.round(data.temperature)} °C</p>
+
+              <div className={styles.weatherDetails}>
+                <p className={styles.weatherCondition}>{data.condition}</p>
+
+                <p className={styles.weatherWind}>
+                  <Wind size={16} aria-hidden="true" />
+                  {Math.round(data.windSpeed)} m/s ({getWindDirection(data.windDirection)})
+                </p>
+              </div>
+
+              <WeatherIcon weatherCode={data.weatherCode} size={120} />
+            </div>
+
+            <div className={styles.weatherHourly}>
+              {data.hourlyForecasts.map((forecast) => (
+                <div key={forecast.time} className={styles.weatherHourlyItem}>
+                  <p className={styles.weatherHourlyTime}>{formatWeatherTime(forecast.time)}</p>
+
+                  <WeatherIcon weatherCode={forecast.weatherCode} size={48} />
+
+                  <p className={styles.weatherHourlyTemperature}>{Math.round(forecast.temperature)} °C</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+      </div>
+    </section>
+  )
 }
 
 export default WeatherWidget
