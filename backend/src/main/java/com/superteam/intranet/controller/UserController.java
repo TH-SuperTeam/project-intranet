@@ -7,6 +7,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.security.core.Authentication;
+import com.superteam.intranet.model.UserStatus;
+import org.springframework.data.domain.Page;
+import com.superteam.intranet.model.SchoolName;
+import org.springframework.data.domain.Page;
 
 import java.util.List;
 
@@ -124,12 +128,32 @@ public UserResponse updateUserRole(
     return userService.updateUserRole(id, request, currentUserId);
 }
 
+
     @GetMapping
-    public ResponseEntity<List<?>> getUsers(
-            @RequestParam(required = false) String search, Authentication authentication) {
+    public ResponseEntity<Page<?>> getUsers(
+            @RequestParam(required = false) String search,
+            @RequestParam(required = false) SchoolName school,
+            @RequestParam(required = false) Long programId,
+            @RequestParam(required = false) Long classId,
+            @RequestParam(defaultValue = "ALL") String statusFilter,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            Authentication authentication) {
 
         Long userId = (Long) authentication.getPrincipal();
 
-        return ResponseEntity.ok(userService.getUsers(search, userId));
+        return ResponseEntity.ok(
+                userService.getUsers(
+                        search,
+                        school,
+                        programId,
+                        classId,
+                        statusFilter,
+                        page,
+                        size,
+                        userId
+                )
+        );
     }
+
 }
