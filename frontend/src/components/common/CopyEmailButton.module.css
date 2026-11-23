@@ -1,0 +1,67 @@
+.container {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.5rem;
+}
+
+.copyButton {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 40px;
+	height: 40px;
+	padding: 0;
+	border: none;
+	border-radius: 8px;
+	background: transparent;
+	color: var(--color-text-secondary);
+	cursor: pointer;
+	transition: transform 0.2s ease;
+}
+
+.copyButton:hover {
+	transform: scale(1.2);
+}
+
+.copyButton:focus-visible {
+	outline: 2px solid var(--color-primary);
+	outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.copyButton {
+		transition: none;
+	}
+
+	.copyButton:hover {
+		transform: none;
+	}
+}
+
+/* Feedback som popup på mobil */
+@media (max-width: 768px) {
+	.container {
+		position: relative;
+	}
+
+	.feedback {
+		position: absolute;
+		margin-top: calc(100% + 4px);
+		right: 0;
+		transform: none;
+
+		width: max-content;
+		max-width: 220px;
+		padding: 0.5rem 0.75rem;
+
+		background-color: var(--color-surface);
+		color: var(--color-text-primary);
+		border: 1px solid var(--color-border);
+		border-radius: 8px;
+		box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+
+		font-size: 0.8rem;
+		text-align: center;
+		z-index: 10;
+	}
+}
