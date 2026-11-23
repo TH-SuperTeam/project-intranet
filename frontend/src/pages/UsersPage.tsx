@@ -7,7 +7,6 @@ import { useAuth } from "../hooks/useAuth";
 import { usePrograms } from "../hooks/usePrograms";
 import { useUsers } from "../hooks/UsersHooks/useUsers";
 import { useUserFilters } from "../hooks/UsersHooks/useUserFilters";
-import { filterUsers } from "../utils/filterUsers";
 import UsersFilterBar from "../components/Users/UsersFilterBar";
 import type { UserFilters } from "../types/UserFilters";
 
@@ -17,7 +16,6 @@ const UsersPage = () => {
     const isAdmin = currentUser?.accessRole === "ADMIN";
     const { data: programs } = usePrograms();
     const filters = useUserFilters(programs);
-    const { data: users, isPending, isError } = useUsers(search);
 
     const activeFilters: UserFilters = {
         school: filters.school,
@@ -25,8 +23,11 @@ const UsersPage = () => {
         classId: filters.classId,
         status: isAdmin ? filters.status : "ALL",
     };
-
-    const filteredUsers = filterUsers(users ?? [], activeFilters);
+    const {
+        data: users = [],
+        isPending,
+        isError,
+    } = useUsers(search, activeFilters);
 
     const hasActiveFilters =
         filters.school !== null ||
@@ -77,7 +78,7 @@ const UsersPage = () => {
                 <div className={styles.resultsBar}>
                     {!isPending && !isError && (
                         <p role="status" className={styles.resultsCount}>
-                            {filteredUsers.length} användare
+                            {users.length} användare
                         </p>
                     )}
 
@@ -92,7 +93,7 @@ const UsersPage = () => {
                 </div>
 
                 <UsersList
-                    users={filteredUsers}
+                    users={users}
                     isPending={isPending}
                     isError={isError}
                     hasActiveFilters={hasActiveFilters}
