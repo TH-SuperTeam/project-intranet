@@ -5,6 +5,7 @@ const useUsers = (search: string) => {
     return useQuery({
         queryKey: ["users", search],
         queryFn: () => getUsers(search),
+        select: data => data.content,
     });
 };
 

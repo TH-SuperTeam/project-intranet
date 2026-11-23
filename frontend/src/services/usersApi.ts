@@ -34,9 +34,17 @@ export const createUser = async (user: CreateUserRequest) => {
     return res.json();
 };
 
-export const getUsers = async (
-    search: string,
-): Promise<(User | PublicUser)[]> => {
+export interface PaginatedUsers {
+    content: (User | PublicUser)[];
+    totalElements: number;
+    totalPages: number;
+    number: number;
+    size: number;
+    first: boolean;
+    last: boolean;
+}
+
+export const getUsers = async (search: string): Promise<PaginatedUsers> => {
     const params = new URLSearchParams({ search });
 
     const res = await apiFetch(`/api/users?${params.toString()}`);
