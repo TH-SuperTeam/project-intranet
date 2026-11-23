@@ -52,10 +52,11 @@
     z-index: -1;
     pointer-events: none;
 
-    background-image: url("../../assets/school-building.png");
+    background-image: url("../../assets/red-school-building.png");
     background-repeat: no-repeat;
     background-size: auto 130%;
     background-position: right center;
+    opacity: 0.5;
 
     -webkit-mask-image:
         radial-gradient(
@@ -67,6 +68,13 @@
             ellipse 65% 85% at bottom right,
             transparent 0%,
             black 100%
+        ),
+        linear-gradient(
+            to right,
+            transparent 0%,
+            black 15%,
+            black 85%,
+            transparent 100%
         );
 
     mask-image:
@@ -79,12 +87,23 @@
             ellipse 65% 85% at bottom right,
             transparent 0%,
             black 100%
+        ),
+        linear-gradient(
+            to right,
+            transparent 0%,
+            black 35%,
+            black 95%,
+            transparent 100%
         );
 
     -webkit-mask-composite: source-in;
     mask-composite: intersect;
 }
 
+.thHeader::before {
+    background-image: url("../../assets/lilac-school-building.png");
+    opacity: 1;
+}
 /* ===== GREETING ===== */
 
 .welcomeLeft {
@@ -197,11 +216,18 @@
 }
 
 .publicHeaderLogo {
-    display: block;
-    width: 280px;
+    display: flex;
+    width: fit-content;
     max-width: 100%;
     height: auto;
-    color: var(--color-primary-light);
+}
+
+.publicHeaderLogo svg:first-child {
+    color: var(--color-th-primary);
+}
+
+.publicHeaderLogo svg:last-child {
+    color: var(--color-vh-primary);
 }
 
 .publicWelcomeText h1 {
@@ -308,10 +334,6 @@
 }
 
 @media (min-width: 1600px) {
-    .publicHeaderLogo {
-        width: 340px;
-    }
-
     .publicWelcomeText h1 {
         font-size: 3rem;
     }
