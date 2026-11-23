@@ -9,7 +9,7 @@ import type { UserProfile } from "../types/UserProfile";
 import type { AccessRole } from "../types/AccessRole";
 import type { ChangePasswordRequest } from "../types/ChangePasswordRequest";
 import type { AdminUpdateUserRequest } from "../types/AdminUpdateUserRequest";
-import type { UserFilters } from "../types/UserFilters";
+import type { GetUsersParams } from "../types/GetUsersParams";
 
 export const createUser = async (user: CreateUserRequest) => {
     const res = await apiFetch("/api/users", {
@@ -45,27 +45,25 @@ export interface PaginatedUsers {
     last: boolean;
 }
 
-export const getUsers = async (
-    search: string,
-    filters: UserFilters,
-): Promise<PaginatedUsers> => {
-    const params = new URLSearchParams({ search });
+export const getUsers = async ({
+    search,
+    page,
+    size,
+    school,
+    programId,
+    classId,
+    status,
+}: GetUsersParams): Promise<PaginatedUsers> => {
+    const params = new URLSearchParams({
+        search,
+        page: page.toString(),
+        size: size.toString(),
+    });
 
-    if (filters.school !== null) {
-        params.append("school", filters.school);
-    }
-
-    if (filters.programId !== null) {
-        params.append("programId", String(filters.programId));
-    }
-
-    if (filters.classId !== null) {
-        params.append("classId", String(filters.classId));
-    }
-
-    if (filters.status !== "ALL") {
-        params.append("statusFilter", filters.status);
-    }
+    if (school) params.set("school", school);
+    if (programId != null) params.set("programId", programId.toString());
+    if (classId != null) params.set("classId", classId.toString());
+    if (status && status !== "ALL") params.set("statusFilter", status);
 
     const res = await apiFetch(`/api/users?${params.toString()}`);
 

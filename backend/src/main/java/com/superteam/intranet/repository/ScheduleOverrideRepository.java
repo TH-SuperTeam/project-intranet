@@ -9,6 +9,9 @@ import java.util.List;
 
 public interface ScheduleOverrideRepository extends JpaRepository<ScheduleOverride, Long> {
 
+    // Hämtar alla avvikelser som hör till ett grundschema
+    List<ScheduleOverride> findByWeeklySchedule_Id(Long weeklyScheduleId);
+
     // Hämtar avvikelser för samma veckodag med överlappande giltighetsperiod
     List<ScheduleOverride> findByWeeklySchedule_WeekdayAndValidFromLessThanEqualAndValidUntilGreaterThanEqual(
             Integer weekday,

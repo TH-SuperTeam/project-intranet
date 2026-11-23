@@ -1,12 +1,11 @@
 import { useQuery } from "@tanstack/react-query";
 import { getUsers } from "../../services/usersApi";
-import type { UserFilters } from "../../types/UserFilters";
+import type { GetUsersParams } from "../../types/GetUsersParams";
 
-const useUsers = (search: string, filters: UserFilters) => {
+const useUsers = (params: GetUsersParams) => {
     return useQuery({
-        queryKey: ["users", search, filters],
-        queryFn: () => getUsers(search, filters),
-        select: data => data.content,
+        queryKey: ["users", params],
+        queryFn: () => getUsers(params),
     });
 };
 

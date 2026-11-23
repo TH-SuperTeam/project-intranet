@@ -11,6 +11,12 @@ import java.util.List;
 
 public interface WeeklyScheduleRepository extends JpaRepository<WeeklySchedule, Long> {
 
+    List<WeeklySchedule> findBySchoolClass_Id(Long classId);
+
+    List<WeeklySchedule> findByClassroom_Id(Long classroomId);
+
+    List<WeeklySchedule> findBySchoolClass_IdAndClassroom_Id(Long classId, Long classroomId);
+
     // Hittar befintliga schemaposter som krockar med en ny eller uppdaterad bokning
     @Query("""
     SELECT w FROM WeeklySchedule w
