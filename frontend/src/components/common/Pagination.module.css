@@ -42,6 +42,17 @@
     outline-offset: 3px;
 }
 
+.pageGroup {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.ellipsis {
+    color: var(--color-text-secondary);
+    padding: 0 0.25rem;
+}
+
 @media (max-width: 420px) {
     .pagination {
         gap: 0.35rem;
