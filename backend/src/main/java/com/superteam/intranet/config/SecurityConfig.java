@@ -78,6 +78,8 @@ public class SecurityConfig {
 
                         .requestMatchers(HttpMethod.GET, "/api/public/news").permitAll()
 
+                        .requestMatchers(HttpMethod.GET, "/api/classrooms/today").permitAll()
+
                         .requestMatchers(HttpMethod.PATCH, "/api/users/*/status")
                         .hasRole("ADMIN")
 
