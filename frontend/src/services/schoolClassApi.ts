@@ -30,7 +30,12 @@ export const createClass = async (
     });
 
     if (response.status === 409) {
-        throw new Error("Klassen kunde inte skapas på grund av en konflikt.");
+        const error = await response.json().catch(() => null);
+
+        throw new Error(
+            error?.message ||
+                "Det finns redan en klass med detta namn inom utbildningen.",
+        );
     }
 
     if (!response.ok) {
@@ -54,8 +59,11 @@ export const updateClass = async (
     });
 
     if (response.status === 409) {
+        const error = await response.json().catch(() => null);
+
         throw new Error(
-            "Klassen kunde inte uppdateras på grund av en konflikt.",
+            error?.message ||
+                "Det finns redan en klass med detta namn inom utbildningen.",
         );
     }
 
