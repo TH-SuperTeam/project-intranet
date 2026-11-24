@@ -16,6 +16,8 @@ interface UsersFilterBarProps {
     onClassChange: (classId: number | null) => void;
     onStatusChange: (status: Status | null) => void;
     onUserTypeChange: (userType: UserType | null) => void;
+    onReset: () => void;
+    canReset: boolean;
 }
 
 // Fasta alternativ. Ligger utanför komponenten så de inte skapas om vid varje render.
@@ -45,6 +47,8 @@ const UsersFilterBar = ({
     onClassChange,
     onStatusChange,
     onUserTypeChange,
+    onReset,
+    canReset,
 }: UsersFilterBarProps) => {
     // Hämtar klasser för valt program. Körs inte när programId är null (enabled i hooken).
     const { data: classes } = useClasses(filters.programId);
@@ -153,6 +157,14 @@ const UsersFilterBar = ({
                         />
                     </div>
                 )}
+                <button
+                    type="button"
+                    onClick={onReset}
+                    disabled={!canReset}
+                    className={styles.clearButton}
+                >
+                    Rensa filter
+                </button>
             </div>
         </div>
     );
