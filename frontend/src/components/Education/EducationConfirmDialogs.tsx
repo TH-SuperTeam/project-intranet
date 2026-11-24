@@ -21,6 +21,9 @@ const EducationConfirmDialogs = ({ actions }: EducationConfirmDialogsProps) => {
         <>
             {archiveTarget && (
                 <ConfirmDialog
+                    variant={
+                        archiveTarget.item.isActive ? "warning" : "success"
+                    }
                     title={
                         archiveTarget.item.isActive
                             ? "Bekräfta arkivering"
@@ -66,6 +69,7 @@ const EducationConfirmDialogs = ({ actions }: EducationConfirmDialogsProps) => {
 
             {deleteTarget && (
                 <ConfirmDialog
+                    variant="danger"
                     title="Bekräfta permanent radering"
                     message={
                         <>
