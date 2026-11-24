@@ -4,4 +4,5 @@ export interface SchoolClass {
     startDate: string | null;
     endDate: string | null;
     programId: number;
+    isActive: boolean;
 }

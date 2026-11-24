@@ -3,4 +3,5 @@ export interface Program {
     name: string;
     schoolId: number;
     school: "TH" | "VH";
+    isActive: boolean;
 }
