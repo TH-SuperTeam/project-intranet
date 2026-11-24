@@ -2,20 +2,19 @@ import { useState } from "react";
 import { Plus } from "lucide-react";
 import { usePrograms } from "../hooks/EducationHooks/usePrograms";
 import { useAllClasses } from "../hooks/EducationHooks/useAllClasses";
-import { useSchools } from "../hooks/EducationHooks/useScools";
+import { useSchools } from "../hooks/EducationHooks/useSchools";
 import { useProgramMutations } from "../hooks/EducationHooks/useProgramMutations";
+import { useProgramForm } from "../hooks/EducationHooks/useProgramForm";
+import { useSchoolClassForm } from "../hooks/EducationHooks/useSchoolClassForm";
+import { useEducationActions } from "../hooks/EducationHooks/useEducationActions";
 import { ListSkeleton } from "../components/Loaders/Skeletons/ListSkeleton";
 import ProgramCard from "../components/Education/ProgramCard";
 import ProgramForm from "../components/Education/ProgramForm";
 import FormModal from "../components/common/FormModal";
 import CreateButton from "../components/common/CreateButton";
-import ConfirmDialog from "../components/common/ConfirmDialog";
-import type { Program } from "../types/Program";
-import type { ProgramRequest } from "../types/ProgramRequest";
+import EducationConfirmDialogs from "../components/Education/EducationConfirmDialogs";
 import SchoolClassForm from "../components/Education/SchoolClassForm";
 import { useSchoolClassMutations } from "../hooks/EducationHooks/useSchoolClassMutations";
-import type { SchoolClass } from "../types/SchoolClass";
-import type { SchoolClassRequest } from "../types/SchoolClassRequest";
 import styles from "../components/Education/Education.module.css";
 
 const schools = [
@@ -23,125 +22,46 @@ const schools = [
     { code: "VH", name: "Vårdyrkeshögskolan" },
 ] as const;
 
-type ArchiveTarget =
-    | { type: "program"; item: Program }
-    | { type: "class"; item: SchoolClass };
-
-type DeleteTarget =
-    | { type: "program"; item: Program }
-    | { type: "class"; item: SchoolClass };
-
 const EducationPage = () => {
-    const [archiveTarget, setArchiveTarget] = useState<ArchiveTarget | null>(
-        null,
-    );
-
-    const [deleteTarget, setDeleteTarget] = useState<DeleteTarget | null>(null);
-
     const [includeArchived, setIncludeArchived] = useState(false);
-
-    const [isProgramFormOpen, setIsProgramFormOpen] = useState(false);
-
-    const [editingProgram, setEditingProgram] = useState<Program | undefined>(
-        undefined,
-    );
-
-    const [isClassFormOpen, setIsClassFormOpen] = useState(false);
-
-    const [editingClass, setEditingClass] = useState<SchoolClass | undefined>(
-        undefined,
-    );
-
-    const [defaultProgramId, setDefaultProgramId] = useState<
-        number | undefined
-    >(undefined);
 
     const programsQuery = usePrograms(includeArchived);
     const classesQuery = useAllClasses(includeArchived);
     const schoolsQuery = useSchools();
 
-    const {
-        createMutation,
-        updateMutation,
-        archiveMutation: archiveProgramMutation,
-        restoreMutation: restoreProgramMutation,
-        deleteMutation: deleteProgramMutation,
-    } = useProgramMutations();
+    const programMutations = useProgramMutations();
 
     const {
-        createMutation: createClassMutation,
-        updateMutation: updateClassMutation,
-        archiveMutation: archiveClassMutation,
-        restoreMutation: restoreClassMutation,
-        deleteMutation: deleteClassMutation,
-    } = useSchoolClassMutations();
+        isProgramFormOpen,
+        editingProgram,
+        isFormPending,
+        formError,
+        openCreateProgram,
+        openEditProgram,
+        closeProgramForm,
+        handleProgramSubmit,
+    } = useProgramForm(programMutations);
 
-    const selectedArchiveMutation = archiveTarget
-        ? archiveTarget.type === "program"
-            ? archiveTarget.item.isActive
-                ? archiveProgramMutation
-                : restoreProgramMutation
-            : archiveTarget.item.isActive
-              ? archiveClassMutation
-              : restoreClassMutation
-        : null;
+    const schoolClassMutations = useSchoolClassMutations();
 
-    const selectedDeleteMutation = deleteTarget
-        ? deleteTarget.type === "program"
-            ? deleteProgramMutation
-            : deleteClassMutation
-        : null;
+    const educationActions = useEducationActions(
+        programMutations,
+        schoolClassMutations,
+    );
 
-    const openArchiveDialog = (target: ArchiveTarget) => {
-        archiveProgramMutation.reset();
-        restoreProgramMutation.reset();
-        archiveClassMutation.reset();
-        restoreClassMutation.reset();
+    const { openArchiveDialog, openDeleteDialog } = educationActions;
 
-        setArchiveTarget(target);
-    };
-
-    const closeArchiveDialog = () => {
-        setArchiveTarget(null);
-    };
-
-    const handleArchiveConfirm = () => {
-        if (!archiveTarget || !selectedArchiveMutation) {
-            return;
-        }
-
-        selectedArchiveMutation.mutate(archiveTarget.item.id, {
-            onSuccess: closeArchiveDialog,
-        });
-    };
-
-    const openDeleteDialog = (target: DeleteTarget) => {
-        deleteProgramMutation.reset();
-        deleteClassMutation.reset();
-
-        setDeleteTarget(target);
-    };
-
-    const closeDeleteDialog = () => {
-        setDeleteTarget(null);
-    };
-
-    const handleDeleteConfirm = () => {
-        if (!deleteTarget || !selectedDeleteMutation) {
-            return;
-        }
-
-        selectedDeleteMutation.mutate(deleteTarget.item.id, {
-            onSuccess: closeDeleteDialog,
-        });
-    };
-
-    const isClassFormPending =
-        createClassMutation.isPending || updateClassMutation.isPending;
-
-    const classFormError = editingClass
-        ? updateClassMutation.error?.message
-        : createClassMutation.error?.message;
+    const {
+        isClassFormOpen,
+        editingClass,
+        defaultProgramId,
+        isClassFormPending,
+        classFormError,
+        openCreateClass,
+        openEditClass,
+        closeClassForm,
+        handleClassSubmit,
+    } = useSchoolClassForm(schoolClassMutations);
 
     const programs = programsQuery.data ?? [];
     const classes = classesQuery.data ?? [];
@@ -153,93 +73,6 @@ const EducationPage = () => {
 
     const isError =
         programsQuery.isError || classesQuery.isError || schoolsQuery.isError;
-
-    const isFormPending = createMutation.isPending || updateMutation.isPending;
-
-    const formError = editingProgram
-        ? updateMutation.error?.message
-        : createMutation.error?.message;
-
-    const openCreateProgram = () => {
-        createMutation.reset();
-        updateMutation.reset();
-
-        setEditingProgram(undefined);
-        setIsProgramFormOpen(true);
-    };
-
-    const openEditProgram = (program: Program) => {
-        createMutation.reset();
-        updateMutation.reset();
-
-        setEditingProgram(program);
-        setIsProgramFormOpen(true);
-    };
-
-    const closeProgramForm = () => {
-        setIsProgramFormOpen(false);
-        setEditingProgram(undefined);
-    };
-
-    const handleProgramSubmit = (request: ProgramRequest) => {
-        if (editingProgram) {
-            updateMutation.mutate(
-                {
-                    id: editingProgram.id,
-                    program: request,
-                },
-                {
-                    onSuccess: closeProgramForm,
-                },
-            );
-        } else {
-            createMutation.mutate(request, {
-                onSuccess: closeProgramForm,
-            });
-        }
-    };
-
-    const openCreateClass = (programId: number) => {
-        createClassMutation.reset();
-        updateClassMutation.reset();
-
-        setEditingClass(undefined);
-        setDefaultProgramId(programId);
-        setIsClassFormOpen(true);
-    };
-
-    const openEditClass = (schoolClass: SchoolClass) => {
-        createClassMutation.reset();
-        updateClassMutation.reset();
-
-        setEditingClass(schoolClass);
-        setDefaultProgramId(undefined);
-        setIsClassFormOpen(true);
-    };
-
-    const closeClassForm = () => {
-        setIsClassFormOpen(false);
-        setEditingClass(undefined);
-        setDefaultProgramId(undefined);
-    };
-
-    const handleClassSubmit = (request: SchoolClassRequest) => {
-        if (editingClass) {
-            updateClassMutation.mutate(
-                {
-                    id: editingClass.id,
-                    schoolClass: request,
-                },
-                {
-                    onSuccess: closeClassForm,
-                },
-            );
-        } else {
-            createClassMutation.mutate(request, {
-                onSuccess: closeClassForm,
-            });
-        }
-    };
 
     return (
         <section className={styles.educationPage}>
@@ -384,81 +217,7 @@ const EducationPage = () => {
                 </FormModal>
             )}
 
-            {archiveTarget && (
-                <ConfirmDialog
-                    title={
-                        archiveTarget.item.isActive
-                            ? "Bekräfta arkivering"
-                            : "Bekräfta återställning"
-                    }
-                    message={
-                        <>
-                            <p>
-                                Vill du{" "}
-                                {archiveTarget.item.isActive
-                                    ? "arkivera"
-                                    : "återställa"}{" "}
-                                <strong>{archiveTarget.item.name}</strong>?
-                            </p>
-
-                            {archiveTarget.type === "program" &&
-                                archiveTarget.item.isActive && (
-                                    <p className="mt-2">
-                                        Programmets klasser kommer inte längre
-                                        att vara valbara. Befintlig information
-                                        bevaras.
-                                    </p>
-                                )}
-
-                            {archiveTarget.type === "class" &&
-                                archiveTarget.item.isActive && (
-                                    <p className="mt-2">
-                                        Klassen kommer inte längre att vara
-                                        valbar. Befintlig information bevaras.
-                                    </p>
-                                )}
-                        </>
-                    }
-                    confirmLabel={
-                        archiveTarget.item.isActive ? "Arkivera" : "Återställ"
-                    }
-                    onConfirm={handleArchiveConfirm}
-                    onCancel={closeArchiveDialog}
-                    isPending={selectedArchiveMutation?.isPending}
-                    errorMessage={selectedArchiveMutation?.error?.message}
-                />
-            )}
-
-            {deleteTarget && (
-                <ConfirmDialog
-                    title="Bekräfta permanent radering"
-                    message={
-                        <>
-                            <p>
-                                Vill du verkligen radera{" "}
-                                <strong>{deleteTarget.item.name}</strong>?
-                            </p>
-
-                            <p className="mt-2">
-                                Informationen tas bort permanent. Denna åtgärd
-                                går inte att ångra.
-                            </p>
-
-                            {deleteTarget.type === "program" && (
-                                <p className="mt-2">
-                                    Programmet kan inte raderas om det har
-                                    tillhörande klasser eller andra beroenden.
-                                </p>
-                            )}
-                        </>
-                    }
-                    confirmLabel="Radera"
-                    onConfirm={handleDeleteConfirm}
-                    onCancel={closeDeleteDialog}
-                    isPending={selectedDeleteMutation?.isPending}
-                    errorMessage={selectedDeleteMutation?.error?.message}
-                />
-            )}
+            <EducationConfirmDialogs actions={educationActions} />
         </section>
     );
 };
