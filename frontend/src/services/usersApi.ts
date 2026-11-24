@@ -49,10 +49,7 @@ export const getUsers = async ({
     search,
     page,
     size,
-    school,
-    programId,
-    classId,
-    status,
+    filters,
 }: GetUsersParams): Promise<PaginatedUsers> => {
     const params = new URLSearchParams({
         search,
@@ -60,10 +57,13 @@ export const getUsers = async ({
         size: size.toString(),
     });
 
-    if (school) params.set("school", school);
-    if (programId != null) params.set("programId", programId.toString());
-    if (classId != null) params.set("classId", classId.toString());
-    if (status && status !== "ALL") params.set("statusFilter", status);
+    if (filters.school != null) params.set("school", filters.school);
+    if (filters.programId != null)
+        params.set("programId", filters.programId.toString());
+    if (filters.classId != null)
+        params.set("classId", filters.classId.toString());
+    if (filters.status != null) params.set("status", filters.status);
+    if (filters.userType != null) params.set("userType", filters.userType);
 
     const res = await apiFetch(`/api/users?${params.toString()}`);
 

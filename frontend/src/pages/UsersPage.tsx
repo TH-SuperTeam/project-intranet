@@ -36,7 +36,8 @@ const UsersPage = () => {
         school: filters.school,
         programId: filters.programId,
         classId: filters.classId,
-        status: isAdmin ? filters.status : "ALL",
+        status: isAdmin ? filters.status : null,
+        userType: filters.userType,
     };
 
     const {
@@ -47,17 +48,15 @@ const UsersPage = () => {
         search: debouncedSearch,
         page,
         size: PAGE_SIZE,
-        school: activeFilters.school ?? undefined,
-        programId: activeFilters.programId ?? undefined,
-        classId: activeFilters.classId ?? undefined,
-        status: activeFilters.status,
+        filters: activeFilters,
     });
 
     const hasActiveFilters =
-        filters.school !== null ||
-        filters.programId !== null ||
-        filters.classId !== null ||
-        (isAdmin && filters.status !== "ALL") ||
+        activeFilters.school !== null ||
+        activeFilters.programId !== null ||
+        activeFilters.classId !== null ||
+        activeFilters.status !== null ||
+        activeFilters.userType !== null ||
         search.trim() !== "";
 
     const handleSearchChange = (value: string) => {
@@ -114,6 +113,10 @@ const UsersPage = () => {
                         }}
                         onStatusChange={value => {
                             filters.changeStatus(value);
+                            setPage(0);
+                        }}
+                        onUserTypeChange={value => {
+                            filters.changeUserType(value);
                             setPage(0);
                         }}
                     />
