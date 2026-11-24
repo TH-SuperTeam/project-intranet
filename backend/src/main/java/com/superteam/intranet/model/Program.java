@@ -13,6 +13,9 @@ public class Program {
     @Column(nullable = false, length = 100)
     private String name;
 
+    @Column(name = "is_active", nullable = false)
+    private boolean isActive = true;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "school_id", nullable = false)
     private School school;
@@ -34,6 +37,14 @@ public class Program {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public boolean isActive() {
+        return isActive;
+    }
+
+    public void setActive(boolean active) {
+        this.isActive = active;
     }
 
     public School getSchool() {
