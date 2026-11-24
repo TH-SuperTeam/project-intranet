@@ -15,7 +15,8 @@ public class SchoolClassMapper {
                 schoolClass.getName(),
                 schoolClass.getStartDate(),
                 schoolClass.getEndDate(),
-                schoolClass.getProgram().getId()
+                schoolClass.getProgram().getId(),
+                schoolClass.isActive()
         );
     }
 

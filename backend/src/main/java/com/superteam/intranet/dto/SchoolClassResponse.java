@@ -7,6 +7,7 @@ public record SchoolClassResponse(
         String name,
         LocalDate startDate,
         LocalDate endDate,
-        Long programId
+        Long programId,
+        boolean isActive
 ) {
 }

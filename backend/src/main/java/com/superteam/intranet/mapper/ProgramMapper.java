@@ -12,7 +12,8 @@ public class ProgramMapper {
                 program.getId(),
                 program.getName(),
                 program.getSchool().getId(),
-                program.getSchool().getName()
+                program.getSchool().getName(),
+                program.isActive()
         );
     }
 
