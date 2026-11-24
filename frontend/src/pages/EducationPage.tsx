@@ -109,7 +109,9 @@ const EducationPage = () => {
             {isPending ? (
                 <EducationSkeleton />
             ) : isError ? (
-                <p>Kunde inte hämta utbildningar.</p>
+                <p className={styles.errorState} role="alert">
+                    Kunde inte hämta utbildningar.
+                </p>
             ) : (
                 schools.map((school) => {
                     const schoolPrograms = programs.filter(

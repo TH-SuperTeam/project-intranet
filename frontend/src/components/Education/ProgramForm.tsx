@@ -126,7 +126,12 @@ const ProgramForm = ({
             )}
 
             <div className={styles.formActions}>
-                <button type="button" onClick={onCancel} disabled={isPending}>
+                <button
+                    className={styles.cancelButton}
+                    type="button"
+                    onClick={onCancel}
+                    disabled={isPending}
+                >
                     Avbryt
                 </button>
 

@@ -57,6 +57,11 @@ const SchoolClassForm = ({
             return;
         }
 
+        if (name.trim().length > 100) {
+            setValidationError("Klassnamnet får vara max 100 tecken.");
+            return;
+        }
+
         if (programId === null) {
             setValidationError("Välj en utbildning.");
             return;
@@ -92,6 +97,7 @@ const SchoolClassForm = ({
                     className={styles.input}
                     type="text"
                     value={name}
+                    maxLength={100}
                     onChange={(e) => setName(e.target.value)}
                     disabled={isPending}
                     required
@@ -162,7 +168,12 @@ const SchoolClassForm = ({
             )}
 
             <div className={styles.formActions}>
-                <button type="button" onClick={onCancel} disabled={isPending}>
+                <button
+                    className={styles.cancelButton}
+                    type="button"
+                    onClick={onCancel}
+                    disabled={isPending}
+                >
                     Avbryt
                 </button>
 
