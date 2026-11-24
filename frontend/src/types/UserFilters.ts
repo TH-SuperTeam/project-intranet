@@ -1,8 +1,11 @@
-import type { StatusFilter } from "./StatusFilter";
+import type { SchoolName } from "./SchoolName";
+import type { Status } from "./Status";
+import type { UserType } from "./UserType";
 
 export interface UserFilters {
-    school: "TH" | "VH" | null;
+    school: SchoolName | null;
     programId: number | null;
     classId: number | null;
-    status: StatusFilter;
+    status: Status | null;
+    userType: UserType | null;
 }

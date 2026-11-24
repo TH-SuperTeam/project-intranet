@@ -9,6 +9,7 @@ import VHUnderline from "../assets/vh-underline.svg?react";
 import VHCircle from "../assets/vh-circle.svg?react";
 import VHNotes from "../assets/vh-notes.svg?react";
 import VHHeart from "../assets/vh-heart.svg?react";
+import { SchoolName } from "../types/SchoolName";
 
 const LoginPage = () => {
     const [email, setEmail] = useState("");
@@ -58,13 +59,13 @@ const LoginPage = () => {
             <section className={styles.welcomeSection}>
                 <div className={styles.welcomeLogos}>
                     <Logo
-                        school="TH"
+                        school={SchoolName.TH}
                         variant="horizontal"
                         className={styles.thLogo}
                     />
                     <div className={styles.vhBrand}>
                         <Logo
-                            school="VH"
+                            school={SchoolName.VH}
                             variant="horizontal"
                             className={styles.vhLogo}
                         />
@@ -115,12 +116,12 @@ const LoginPage = () => {
                     <div className={styles.cardHeader}>
                         <div className={styles.loginLogos}>
                             <Logo
-                                school="TH"
+                                school={SchoolName.TH}
                                 variant="stacked"
                                 className={styles.loginThLogo}
                             />
                             <Logo
-                                school="VH"
+                                school={SchoolName.VH}
                                 variant="stacked"
                                 className={styles.loginVhLogo}
                             />
@@ -167,7 +168,7 @@ const LoginPage = () => {
                                     autoComplete="username"
                                     placeholder="namn@teknikhogskolan.se"
                                     value={email}
-                                    onChange={(e) => setEmail(e.target.value)}
+                                    onChange={e => setEmail(e.target.value)}
                                     required
                                     className={styles.input}
                                 />
@@ -204,9 +205,7 @@ const LoginPage = () => {
                                     autoComplete="current-password"
                                     placeholder="Ditt lösenord"
                                     value={password}
-                                    onChange={(e) =>
-                                        setPassword(e.target.value)
-                                    }
+                                    onChange={e => setPassword(e.target.value)}
                                     required
                                     className={styles.input}
                                 />
