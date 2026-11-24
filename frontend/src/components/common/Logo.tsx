@@ -5,11 +5,12 @@ import THStacked from "../../assets/logo-th-stacked.svg?react";
 import THHorizontal from "../../assets/logo-th-horizontal.svg?react";
 import VHStacked from "../../assets/logo-vh-stacked.svg?react";
 import VHHorizontal from "../../assets/logo-vh-horizontal.svg?react";
+import type { SchoolName } from "../../types/SchoolName";
 
 type LogoProps = {
     variant?: "stacked" | "horizontal";
     className?: string;
-    school?: "TH" | "VH";
+    school?: SchoolName;
 };
 
 export default function Logo({

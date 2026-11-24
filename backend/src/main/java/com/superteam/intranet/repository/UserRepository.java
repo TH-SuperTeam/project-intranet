@@ -3,6 +3,7 @@ package com.superteam.intranet.repository;
 
 import com.superteam.intranet.model.User;
 import com.superteam.intranet.model.UserStatus;
+import com.superteam.intranet.model.UserType;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -32,12 +33,9 @@ public interface UserRepository extends JpaRepository<User, Long> {
         AND (:programId IS NULL OR u.program.id = :programId)
         AND (:classId IS NULL OR u.schoolClass.id = :classId)
         AND (:school IS NULL OR u.program.school.name = :school)
-        AND (:statusFilter = 'ALL'
-             OR (:statusFilter = 'ACTIVE'
-        AND u.status = com.superteam.intranet.model.UserStatus.ACTIVE)
-             OR (:statusFilter = 'INACTIVE'
-        AND u.status <> com.superteam.intranet.model.UserStatus.ACTIVE)
-        )ORDER BY
+        AND (:userType IS NULL OR u.userType = :userType)
+        AND (:status IS NULL OR u.status = :status)
+        ORDER BY
             CASE WHEN u.status = com.superteam.intranet.model.UserStatus.ACTIVE
                 THEN 0 ELSE 1 END,
             u.lastName,
@@ -49,7 +47,8 @@ public interface UserRepository extends JpaRepository<User, Long> {
             @Param("school") SchoolName school,
             @Param("programId") Long programId,
             @Param("classId") Long classId,
-            @Param("statusFilter") String statusFilter,
+            @Param("status") UserStatus status,
+            @Param("userType") UserType userType,
             Pageable pageable
     );
 
@@ -65,6 +64,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
         )
         AND (:programId IS NULL OR u.program.id = :programId)
         AND (:classId IS NULL OR u.schoolClass.id = :classId)
+        AND (:userType IS NULL OR u.userType = :userType)
         AND (:school IS NULL OR u.program.school.name = :school)
                 ORDER BY
             u.lastName,
@@ -76,6 +76,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
             @Param("school") SchoolName school,
             @Param("programId") Long programId,
             @Param("classId") Long classId,
+            @Param("userType") UserType userType,
             Pageable pageable
     );
 }

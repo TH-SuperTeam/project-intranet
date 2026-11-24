@@ -4,11 +4,12 @@ import styles from "./Dashboard.module.css";
 import { useCurrentTime } from "../../hooks/useCurrentTime";
 import UserAvatar from "../common/UserAvatar";
 import { Link } from "react-router-dom";
+import type { SchoolName } from "../../types/SchoolName";
 
 interface DashboardHeaderProps {
     firstName: string;
     profileImageUrl?: string | null;
-    school?: "TH" | "VH" | null;
+    school?: SchoolName | null;
 }
 
 const DashboardHeader = ({

@@ -1,4 +1,6 @@
 import type { AccessRole } from "./AccessRole";
+import type { SchoolName } from "./SchoolName";
+import type { Status } from "./Status";
 import type { UserType } from "./UserType";
 
 export type AuthUser = {
@@ -8,8 +10,8 @@ export type AuthUser = {
     email: string;
     userType: UserType;
     accessRole: AccessRole;
-    status: string;
+    status: Status;
     createdAt: string;
     profileImageUrl: string | null;
-    school: "TH" | "VH" | null;
+    school: SchoolName | null;
 };
