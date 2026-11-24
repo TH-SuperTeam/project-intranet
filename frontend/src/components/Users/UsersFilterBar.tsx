@@ -99,39 +99,61 @@ const UsersFilterBar = ({
                 onChange={value =>
                     onClassChange(value === "" ? null : Number(value))
                 }
-                disabled={filters.programId === null}
+                disabled={
+                    filters.programId === null ||
+                    filters.userType === UserType.TEACHER
+                }
             />
+            <div className={styles.userTypeRow}>
+                <div
+                    role="group"
+                    aria-label="Användartyp"
+                    className={styles.userTypeGroup}
+                >
+                    {userTypeOptions.map(option => {
+                        const isDisabled =
+                            option.value === UserType.TEACHER &&
+                            filters.classId !== null;
 
-            <div
-                role="group"
-                aria-label="Användartyp"
-                className={styles.userTypeGroup}
-            >
-                {userTypeOptions.map(option => (
-                    <button
-                        key={option.value ?? "ALL"}
-                        type="button"
-                        aria-pressed={filters.userType === option.value}
-                        onClick={() => onUserTypeChange(option.value)}
-                        className={styles.userTypeButton}
-                    >
-                        {option.label}
-                    </button>
-                ))}
+                        return (
+                            <button
+                                key={option.value ?? "ALL"}
+                                type="button"
+                                aria-pressed={filters.userType === option.value}
+                                onClick={() => onUserTypeChange(option.value)}
+                                disabled={isDisabled}
+                                title={
+                                    isDisabled
+                                        ? "Rensa klassfilter för att visa lärare"
+                                        : undefined
+                                }
+                                className={styles.userTypeButton}
+                            >
+                                {option.label}
+                            </button>
+                        );
+                    })}
+                </div>
+
+                {/* Status visas bara för admin. null visas som standardalternativet (""). */}
+                {isAdmin && (
+                    <div className={styles.statusField}>
+                        <FilterSelect
+                            label="Status"
+                            value={
+                                filters.status === null ? "" : filters.status
+                            }
+                            options={statusOptions}
+                            defaultLabel="Alla"
+                            onChange={value =>
+                                onStatusChange(
+                                    value === "" ? null : (value as Status),
+                                )
+                            }
+                        />
+                    </div>
+                )}
             </div>
-
-            {/* Status visas bara för admin. null visas som standardalternativet (""). */}
-            {isAdmin && (
-                <FilterSelect
-                    label="Status"
-                    value={filters.status === null ? "" : filters.status}
-                    options={statusOptions}
-                    defaultLabel="Alla"
-                    onChange={value =>
-                        onStatusChange(value === "" ? null : (value as Status))
-                    }
-                />
-            )}
         </div>
     );
 };

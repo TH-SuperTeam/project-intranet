@@ -6,9 +6,20 @@
 }
 
 /* ===== USER TYPE BUTTONS ===== */
+.userTypeRow {
+    grid-column: 1 / -1; /* egen rad i filterBar-griden */
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end; /* knapparna linjerar med botten på dropdownen */
+    gap: 0.75rem;
+}
+
+.statusField {
+    flex: 0 1 220px;
+    min-width: 180px;
+}
 
 .userTypeGroup {
-    grid-column: 1 / -1; /* egen rad i filterBar-griden */
     display: flex;
     flex-wrap: wrap;
     gap: 0.5rem;
@@ -32,7 +43,7 @@
         color 0.2s ease;
 }
 
-.userTypeButton:hover {
+.userTypeButton:hover:not(:disabled) {
     border-color: var(--color-border-hover);
     background-color: var(--color-primary-soft);
 }
@@ -50,10 +61,19 @@
     font-weight: 600;
 }
 
+.userTypeButton:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
 /* Små skärmar: knapparna delar lika på bredden */
 @media (max-width: 600px) {
     .userTypeButton {
         flex: 1;
         padding-inline: 0.5rem;
+    }
+
+    .statusField {
+        flex: 1 1 100%; /* full bredd på mobil */
     }
 }

@@ -2,7 +2,7 @@ import { useState } from "react";
 import type { Program } from "../../types/Program";
 import type { SchoolName } from "../../types/SchoolName";
 import type { Status } from "../../types/Status";
-import type { UserType } from "../../types/UserType";
+import { UserType } from "../../types/UserType";
 
 const useUserFilters = (programs: Program[] | undefined) => {
     // Valda filter. null = standardalternativet (Alla skolor, Alla program osv.)
@@ -36,6 +36,13 @@ const useUserFilters = (programs: Program[] | undefined) => {
         setClassId(null);
     };
 
+    const changeUserType = (newUserType: UserType | null) => {
+        setUserType(newUserType);
+        if (newUserType === UserType.TEACHER) {
+            setClassId(null);
+        }
+    };
+
     const reset = () => {
         setSchool(null);
         setProgramId(null);
@@ -54,7 +61,7 @@ const useUserFilters = (programs: Program[] | undefined) => {
         changeProgram,
         changeClass: setClassId,
         changeStatus: setStatus,
-        changeUserType: setUserType,
+        changeUserType,
         reset,
     };
 };
