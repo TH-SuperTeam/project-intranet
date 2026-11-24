@@ -74,6 +74,7 @@ public class SchoolClassService {
         validateDates(request.startDate(), request.endDate());
 
         Program program = findProgramById(request.programId());
+        validateActiveProgram(program);
 
         if (schoolClassRepository.existsByProgramIdAndStartDate(
                 request.programId(), request.startDate())) {
@@ -109,6 +110,11 @@ public class SchoolClassService {
 
         SchoolClass schoolClass = findClassById(id);
         Program program = findProgramById(request.programId());
+
+        // Kontrollera att utbildningen är aktiv vid byte av utbildning
+        if (!schoolClass.getProgram().getId().equals(request.programId())) {
+            validateActiveProgram(program);
+        }
 
         if (schoolClassRepository.existsByProgramIdAndStartDateAndIdNot(
                 request.programId(), request.startDate(), id)) {
@@ -200,6 +206,16 @@ public class SchoolClassService {
             throw new ResponseStatusException(
                     HttpStatus.BAD_REQUEST,
                     "Slutdatum får inte vara före startdatum"
+            );
+        }
+    }
+
+    // Hjälpmetod: kontrollera att utbildningen är aktiv
+    private void validateActiveProgram(Program program) {
+        if (!program.isActive()) {
+            throw new ResponseStatusException(
+                    HttpStatus.CONFLICT,
+                    "Utbildningen är arkiverad"
             );
         }
     }

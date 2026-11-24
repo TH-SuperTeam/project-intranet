@@ -82,7 +82,14 @@ public class ProgramService {
     // Uppdatera en utbildning
     public ProgramResponse updateProgram(Long id, ProgramRequest request) {
         Program program = findProgramById(id);
-        School school = findSchoolById(request.schoolId());
+
+        // Förhindra byte av skoltillhörighet
+        if (!program.getSchool().getId().equals(request.schoolId())) {
+            throw new ResponseStatusException(
+                    HttpStatus.BAD_REQUEST,
+                    "Utbildningens skoltillhörighet kan inte ändras"
+            );
+        };
 
         if (programRepository.existsByNameAndSchoolIdAndIdNot(
                 request.name(), request.schoolId(), id)) {
@@ -93,7 +100,6 @@ public class ProgramService {
         }
 
         program.setName(request.name());
-        program.setSchool(school);
 
         try {
             Program updatedProgram = programRepository.saveAndFlush(program);
