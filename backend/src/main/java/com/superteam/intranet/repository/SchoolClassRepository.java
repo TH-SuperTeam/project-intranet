@@ -25,4 +25,12 @@ public interface SchoolClassRepository extends JpaRepository<SchoolClass, Long> 
             LocalDate startDate,
             Long id
     );
+
+    // Hämta aktiva klasser inom aktiva program
+    List<SchoolClass> findByIsActiveTrueAndProgram_IsActiveTrue();
+
+    // Hämta aktiva klasser för ett specifikt aktivt program
+    List<SchoolClass> findByProgramIdAndIsActiveTrueAndProgram_IsActiveTrue(
+            Long programId
+    );
 }

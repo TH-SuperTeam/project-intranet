@@ -32,22 +32,32 @@ public class SchoolClassService {
         this.programRepository = programRepository;
     }
 
-    // Hämta alla klasser
+    // Hämta klasser med möjlighet att inkludera arkiverade
     @Transactional(readOnly = true)
-    public List<SchoolClassResponse> getAllClasses() {
-        return schoolClassRepository.findAll()
-                .stream()
+    public List<SchoolClassResponse> getAllClasses(boolean includeArchived) {
+        List<SchoolClass> classes = includeArchived
+                ? schoolClassRepository.findAll()
+                : schoolClassRepository.findByIsActiveTrueAndProgram_IsActiveTrue();
+
+        return classes.stream()
                 .map(SchoolClassMapper::toResponse)
                 .toList();
     }
 
     // Hämta klasser för en specifik utbildning
     @Transactional(readOnly = true)
-    public List<SchoolClassResponse> getClassesByProgramId(Long programId) {
+    public List<SchoolClassResponse> getClassesByProgramId(
+            Long programId,
+            boolean includeArchived
+    ) {
         findProgramById(programId);
 
-        return schoolClassRepository.findByProgramId(programId)
-                .stream()
+        List<SchoolClass> classes = includeArchived
+                ? schoolClassRepository.findByProgramId(programId)
+                : schoolClassRepository
+                .findByProgramIdAndIsActiveTrueAndProgram_IsActiveTrue(programId);
+
+        return classes.stream()
                 .map(SchoolClassMapper::toResponse)
                 .toList();
     }

@@ -22,12 +22,13 @@ public class ProgramController {
         this.programService = programService;
     }
 
-    // Hämta alla utbildningar
+    // Hämta utbildningar
     @GetMapping
-    public List<ProgramResponse> getAllPrograms() {
-        return programService.getAllPrograms();
+    public List<ProgramResponse> getAllPrograms(
+            @RequestParam(defaultValue = "false") boolean includeArchived
+    ) {
+        return programService.getAllPrograms(includeArchived);
     }
-
     // Hämta en utbildning via ID
     @GetMapping("/{id}")
     public ProgramResponse getProgramById(@PathVariable Long id) {

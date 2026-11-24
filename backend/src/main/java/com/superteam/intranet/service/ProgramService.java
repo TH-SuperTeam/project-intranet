@@ -35,10 +35,14 @@ public class ProgramService {
         this.schoolClassRepository = schoolClassRepository;
     }
 
-    // Hämta alla utbildningar
-    public List<ProgramResponse> getAllPrograms() {
-        return programRepository.findAll()
-                .stream()
+    // Hämta utbildningar med möjlighet att inkludera arkiverade
+    @Transactional(readOnly = true)
+    public List<ProgramResponse> getAllPrograms(boolean includeArchived) {
+        List<Program> programs = includeArchived
+                ? programRepository.findAll()
+                : programRepository.findByIsActiveTrue();
+
+        return programs.stream()
                 .map(ProgramMapper::toResponse)
                 .toList();
     }
