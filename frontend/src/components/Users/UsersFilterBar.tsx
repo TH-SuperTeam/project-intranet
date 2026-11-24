@@ -27,7 +27,7 @@ const schoolOptions = [
     { value: "VH", label: "Vårdyrkeshögskolan" },
 ];
 
-const statusOptions = Object.values(Status).map(status => ({
+const statusOptions = Object.values(Status).map((status) => ({
     value: status,
     label: statusLabels[status],
 }));
@@ -76,13 +76,8 @@ const UsersFilterBar = ({
                 value={filters.school ?? ""}
                 options={schoolOptions}
                 defaultLabel="Alla skolor"
-<<<<<<< HEAD
                 onChange={(value) =>
-                    onSchoolChange(value === "" ? null : (value as School))
-=======
-                onChange={value =>
                     onSchoolChange(value === "" ? null : (value as SchoolName))
->>>>>>> origin/dev
                 }
             />
 
@@ -119,27 +114,11 @@ const UsersFilterBar = ({
                     aria-label="Användartyp"
                     className={styles.userTypeGroup}
                 >
-                    {userTypeOptions.map(option => {
+                    {userTypeOptions.map((option) => {
                         const isDisabled =
                             option.value === UserType.TEACHER &&
                             filters.classId !== null;
 
-<<<<<<< HEAD
-            {/* Status visas bara för admin. "ALL" visas som standardalternativet (""). */}
-            {isAdmin && (
-                <FilterSelect
-                    label="Status"
-                    value={filters.status === "ALL" ? "" : filters.status}
-                    options={statusOptions}
-                    defaultLabel="Alla"
-                    onChange={(value) =>
-                        onStatusChange(
-                            value === "" ? "ALL" : (value as StatusFilter),
-                        )
-                    }
-                />
-            )}
-=======
                         return (
                             <button
                                 key={option.value ?? "ALL"}
@@ -170,7 +149,7 @@ const UsersFilterBar = ({
                             }
                             options={statusOptions}
                             defaultLabel="Alla"
-                            onChange={value =>
+                            onChange={(value) =>
                                 onStatusChange(
                                     value === "" ? null : (value as Status),
                                 )
@@ -187,7 +166,6 @@ const UsersFilterBar = ({
                     Rensa filter
                 </button>
             </div>
->>>>>>> origin/dev
         </div>
     );
 };
