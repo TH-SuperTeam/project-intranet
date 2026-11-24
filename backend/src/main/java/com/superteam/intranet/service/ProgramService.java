@@ -103,6 +103,26 @@ public class ProgramService {
         }
     }
 
+    // Arkivera en utbildning
+    @Transactional
+    public ProgramResponse archiveProgram(Long id) {
+        Program program = findProgramById(id);
+
+        program.setActive(false);
+
+        return ProgramMapper.toResponse(program);
+    }
+
+    // Återaktivera en utbildning
+    @Transactional
+    public ProgramResponse restoreProgram(Long id) {
+        Program program = findProgramById(id);
+
+        program.setActive(true);
+
+        return ProgramMapper.toResponse(program);
+    }
+
     // Ta bort en utbildning
     @Transactional
     public void deleteProgram(Long id) {

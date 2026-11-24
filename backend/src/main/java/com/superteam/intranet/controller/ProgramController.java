@@ -52,6 +52,18 @@ public class ProgramController {
         return programService.updateProgram(id, request);
     }
 
+    // Arkivera en utbildning
+    @PatchMapping("/{id}/archive")
+    public ProgramResponse archiveProgram(@PathVariable Long id) {
+        return programService.archiveProgram(id);
+    }
+
+    // Återaktivera en utbildning
+    @PatchMapping("/{id}/restore")
+    public ProgramResponse restoreProgram(@PathVariable Long id) {
+        return programService.restoreProgram(id);
+    }
+
     // Ta bort en utbildning
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)

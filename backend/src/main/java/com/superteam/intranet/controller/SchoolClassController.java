@@ -58,6 +58,18 @@ public class SchoolClassController {
         return schoolClassService.updateClass(id, request);
     }
 
+    // Arkivera en klass
+    @PatchMapping("/{id}/archive")
+    public SchoolClassResponse archiveClass(@PathVariable Long id) {
+        return schoolClassService.archiveClass(id);
+    }
+
+    // Återaktivera en klass
+    @PatchMapping("/{id}/restore")
+    public SchoolClassResponse restoreClass(@PathVariable Long id) {
+        return schoolClassService.restoreClass(id);
+    }
+
     // Ta bort en klass
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)

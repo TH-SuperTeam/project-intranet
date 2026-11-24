@@ -127,6 +127,26 @@ public class SchoolClassService {
         }
     }
 
+    // Arkivera en klass
+    @Transactional
+    public SchoolClassResponse archiveClass(Long id) {
+        SchoolClass schoolClass = findClassById(id);
+
+        schoolClass.setActive(false);
+
+        return SchoolClassMapper.toResponse(schoolClass);
+    }
+
+    // Återaktivera en klass
+    @Transactional
+    public SchoolClassResponse restoreClass(Long id) {
+        SchoolClass schoolClass = findClassById(id);
+
+        schoolClass.setActive(true);
+
+        return SchoolClassMapper.toResponse(schoolClass);
+    }
+
     // Ta bort en klass
     @Transactional
     public void deleteClass(Long id) {
