@@ -1,15 +1,18 @@
 import { Users } from "lucide-react";
 import type { SchoolClass } from "../../types/SchoolClass";
+import EditButton from "../common/EditButton";
 import styles from "./Education.module.css";
 
 type SchoolClassRowProps = {
     schoolClass: SchoolClass;
     isProgramActive: boolean;
+    onEdit: (schoolClass: SchoolClass) => void;
 };
 
 const SchoolClassRow = ({
     schoolClass,
     isProgramActive,
+    onEdit,
 }: SchoolClassRowProps) => {
     const isAvailable = schoolClass.isActive && isProgramActive;
 
@@ -38,6 +41,7 @@ const SchoolClassRow = ({
                       ? "Ej valbar"
                       : "Aktiv"}
             </span>
+            <EditButton iconOnly onClick={() => onEdit(schoolClass)} />
         </div>
     );
 };

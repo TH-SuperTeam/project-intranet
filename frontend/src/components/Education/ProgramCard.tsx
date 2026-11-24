@@ -1,17 +1,26 @@
-import { GraduationCap } from "lucide-react";
+import { GraduationCap, Plus } from "lucide-react";
 import type { Program } from "../../types/Program";
 import type { SchoolClass } from "../../types/SchoolClass";
-import EditButton from "../common/EditButton";
 import SchoolClassRow from "./SchoolClassRow";
+import EditButton from "../common/EditButton";
+import CreateButton from "../common/CreateButton";
 import styles from "./Education.module.css";
 
 type ProgramCardProps = {
     program: Program;
     classes: SchoolClass[];
     onEdit: (program: Program) => void;
+    onCreateClass: (programId: number) => void;
+    onEditClass: (schoolClass: SchoolClass) => void;
 };
 
-const ProgramCard = ({ program, classes, onEdit }: ProgramCardProps) => {
+const ProgramCard = ({
+    program,
+    classes,
+    onEdit,
+    onCreateClass,
+    onEditClass,
+}: ProgramCardProps) => {
     return (
         <article className={styles.programCard}>
             <div className={styles.programHeader}>
@@ -35,6 +44,7 @@ const ProgramCard = ({ program, classes, onEdit }: ProgramCardProps) => {
                 >
                     {program.isActive ? "Aktiv" : "Arkiverad"}
                 </span>
+
                 <EditButton iconOnly onClick={() => onEdit(program)} />
             </div>
 
@@ -49,10 +59,20 @@ const ProgramCard = ({ program, classes, onEdit }: ProgramCardProps) => {
                             key={schoolClass.id}
                             schoolClass={schoolClass}
                             isProgramActive={program.isActive}
+                            onEdit={onEditClass}
                         />
                     ))
                 )}
             </div>
+
+            {program.isActive && (
+                <div className={styles.programActions}>
+                    <CreateButton onClick={() => onCreateClass(program.id)}>
+                        <Plus size={16} />
+                        Lägg till klass
+                    </CreateButton>
+                </div>
+            )}
         </article>
     );
 };

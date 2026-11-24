@@ -11,6 +11,10 @@ import FormModal from "../components/common/FormModal";
 import CreateButton from "../components/common/CreateButton";
 import type { Program } from "../types/Program";
 import type { ProgramRequest } from "../types/ProgramRequest";
+import SchoolClassForm from "../components/Education/SchoolClassForm";
+import { useSchoolClassMutations } from "../hooks/EducationHooks/useSchoolClassMutations";
+import type { SchoolClass } from "../types/SchoolClass";
+import type { SchoolClassRequest } from "../types/SchoolClassRequest";
 import styles from "../components/Education/Education.module.css";
 
 const schools = [
@@ -27,11 +31,33 @@ const EducationPage = () => {
         undefined,
     );
 
+    const [isClassFormOpen, setIsClassFormOpen] = useState(false);
+
+    const [editingClass, setEditingClass] = useState<SchoolClass | undefined>(
+        undefined,
+    );
+
+    const [defaultProgramId, setDefaultProgramId] = useState<
+        number | undefined
+    >(undefined);
+
     const programsQuery = usePrograms(includeArchived);
     const classesQuery = useAllClasses(includeArchived);
     const schoolsQuery = useSchools();
 
     const { createMutation, updateMutation } = useProgramMutations();
+
+    const {
+        createMutation: createClassMutation,
+        updateMutation: updateClassMutation,
+    } = useSchoolClassMutations();
+
+    const isClassFormPending =
+        createClassMutation.isPending || updateClassMutation.isPending;
+
+    const classFormError = editingClass
+        ? updateClassMutation.error?.message
+        : createClassMutation.error?.message;
 
     const programs = programsQuery.data ?? [];
     const classes = classesQuery.data ?? [];
@@ -85,6 +111,48 @@ const EducationPage = () => {
         } else {
             createMutation.mutate(request, {
                 onSuccess: closeProgramForm,
+            });
+        }
+    };
+
+    const openCreateClass = (programId: number) => {
+        createClassMutation.reset();
+        updateClassMutation.reset();
+
+        setEditingClass(undefined);
+        setDefaultProgramId(programId);
+        setIsClassFormOpen(true);
+    };
+
+    const openEditClass = (schoolClass: SchoolClass) => {
+        createClassMutation.reset();
+        updateClassMutation.reset();
+
+        setEditingClass(schoolClass);
+        setDefaultProgramId(undefined);
+        setIsClassFormOpen(true);
+    };
+
+    const closeClassForm = () => {
+        setIsClassFormOpen(false);
+        setEditingClass(undefined);
+        setDefaultProgramId(undefined);
+    };
+
+    const handleClassSubmit = (request: SchoolClassRequest) => {
+        if (editingClass) {
+            updateClassMutation.mutate(
+                {
+                    id: editingClass.id,
+                    schoolClass: request,
+                },
+                {
+                    onSuccess: closeClassForm,
+                },
+            );
+        } else {
+            createClassMutation.mutate(request, {
+                onSuccess: closeClassForm,
             });
         }
     };
@@ -154,6 +222,8 @@ const EducationPage = () => {
                                                     program.id,
                                             )}
                                             onEdit={openEditProgram}
+                                            onCreateClass={openCreateClass}
+                                            onEditClass={openEditClass}
                                         />
                                     ))
                                 )}
@@ -181,6 +251,25 @@ const EducationPage = () => {
                         errorMessage={formError}
                         onSubmit={handleProgramSubmit}
                         onCancel={closeProgramForm}
+                    />
+                </FormModal>
+            )}
+
+            {isClassFormOpen && (
+                <FormModal
+                    title={editingClass ? "Redigera klass" : "Skapa klass"}
+                    onClose={closeClassForm}
+                    isPending={isClassFormPending}
+                >
+                    <SchoolClassForm
+                        key={editingClass?.id ?? "create"}
+                        schoolClass={editingClass}
+                        defaultProgramId={defaultProgramId}
+                        programs={programs}
+                        isPending={isClassFormPending}
+                        errorMessage={classFormError}
+                        onSubmit={handleClassSubmit}
+                        onCancel={closeClassForm}
                     />
                 </FormModal>
             )}
