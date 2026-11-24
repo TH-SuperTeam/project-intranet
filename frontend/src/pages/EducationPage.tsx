@@ -7,7 +7,7 @@ import { useProgramMutations } from "../hooks/EducationHooks/useProgramMutations
 import { useProgramForm } from "../hooks/EducationHooks/useProgramForm";
 import { useSchoolClassForm } from "../hooks/EducationHooks/useSchoolClassForm";
 import { useEducationActions } from "../hooks/EducationHooks/useEducationActions";
-import { ListSkeleton } from "../components/Loaders/Skeletons/ListSkeleton";
+import { EducationSkeleton } from "../components/Loaders/Skeletons/EducationSkeleton";
 import ProgramCard from "../components/Education/ProgramCard";
 import ProgramForm from "../components/Education/ProgramForm";
 import FormModal from "../components/common/FormModal";
@@ -107,7 +107,7 @@ const EducationPage = () => {
             </div>
 
             {isPending ? (
-                <ListSkeleton variant="list" count={4} />
+                <EducationSkeleton />
             ) : isError ? (
                 <p>Kunde inte hämta utbildningar.</p>
             ) : (

@@ -445,6 +445,25 @@
     cursor: not-allowed;
 }
 
+/* ===== EDUCATION SKELETON ===== */
+
+.programCard[aria-hidden="true"] .activeStatus {
+    background: transparent;
+    padding: 0;
+}
+
+.programCard[aria-hidden="true"] .activeStatus::before {
+    display: none;
+}
+
+.programCard[aria-hidden="true"] .programIcon {
+    background: transparent;
+}
+
+.programCard[aria-hidden="true"]:hover {
+    border-color: var(--color-border);
+}
+
 /* ===== RESPONSIVE ===== */
 
 /* Medium: 640px+ */
