@@ -27,7 +27,7 @@ public class SchoolClassMapper {
     ) {
         SchoolClass schoolClass = new SchoolClass();
 
-        schoolClass.setName(request.name());
+        schoolClass.setName(request.name().trim());
         schoolClass.setStartDate(request.startDate());
         schoolClass.setEndDate(request.endDate());
         schoolClass.setProgram(program);

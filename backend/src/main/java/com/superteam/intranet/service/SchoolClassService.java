@@ -76,11 +76,11 @@ public class SchoolClassService {
         Program program = findProgramById(request.programId());
         validateActiveProgram(program);
 
-        if (schoolClassRepository.existsByProgramIdAndStartDate(
-                request.programId(), request.startDate())) {
+        if (schoolClassRepository.existsByProgramIdAndNameIgnoreCase(
+                request.programId(), request.name().trim())) {
             throw new ResponseStatusException(
                     HttpStatus.CONFLICT,
-                    "Det finns redan en klass med detta startdatum på utbildningen"
+                    "Det finns redan en klass med detta namn på utbildningen"
             );
         }
 
@@ -116,15 +116,15 @@ public class SchoolClassService {
             validateActiveProgram(program);
         }
 
-        if (schoolClassRepository.existsByProgramIdAndStartDateAndIdNot(
-                request.programId(), request.startDate(), id)) {
+        if (schoolClassRepository.existsByProgramIdAndNameIgnoreCase(
+                request.programId(), request.name().trim())) {
             throw new ResponseStatusException(
                     HttpStatus.CONFLICT,
-                    "Det finns redan en klass med detta startdatum på utbildningen"
+                    "Det finns redan en klass med detta namn på utbildningen"
             );
         }
 
-        schoolClass.setName(request.name());
+        schoolClass.setName(request.name().trim());
         schoolClass.setStartDate(request.startDate());
         schoolClass.setEndDate(request.endDate());
         schoolClass.setProgram(program);
