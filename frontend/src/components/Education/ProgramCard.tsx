@@ -5,6 +5,7 @@ import SchoolClassRow from "./SchoolClassRow";
 import EditButton from "../common/EditButton";
 import CreateButton from "../common/CreateButton";
 import ArchiveButton from "../common/ArchiveButton";
+import DeleteButton from "../common/DeleteButton";
 import styles from "./Education.module.css";
 
 type ProgramCardProps = {
@@ -15,6 +16,8 @@ type ProgramCardProps = {
     onEditClass: (schoolClass: SchoolClass) => void;
     onToggleArchive: (program: Program) => void;
     onToggleClassArchive: (schoolClass: SchoolClass) => void;
+    onDelete: (program: Program) => void;
+    onDeleteClass: (schoolClass: SchoolClass) => void;
 };
 
 const ProgramCard = ({
@@ -25,6 +28,8 @@ const ProgramCard = ({
     onEditClass,
     onToggleArchive,
     onToggleClassArchive,
+    onDelete,
+    onDeleteClass,
 }: ProgramCardProps) => {
     return (
         <article className={styles.programCard}>
@@ -57,6 +62,13 @@ const ProgramCard = ({
                         isActive={program.isActive}
                         onClick={() => onToggleArchive(program)}
                     />
+
+                    {!program.isActive && (
+                        <DeleteButton
+                            iconOnly
+                            onClick={() => onDelete(program)}
+                        />
+                    )}
                 </div>
             </div>
 
@@ -73,6 +85,7 @@ const ProgramCard = ({
                             isProgramActive={program.isActive}
                             onEdit={onEditClass}
                             onToggleArchive={onToggleClassArchive}
+                            onDelete={onDeleteClass}
                         />
                     ))
                 )}

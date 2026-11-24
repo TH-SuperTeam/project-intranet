@@ -27,10 +27,16 @@ type ArchiveTarget =
     | { type: "program"; item: Program }
     | { type: "class"; item: SchoolClass };
 
+type DeleteTarget =
+    | { type: "program"; item: Program }
+    | { type: "class"; item: SchoolClass };
+
 const EducationPage = () => {
     const [archiveTarget, setArchiveTarget] = useState<ArchiveTarget | null>(
         null,
     );
+
+    const [deleteTarget, setDeleteTarget] = useState<DeleteTarget | null>(null);
 
     const [includeArchived, setIncludeArchived] = useState(false);
 
@@ -59,6 +65,7 @@ const EducationPage = () => {
         updateMutation,
         archiveMutation: archiveProgramMutation,
         restoreMutation: restoreProgramMutation,
+        deleteMutation: deleteProgramMutation,
     } = useProgramMutations();
 
     const {
@@ -66,6 +73,7 @@ const EducationPage = () => {
         updateMutation: updateClassMutation,
         archiveMutation: archiveClassMutation,
         restoreMutation: restoreClassMutation,
+        deleteMutation: deleteClassMutation,
     } = useSchoolClassMutations();
 
     const selectedArchiveMutation = archiveTarget
@@ -76,6 +84,12 @@ const EducationPage = () => {
             : archiveTarget.item.isActive
               ? archiveClassMutation
               : restoreClassMutation
+        : null;
+
+    const selectedDeleteMutation = deleteTarget
+        ? deleteTarget.type === "program"
+            ? deleteProgramMutation
+            : deleteClassMutation
         : null;
 
     const openArchiveDialog = (target: ArchiveTarget) => {
@@ -98,6 +112,27 @@ const EducationPage = () => {
 
         selectedArchiveMutation.mutate(archiveTarget.item.id, {
             onSuccess: closeArchiveDialog,
+        });
+    };
+
+    const openDeleteDialog = (target: DeleteTarget) => {
+        deleteProgramMutation.reset();
+        deleteClassMutation.reset();
+
+        setDeleteTarget(target);
+    };
+
+    const closeDeleteDialog = () => {
+        setDeleteTarget(null);
+    };
+
+    const handleDeleteConfirm = () => {
+        if (!deleteTarget || !selectedDeleteMutation) {
+            return;
+        }
+
+        selectedDeleteMutation.mutate(deleteTarget.item.id, {
+            onSuccess: closeDeleteDialog,
         });
     };
 
@@ -287,6 +322,18 @@ const EducationPage = () => {
                                                     item: schoolClass,
                                                 })
                                             }
+                                            onDelete={(program) =>
+                                                openDeleteDialog({
+                                                    type: "program",
+                                                    item: program,
+                                                })
+                                            }
+                                            onDeleteClass={(schoolClass) =>
+                                                openDeleteDialog({
+                                                    type: "class",
+                                                    item: schoolClass,
+                                                })
+                                            }
                                         />
                                     ))
                                 )}
@@ -379,6 +426,37 @@ const EducationPage = () => {
                     onCancel={closeArchiveDialog}
                     isPending={selectedArchiveMutation?.isPending}
                     errorMessage={selectedArchiveMutation?.error?.message}
+                />
+            )}
+
+            {deleteTarget && (
+                <ConfirmDialog
+                    title="Bekräfta permanent radering"
+                    message={
+                        <>
+                            <p>
+                                Vill du verkligen radera{" "}
+                                <strong>{deleteTarget.item.name}</strong>?
+                            </p>
+
+                            <p className="mt-2">
+                                Informationen tas bort permanent. Denna åtgärd
+                                går inte att ångra.
+                            </p>
+
+                            {deleteTarget.type === "program" && (
+                                <p className="mt-2">
+                                    Programmet kan inte raderas om det har
+                                    tillhörande klasser eller andra beroenden.
+                                </p>
+                            )}
+                        </>
+                    }
+                    confirmLabel="Radera"
+                    onConfirm={handleDeleteConfirm}
+                    onCancel={closeDeleteDialog}
+                    isPending={selectedDeleteMutation?.isPending}
+                    errorMessage={selectedDeleteMutation?.error?.message}
                 />
             )}
         </section>

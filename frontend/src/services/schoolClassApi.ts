@@ -100,7 +100,7 @@ export const deleteClass = async (id: number): Promise<void> => {
 
     if (response.status === 409) {
         throw new Error(
-            "Klassen kan inte raderas eftersom den har befintliga kopplingar.",
+            "Klassen kan inte raderas eftersom den har tilldelade elever eller schemalagda lektioner",
         );
     }
 

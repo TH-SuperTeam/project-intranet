@@ -2,6 +2,7 @@ import { Users } from "lucide-react";
 import type { SchoolClass } from "../../types/SchoolClass";
 import EditButton from "../common/EditButton";
 import ArchiveButton from "../common/ArchiveButton";
+import DeleteButton from "../common/DeleteButton";
 import styles from "./Education.module.css";
 
 type SchoolClassRowProps = {
@@ -9,6 +10,7 @@ type SchoolClassRowProps = {
     isProgramActive: boolean;
     onEdit: (schoolClass: SchoolClass) => void;
     onToggleArchive: (schoolClass: SchoolClass) => void;
+    onDelete: (schoolClass: SchoolClass) => void;
 };
 
 const SchoolClassRow = ({
@@ -16,6 +18,7 @@ const SchoolClassRow = ({
     isProgramActive,
     onEdit,
     onToggleArchive,
+    onDelete,
 }: SchoolClassRowProps) => {
     const isAvailable = schoolClass.isActive && isProgramActive;
 
@@ -51,6 +54,13 @@ const SchoolClassRow = ({
                     isActive={schoolClass.isActive}
                     onClick={() => onToggleArchive(schoolClass)}
                 />
+
+                {!schoolClass.isActive && (
+                    <DeleteButton
+                        iconOnly
+                        onClick={() => onDelete(schoolClass)}
+                    />
+                )}
             </div>
         </div>
     );
