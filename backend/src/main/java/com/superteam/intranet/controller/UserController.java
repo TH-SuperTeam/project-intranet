@@ -1,6 +1,7 @@
 package com.superteam.intranet.controller;
 
 import com.superteam.intranet.dto.*;
+import com.superteam.intranet.model.UserType;
 import com.superteam.intranet.service.UserService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
@@ -135,7 +136,8 @@ public UserResponse updateUserRole(
             @RequestParam(required = false) SchoolName school,
             @RequestParam(required = false) Long programId,
             @RequestParam(required = false) Long classId,
-            @RequestParam(defaultValue = "ALL") String statusFilter,
+            @RequestParam(required = false) UserStatus status,
+            @RequestParam(required = false) UserType userType,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size,
             Authentication authentication) {
@@ -148,7 +150,8 @@ public UserResponse updateUserRole(
                         school,
                         programId,
                         classId,
-                        statusFilter,
+                        status,
+                        userType,
                         page,
                         size,
                         userId

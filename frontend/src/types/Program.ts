@@ -1,7 +1,9 @@
+import type { SchoolName } from "./SchoolName";
+
 export interface Program {
     id: number;
     name: string;
     schoolId: number;
-    school: "TH" | "VH";
+    school: SchoolName;
     isActive: boolean;
 }

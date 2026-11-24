@@ -3,9 +3,10 @@ import type { Departure } from "../../types/Departure";
 
 interface DepartureCardProps {
     departure: Departure;
+    now: number;
 }
 
-const DepartureCard = ({ departure }: DepartureCardProps) => {
+const DepartureCard = ({ departure, now }: DepartureCardProps) => {
     const formattedScheduledTime = new Date(
         departure.scheduledDeparture,
     ).toLocaleTimeString("sv-SE", {
@@ -29,7 +30,7 @@ const DepartureCard = ({ departure }: DepartureCardProps) => {
 
     //Math.ceil avrundar uppåt
     const minutesUntilDeparture = Math.ceil(
-        (new Date(departure.estimatedDeparture).getTime() - Date.now()) / 60000,
+        (new Date(departure.estimatedDeparture).getTime() - now) / 60000,
     );
 
     return (

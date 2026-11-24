@@ -1,9 +1,10 @@
+import type { SchoolName } from "../../types/SchoolName";
 import type { UserType } from "../../types/UserType";
 import { formatEducation } from "../../utils/formatEducation";
 
 type UserBadgesProps = {
     userType: UserType;
-    school: "TH" | "VH" | null;
+    school: SchoolName | null;
     programName: string | null;
     className: string | null;
 };

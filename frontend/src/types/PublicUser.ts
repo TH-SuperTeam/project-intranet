@@ -1,3 +1,4 @@
+import type { SchoolName } from "./SchoolName";
 import type { UserType } from "./UserType";
 
 export interface PublicUser {
@@ -7,7 +8,7 @@ export interface PublicUser {
     email: string;
     profileImageUrl: string | null;
     userType: UserType;
-    school: "TH" | "VH" | null;
+    school: SchoolName | null;
     programId: number | null;
     programName: string | null;
     classId: number | null;

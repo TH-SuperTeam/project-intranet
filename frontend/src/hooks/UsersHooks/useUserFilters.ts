@@ -1,17 +1,18 @@
 import { useState } from "react";
 import type { Program } from "../../types/Program";
-import type { StatusFilter } from "../../types/StatusFilter";
-
-type School = "TH" | "VH";
+import type { SchoolName } from "../../types/SchoolName";
+import type { Status } from "../../types/Status";
+import { UserType } from "../../types/UserType";
 
 const useUserFilters = (programs: Program[] | undefined) => {
     // Valda filter. null = standardalternativet (Alla skolor, Alla program osv.)
-    const [school, setSchool] = useState<School | null>(null);
+    const [school, setSchool] = useState<SchoolName | null>(null);
     const [programId, setProgramId] = useState<number | null>(null);
     const [classId, setClassId] = useState<number | null>(null);
-    const [status, setStatus] = useState<StatusFilter>("ALL");
+    const [status, setStatus] = useState<Status | null>(null);
+    const [userType, setUserType] = useState<UserType | null>(null);
 
-    const changeSchool = (newSchool: School | null) => {
+    const changeSchool = (newSchool: SchoolName | null) => {
         setSchool(newSchool);
 
         // Hitta det program som är valt just nu
@@ -35,11 +36,19 @@ const useUserFilters = (programs: Program[] | undefined) => {
         setClassId(null);
     };
 
+    const changeUserType = (newUserType: UserType | null) => {
+        setUserType(newUserType);
+        if (newUserType === UserType.TEACHER) {
+            setClassId(null);
+        }
+    };
+
     const reset = () => {
         setSchool(null);
         setProgramId(null);
         setClassId(null);
-        setStatus("ALL");
+        setStatus(null);
+        setUserType(null);
     };
 
     return {
@@ -47,10 +56,12 @@ const useUserFilters = (programs: Program[] | undefined) => {
         programId,
         classId,
         status,
+        userType,
         changeSchool,
         changeProgram,
         changeClass: setClassId,
         changeStatus: setStatus,
+        changeUserType,
         reset,
     };
 };

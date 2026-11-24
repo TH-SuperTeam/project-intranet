@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom"
+import { Link, useLocation } from "react-router-dom"
 import type { News } from "../../types/News"
 import styles from "./News.module.css"
 import NewsImage from "../common/NewsImage"
@@ -8,6 +8,8 @@ interface NewsCardProps {
 }
 
 const NewsCard = ({ news }: NewsCardProps) => {
+  const location = useLocation()
+
   const formattedDate = new Date(news.createdAt).toLocaleDateString("sv-SE", {
     day: "numeric",
     month: "short",
@@ -27,7 +29,10 @@ const NewsCard = ({ news }: NewsCardProps) => {
         </div>
 
         <p className={styles.content}>{news.content}</p>
-        <Link to={`/news/${news.id}`} className={styles.readMore}>
+        <Link 
+          to={`/news/${news.id}`}
+          state={{ from: location.pathname + location.search }}
+          className={styles.readMore}>
           Läs mer...
         </Link>
       </div>
