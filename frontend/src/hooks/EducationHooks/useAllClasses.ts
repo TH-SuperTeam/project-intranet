@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { getClasses } from "../services/schoolClassApi";
+import { getClasses } from "../../services/schoolClassApi";
 
 const useAllClasses = (includeArchived: boolean = false) => {
     return useQuery({

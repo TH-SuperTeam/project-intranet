@@ -4,7 +4,7 @@ import SearchInput from "../components/common/SearchInput";
 import UsersList from "../components/Users/UsersList";
 import styles from "../components/Users/Users.module.css";
 import { useAuth } from "../hooks/useAuth";
-import { usePrograms } from "../hooks/usePrograms";
+import { usePrograms } from "../hooks/EducationHooks/usePrograms";
 import { useUsers } from "../hooks/UsersHooks/useUsers";
 import { useUserFilters } from "../hooks/UsersHooks/useUserFilters";
 import UsersFilterBar from "../components/Users/UsersFilterBar";
