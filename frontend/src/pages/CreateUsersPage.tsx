@@ -1,4 +1,4 @@
-import { getPrograms, getClassesByProgramId } from "../services/programApi";
+import { getClassesByProgramId } from "../services/programApi";
 import { useState, type FormEvent } from "react";
 import BackLink from "../components/common/BackLink";
 import UsersForm from "../components/Users/UsersForm";
@@ -6,6 +6,7 @@ import { AccessRole } from "../types/AccessRole";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { UserType } from "../types/UserType";
 import { createUser } from "../services/usersApi";
+import { usePrograms } from "../hooks/EducationHooks/usePrograms";
 import styles from "../components/Users/Users.module.css";
 
 const capitalize = (value: string) => {
@@ -27,10 +28,7 @@ const CreateUsersPage = () => {
 
     const queryClient = useQueryClient();
 
-    const programsQuery = useQuery({
-        queryKey: ["programs"],
-        queryFn: getPrograms,
-    });
+    const programsQuery = usePrograms();
 
     const classesQuery = useQuery({
         queryKey: ["classes", programId],

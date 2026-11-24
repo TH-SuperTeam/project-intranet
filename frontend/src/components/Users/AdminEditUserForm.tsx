@@ -2,8 +2,9 @@ import { useState, type FormEvent } from "react";
 import { useQuery } from "@tanstack/react-query";
 import type { UserProfile } from "../../types/UserProfile";
 import { UserType } from "../../types/UserType";
-import { getPrograms, getClassesByProgramId } from "../../services/programApi";
+import { getClassesByProgramId } from "../../services/programApi";
 import useUpdateUserByAdmin from "../../hooks/UsersHooks/useUpdateUserByAdmin";
+import { usePrograms } from "../../hooks/EducationHooks/usePrograms";
 import SubmitButton from "../common/SubmitButton";
 import styles from "./Users.module.css";
 
@@ -31,10 +32,7 @@ const AdminEditUserForm = ({
     const isStudent = profile.userType === UserType.STUDENT;
     const mutation = useUpdateUserByAdmin();
 
-    const programsQuery = useQuery({
-        queryKey: ["programs"],
-        queryFn: getPrograms,
-    });
+    const programsQuery = usePrograms();
 
     const classesQuery = useQuery({
         queryKey: ["classes", programId],

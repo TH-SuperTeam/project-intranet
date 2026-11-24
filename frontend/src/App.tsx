@@ -17,6 +17,7 @@ import PublicDashboardPage from "./pages/PublicDashboardPage";
 import MyProfilePage from "./pages/MyProfilePage";
 import UserProfilePage from "./pages/UserProfilePage";
 import EducationPage from "./pages/EducationPage";
+import SchedulePage from "./pages/SchedulePage";
 import ThemeManager from "./components/auth/ThemeManager";
 
 function App() {
@@ -52,6 +53,10 @@ function App() {
                                 <Route
                                     path="/users/:id"
                                     element={<UserProfilePage />}
+                                />
+                                <Route
+                                    path="/schedule"
+                                    element={<SchedulePage />}
                                 />
 
                                 {/* Admin only */}

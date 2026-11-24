@@ -8,6 +8,7 @@ import {
     Users,
     GraduationCap,
     X,
+    CalendarDays,
 } from "lucide-react";
 import LogoutButton from "../components/common/LogoutButton";
 import VHHeart from "../assets/vh-heart.svg?react";
@@ -47,6 +48,14 @@ const Sidebar = ({ isOpen, onNavigate }: SidebarProps) => {
                     onClick={onNavigate}
                 >
                     <Home /> Dashboard
+                </NavLink>
+
+                <NavLink
+                    to="/schedule"
+                    className={navLinkClass}
+                    onClick={onNavigate}
+                >
+                    <CalendarDays /> Schema
                 </NavLink>
 
                 <NavLink

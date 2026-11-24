@@ -107,7 +107,7 @@ export const deleteProgram = async (id: number): Promise<void> => {
 
     if (response.status === 409) {
         throw new Error(
-            "Utbildningen kan inte raderas eftersom den har tillhörande klasser eller tilldelade elever",
+            "Utbildningen kan inte raderas eftersom den har tillhörande klasser eller tilldelade elever.",
         );
     }
 
