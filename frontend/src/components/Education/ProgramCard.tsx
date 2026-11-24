@@ -1,15 +1,17 @@
 import { GraduationCap } from "lucide-react";
 import type { Program } from "../../types/Program";
 import type { SchoolClass } from "../../types/SchoolClass";
+import EditButton from "../common/EditButton";
 import SchoolClassRow from "./SchoolClassRow";
 import styles from "./Education.module.css";
 
 type ProgramCardProps = {
     program: Program;
     classes: SchoolClass[];
+    onEdit: (program: Program) => void;
 };
 
-const ProgramCard = ({ program, classes }: ProgramCardProps) => {
+const ProgramCard = ({ program, classes, onEdit }: ProgramCardProps) => {
     return (
         <article className={styles.programCard}>
             <div className={styles.programHeader}>
@@ -33,6 +35,7 @@ const ProgramCard = ({ program, classes }: ProgramCardProps) => {
                 >
                     {program.isActive ? "Aktiv" : "Arkiverad"}
                 </span>
+                <EditButton iconOnly onClick={() => onEdit(program)} />
             </div>
 
             <div className={styles.classList}>
