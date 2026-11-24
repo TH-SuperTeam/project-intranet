@@ -326,7 +326,8 @@ public class UserService {
             SchoolName school,
             Long programId,
             Long classId,
-            String statusFilter,
+            UserStatus status,
+            UserType userType,
             int page,
             int size,
             Long userId) {
@@ -354,7 +355,8 @@ public class UserService {
                     school,
                     programId,
                     classId,
-                    statusFilter,
+                    status,
+                    userType,
                     pageable
             ).map(userMapper::toListResponse);
         }
@@ -364,6 +366,7 @@ public class UserService {
                 school,
                 programId,
                 classId,
+                userType,
                 pageable
         ).map(userMapper::toPublicUserResponse);
     }
