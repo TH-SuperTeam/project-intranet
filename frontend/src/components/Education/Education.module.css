@@ -107,6 +107,7 @@
     border-radius: 12px;
     background-color: var(--color-surface);
     overflow: hidden;
+    container-type: inline-size;
     transition: border-color 0.2s ease;
 }
 
@@ -547,5 +548,37 @@
 
     .formActions > button {
         width: 100%;
+    }
+}
+
+/* ===== ALIGNED STATUS COLUMNS ===== */
+
+@container (min-width: 600px) {
+    .programHeader,
+    .classRow {
+        display: grid;
+        grid-template-columns:
+            44px
+            minmax(0, 200px)
+            104px
+            minmax(124px, 1fr);
+        align-items: center;
+    }
+
+    .programHeader > .activeStatus,
+    .programHeader > .archivedStatus,
+    .classRow > .activeStatus,
+    .classRow > .archivedStatus {
+        justify-self: start;
+        align-self: start;
+    }
+
+    .programInfo,
+    .classInfo {
+        align-self: start;
+    }
+
+    .rowActions {
+        justify-self: end;
     }
 }
