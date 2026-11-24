@@ -1,12 +1,20 @@
 import { NavLink } from "react-router-dom";
 import type { NavLinkProps } from "react-router-dom";
 import Logo from "../components/common/Logo";
-import { Home, Newspaper, UserIcon, Users, X } from "lucide-react";
+import {
+    Home,
+    Newspaper,
+    UserIcon,
+    Users,
+    GraduationCap,
+    X,
+} from "lucide-react";
 import LogoutButton from "../components/common/LogoutButton";
 import VHHeart from "../assets/vh-heart.svg?react";
 import VHNotes from "../assets/vh-notes.svg?react";
 import { useAuth } from "../hooks/useAuth";
 import styles from "./Sidebar.module.css";
+import { AccessRole } from "../types/AccessRole";
 
 type SidebarProps = {
     isOpen: boolean;
@@ -64,6 +72,16 @@ const Sidebar = ({ isOpen, onNavigate }: SidebarProps) => {
                 >
                     <Users /> Användare
                 </NavLink>
+
+                {user?.accessRole === AccessRole.ADMIN && (
+                    <NavLink
+                        to="/admin/education"
+                        className={navLinkClass}
+                        onClick={onNavigate}
+                    >
+                        <GraduationCap /> Utbildningar
+                    </NavLink>
+                )}
 
                 <div className={styles.sidebarLogout}>
                     <LogoutButton />

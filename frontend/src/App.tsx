@@ -16,6 +16,7 @@ import MainLayout from "./layouts/MainLayout";
 import PublicDashboardPage from "./pages/PublicDashboardPage";
 import MyProfilePage from "./pages/MyProfilePage";
 import UserProfilePage from "./pages/UserProfilePage";
+import EducationPage from "./pages/EducationPage";
 import ThemeManager from "./components/auth/ThemeManager";
 
 function App() {
@@ -66,6 +67,10 @@ function App() {
                                     <Route
                                         path="/users/create"
                                         element={<CreateUsersPage />}
+                                    />
+                                    <Route
+                                        path="/admin/education"
+                                        element={<EducationPage />}
                                     />
                                 </Route>
                             </Route>
