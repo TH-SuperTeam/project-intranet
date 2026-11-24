@@ -9,70 +9,93 @@ import EditButton from "../common/EditButton"
 import NewsImage from "../common/NewsImage"
 import { useState } from "react"
 import { useCanManageNews } from "../../hooks/NewsHooks/useCanManageNews"
+import { useLocation } from "react-router-dom"
 
 interface NewsDetailsProps {
-  news: News
+	news: News
 }
 
 const NewsDetails = ({ news }: NewsDetailsProps) => {
-  const [showConfirm, setShowConfirm] = useState(false)
+	const [showConfirm, setShowConfirm] = useState(false)
 
-  const formattedDate = new Date(news.createdAt).toLocaleDateString("sv-SE", {
-    day: "numeric",
-    month: "long",
-    year: "numeric",
-  })
-  const canManageNews = useCanManageNews()
+	const location = useLocation()
 
-  const mutation = useDeleteNews()
+	// Använd ursprungssidan eller nyhetssidan som standard
+	const backTo = location.state?.from ?? "/news"
 
-  // Hanterar visningen av bekräftelsedialogen för att radera nyheten
-  const handleDelete = () => {
-    setShowConfirm(true)
-  }
+	const formattedDate = new Date(news.createdAt).toLocaleDateString("sv-SE", {
+		day: "numeric",
+		month: "long",
+		year: "numeric",
+	})
+	const canManageNews = useCanManageNews()
 
-  const confirmDelete = () => {
-    mutation.mutate(news.id, {
-      onSuccess: () => setShowConfirm(false),
-    })
-  }
+	const mutation = useDeleteNews()
 
-  return (
-    <>
-      <article className={styles.newsDetails}>
-        <BackLink to="/news" />
+	// Hanterar visningen av bekräftelsedialogen för att radera nyheten
+	const handleDelete = () => {
+		setShowConfirm(true)
+	}
 
-        <div className={styles.detailsCard}>
-          <NewsImage src={news.newsImageUrl} className={styles.newsDetailsImage} />
-          <header className={styles.detailsHeader}>
-            <time dateTime={news.createdAt} className={styles.detailsDate}>
-              {formattedDate}
-            </time>
-            <h1 className={styles.detailsTitle}>{news.title}</h1>
-          </header>
+	const confirmDelete = () => {
+		mutation.mutate(news.id, {
+			onSuccess: () => setShowConfirm(false),
+		})
+	}
 
-          <div className={styles.detailsDivider} />
+	return (
+		<>
+			<article className={styles.newsDetails}>
+				<BackLink to={backTo} />
 
-          <p className={styles.detailsContent}>{news.content}</p>
-        </div>
+				<div className={styles.detailsCard}>
+					<NewsImage
+						src={news.newsImageUrl}
+						className={styles.newsDetailsImage}
+					/>
+					<header className={styles.detailsHeader}>
+						<time
+							dateTime={news.createdAt}
+							className={styles.detailsDate}
+						>
+							{formattedDate}
+						</time>
+						<h1 className={styles.detailsTitle}>{news.title}</h1>
+					</header>
 
-        <div className="flex items-center justify-end gap-2">
-          {canManageNews && <EditButton to={`/news/${news.id}/edit`} />}
-          {canManageNews && <DeleteButton onClick={handleDelete} isPending={mutation.isPending} />}
+					<div className={styles.detailsDivider} />
 
-          {showConfirm && (
-            <ConfirmDialog
-              message="Är du säker på att du vill ta bort nyheten?"
-              onConfirm={confirmDelete}
-              onCancel={() => setShowConfirm(false)}
-              isPending={mutation.isPending}
-              errorMessage={mutation.isError ? mutation.error.message : undefined}
-            />
-          )}
-        </div>
-      </article>
-    </>
-  )
+					<p className={styles.detailsContent}>{news.content}</p>
+				</div>
+
+				<div className="flex items-center justify-end gap-2">
+					{canManageNews && (
+						<EditButton to={`/news/${news.id}/edit`} />
+					)}
+					{canManageNews && (
+						<DeleteButton
+							onClick={handleDelete}
+							isPending={mutation.isPending}
+						/>
+					)}
+
+					{showConfirm && (
+						<ConfirmDialog
+							message="Är du säker på att du vill ta bort nyheten?"
+							onConfirm={confirmDelete}
+							onCancel={() => setShowConfirm(false)}
+							isPending={mutation.isPending}
+							errorMessage={
+								mutation.isError
+									? mutation.error.message
+									: undefined
+							}
+						/>
+					)}
+				</div>
+			</article>
+		</>
+	)
 }
 
 export default NewsDetails
