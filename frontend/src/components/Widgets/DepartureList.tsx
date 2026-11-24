@@ -1,57 +1,69 @@
-import styles from "./Widgets.module.css"
-import DepartureCard from "./DepartureCard"
-import type { Departure } from "../../types/Departure"
-import { useTransport } from "../../hooks/useTransport"
-import { useEffect, useState } from "react"
+import styles from "./Widgets.module.css";
+import DepartureCard from "./DepartureCard";
+import type { Departure } from "../../types/Departure";
+import { useTransport } from "../../hooks/useTransport";
+import { useEffect, useState } from "react";
 
 const DepartureList = () => {
-  const { data: departures, isPending, isError } = useTransport()
+    const { data: departures, isPending, isError } = useTransport();
 
-  //renderar komponenten var 20e sekund för att filtrera bort redan gångna bussar
-  const [, setTick] = useState(0)
+    //renderar komponenten var 20e sekund för att filtrera bort redan gångna bussar
+    const [now, setNow] = useState<number | null>(null);
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setTick((tick) => tick + 1)
-    }, 20 * 1000)
+    useEffect(() => {
+        const updateNow = () => setNow(Date.now());
 
-    return () => clearInterval(interval)
-  }, [])
+        updateNow();
 
-  if (isPending) {
-    return <div className={styles.state}>Hämtar avgångar...</div>
-  }
+        const interval = setInterval(updateNow, 20 * 1000);
 
-  if (isError) {
+        return () => clearInterval(interval);
+    }, []);
+
+    if (isPending) {
+        return <div className={styles.state}>Hämtar avgångar...</div>;
+    }
+
+    if (isError) {
+        return (
+            <div className={styles.errorState} role="alert">
+                Det gick inte att hämta avgångarna.
+            </div>
+        );
+    }
+
+    if (now === null) {
+        return <div className={styles.state}>Hämtar avgångar...</div>;
+    }
+
+    const upcomingDepartures = (departures ?? [])
+        .filter(
+            departure => new Date(departure.estimatedDeparture).getTime() > now,
+        )
+        .slice(0, 4);
+
+    if (upcomingDepartures.length === 0) {
+        return (
+            <div className={styles.emptyState}>
+                <h3>Inga avgångar att visa</h3>
+                <p>Det finns inga kommande avgångar just nu.</p>
+            </div>
+        );
+    }
+
     return (
-      <div className={styles.errorState} role="alert">
-        Det gick inte att hämta avgångarna.
-      </div>
-    )
-  }
+        <>
+            <ul className={styles.departureList}>
+                {upcomingDepartures.map((departure: Departure) => (
+                    <DepartureCard
+                        key={departure.scheduledDeparture}
+                        departure={departure}
+                        now={now}
+                    />
+                ))}
+            </ul>
+        </>
+    );
+};
 
-  const upcomingDepartures = (departures ?? [])
-    .filter((departure) => new Date(departure.estimatedDeparture).getTime() > Date.now())
-    .slice(0, 4)
-
-  if (upcomingDepartures.length === 0) {
-    return (
-      <div className={styles.emptyState}>
-        <h3>Inga avgångar att visa</h3>
-        <p>Det finns inga kommande avgångar just nu.</p>
-      </div>
-    )
-  }
-
-  return (
-    <>
-      <ul className={styles.departureList}>
-        {upcomingDepartures.map((departure: Departure) => (
-          <DepartureCard key={departure.scheduledDeparture} departure={departure} />
-        ))}
-      </ul>
-    </>
-  )
-}
-
-export default DepartureList
+export default DepartureList;
