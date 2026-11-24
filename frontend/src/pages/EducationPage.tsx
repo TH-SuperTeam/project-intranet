@@ -9,6 +9,7 @@ import ProgramCard from "../components/Education/ProgramCard";
 import ProgramForm from "../components/Education/ProgramForm";
 import FormModal from "../components/common/FormModal";
 import CreateButton from "../components/common/CreateButton";
+import ConfirmDialog from "../components/common/ConfirmDialog";
 import type { Program } from "../types/Program";
 import type { ProgramRequest } from "../types/ProgramRequest";
 import SchoolClassForm from "../components/Education/SchoolClassForm";
@@ -22,7 +23,15 @@ const schools = [
     { code: "VH", name: "Vårdyrkeshögskolan" },
 ] as const;
 
+type ArchiveTarget =
+    | { type: "program"; item: Program }
+    | { type: "class"; item: SchoolClass };
+
 const EducationPage = () => {
+    const [archiveTarget, setArchiveTarget] = useState<ArchiveTarget | null>(
+        null,
+    );
+
     const [includeArchived, setIncludeArchived] = useState(false);
 
     const [isProgramFormOpen, setIsProgramFormOpen] = useState(false);
@@ -45,12 +54,52 @@ const EducationPage = () => {
     const classesQuery = useAllClasses(includeArchived);
     const schoolsQuery = useSchools();
 
-    const { createMutation, updateMutation } = useProgramMutations();
+    const {
+        createMutation,
+        updateMutation,
+        archiveMutation: archiveProgramMutation,
+        restoreMutation: restoreProgramMutation,
+    } = useProgramMutations();
 
     const {
         createMutation: createClassMutation,
         updateMutation: updateClassMutation,
+        archiveMutation: archiveClassMutation,
+        restoreMutation: restoreClassMutation,
     } = useSchoolClassMutations();
+
+    const selectedArchiveMutation = archiveTarget
+        ? archiveTarget.type === "program"
+            ? archiveTarget.item.isActive
+                ? archiveProgramMutation
+                : restoreProgramMutation
+            : archiveTarget.item.isActive
+              ? archiveClassMutation
+              : restoreClassMutation
+        : null;
+
+    const openArchiveDialog = (target: ArchiveTarget) => {
+        archiveProgramMutation.reset();
+        restoreProgramMutation.reset();
+        archiveClassMutation.reset();
+        restoreClassMutation.reset();
+
+        setArchiveTarget(target);
+    };
+
+    const closeArchiveDialog = () => {
+        setArchiveTarget(null);
+    };
+
+    const handleArchiveConfirm = () => {
+        if (!archiveTarget || !selectedArchiveMutation) {
+            return;
+        }
+
+        selectedArchiveMutation.mutate(archiveTarget.item.id, {
+            onSuccess: closeArchiveDialog,
+        });
+    };
 
     const isClassFormPending =
         createClassMutation.isPending || updateClassMutation.isPending;
@@ -224,6 +273,20 @@ const EducationPage = () => {
                                             onEdit={openEditProgram}
                                             onCreateClass={openCreateClass}
                                             onEditClass={openEditClass}
+                                            onToggleArchive={(program) =>
+                                                openArchiveDialog({
+                                                    type: "program",
+                                                    item: program,
+                                                })
+                                            }
+                                            onToggleClassArchive={(
+                                                schoolClass,
+                                            ) =>
+                                                openArchiveDialog({
+                                                    type: "class",
+                                                    item: schoolClass,
+                                                })
+                                            }
                                         />
                                     ))
                                 )}
@@ -272,6 +335,51 @@ const EducationPage = () => {
                         onCancel={closeClassForm}
                     />
                 </FormModal>
+            )}
+
+            {archiveTarget && (
+                <ConfirmDialog
+                    title={
+                        archiveTarget.item.isActive
+                            ? "Bekräfta arkivering"
+                            : "Bekräfta återställning"
+                    }
+                    message={
+                        <>
+                            <p>
+                                Vill du{" "}
+                                {archiveTarget.item.isActive
+                                    ? "arkivera"
+                                    : "återställa"}{" "}
+                                <strong>{archiveTarget.item.name}</strong>?
+                            </p>
+
+                            {archiveTarget.type === "program" &&
+                                archiveTarget.item.isActive && (
+                                    <p className="mt-2">
+                                        Programmets klasser kommer inte längre
+                                        att vara valbara. Befintlig information
+                                        bevaras.
+                                    </p>
+                                )}
+
+                            {archiveTarget.type === "class" &&
+                                archiveTarget.item.isActive && (
+                                    <p className="mt-2">
+                                        Klassen kommer inte längre att vara
+                                        valbar. Befintlig information bevaras.
+                                    </p>
+                                )}
+                        </>
+                    }
+                    confirmLabel={
+                        archiveTarget.item.isActive ? "Arkivera" : "Återställ"
+                    }
+                    onConfirm={handleArchiveConfirm}
+                    onCancel={closeArchiveDialog}
+                    isPending={selectedArchiveMutation?.isPending}
+                    errorMessage={selectedArchiveMutation?.error?.message}
+                />
             )}
         </section>
     );

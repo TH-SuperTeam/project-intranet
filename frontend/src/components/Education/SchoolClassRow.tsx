@@ -1,18 +1,21 @@
 import { Users } from "lucide-react";
 import type { SchoolClass } from "../../types/SchoolClass";
 import EditButton from "../common/EditButton";
+import ArchiveButton from "../common/ArchiveButton";
 import styles from "./Education.module.css";
 
 type SchoolClassRowProps = {
     schoolClass: SchoolClass;
     isProgramActive: boolean;
     onEdit: (schoolClass: SchoolClass) => void;
+    onToggleArchive: (schoolClass: SchoolClass) => void;
 };
 
 const SchoolClassRow = ({
     schoolClass,
     isProgramActive,
     onEdit,
+    onToggleArchive,
 }: SchoolClassRowProps) => {
     const isAvailable = schoolClass.isActive && isProgramActive;
 
@@ -41,7 +44,14 @@ const SchoolClassRow = ({
                       ? "Ej valbar"
                       : "Aktiv"}
             </span>
-            <EditButton iconOnly onClick={() => onEdit(schoolClass)} />
+            <div className={styles.rowActions}>
+                <EditButton iconOnly onClick={() => onEdit(schoolClass)} />
+
+                <ArchiveButton
+                    isActive={schoolClass.isActive}
+                    onClick={() => onToggleArchive(schoolClass)}
+                />
+            </div>
         </div>
     );
 };

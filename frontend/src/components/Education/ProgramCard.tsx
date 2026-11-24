@@ -4,6 +4,7 @@ import type { SchoolClass } from "../../types/SchoolClass";
 import SchoolClassRow from "./SchoolClassRow";
 import EditButton from "../common/EditButton";
 import CreateButton from "../common/CreateButton";
+import ArchiveButton from "../common/ArchiveButton";
 import styles from "./Education.module.css";
 
 type ProgramCardProps = {
@@ -12,6 +13,8 @@ type ProgramCardProps = {
     onEdit: (program: Program) => void;
     onCreateClass: (programId: number) => void;
     onEditClass: (schoolClass: SchoolClass) => void;
+    onToggleArchive: (program: Program) => void;
+    onToggleClassArchive: (schoolClass: SchoolClass) => void;
 };
 
 const ProgramCard = ({
@@ -20,6 +23,8 @@ const ProgramCard = ({
     onEdit,
     onCreateClass,
     onEditClass,
+    onToggleArchive,
+    onToggleClassArchive,
 }: ProgramCardProps) => {
     return (
         <article className={styles.programCard}>
@@ -45,7 +50,14 @@ const ProgramCard = ({
                     {program.isActive ? "Aktiv" : "Arkiverad"}
                 </span>
 
-                <EditButton iconOnly onClick={() => onEdit(program)} />
+                <div className={styles.rowActions}>
+                    <EditButton iconOnly onClick={() => onEdit(program)} />
+
+                    <ArchiveButton
+                        isActive={program.isActive}
+                        onClick={() => onToggleArchive(program)}
+                    />
+                </div>
             </div>
 
             <div className={styles.classList}>
@@ -60,6 +72,7 @@ const ProgramCard = ({
                             schoolClass={schoolClass}
                             isProgramActive={program.isActive}
                             onEdit={onEditClass}
+                            onToggleArchive={onToggleClassArchive}
                         />
                     ))
                 )}
