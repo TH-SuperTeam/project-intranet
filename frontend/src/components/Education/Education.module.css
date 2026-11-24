@@ -529,8 +529,13 @@
         flex-basis: calc(100% - 60px);
     }
 
-    .rowActions {
+    .activeStatus,
+    .archivedStatus {
         margin-left: auto;
+    }
+
+    .rowActions {
+        margin-left: 0;
     }
 
     .programActions button {
