@@ -1,0 +1,521 @@
+.page {
+  display: grid;
+  gap: 1.5rem;
+  width: 100%;
+  max-width: 1100px;
+  min-width: 0;
+  margin: 0 auto;
+  padding: 1.5rem 1rem 2.5rem;
+  box-sizing: border-box;
+  color: var(--color-text-primary);
+}
+
+.header h1 {
+  margin: 0;
+  font-size: 2.5rem;
+  font-weight: 700;
+}
+
+.header p {
+  margin: 0.4rem 0 0;
+  color: var(--color-text-muted);
+}
+
+.panel {
+  display: grid;
+  gap: 1.25rem;
+  min-width: 0;
+  padding: 1.5rem;
+  border: 1px solid var(--color-border);
+  border-radius: 1rem;
+  background: var(--color-surface);
+}
+
+.formSection {
+  scroll-margin-top: 1rem;
+}
+
+.controls {
+  display: grid;
+  gap: 1.25rem;
+}
+
+.tabs,
+.filters,
+.dateNavigation {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.tabs button,
+.dateNavigation button {
+  min-height: 2.8rem;
+  padding: 0.55rem 1rem;
+  border: 1px solid var(--color-border);
+  border-radius: 0.65rem;
+  background: var(--color-surface);
+  color: var(--color-text-primary);
+  cursor: pointer;
+  font: inherit;
+  font-weight: 600;
+}
+
+.tabs button:hover,
+.dateNavigation button:hover {
+  border-color: var(--color-primary);
+}
+
+.tabs .activeTab {
+  border-color: var(--color-primary);
+  background: var(--color-primary);
+  color: var(--color-text-white);
+}
+
+.filters {
+  align-items: flex-end;
+  gap: 1rem;
+}
+
+.filters label {
+  display: grid;
+  flex: 1 1 14rem;
+  gap: 0.4rem;
+  max-width: 22rem;
+  color: var(--color-text-muted);
+}
+
+.filters select {
+  appearance: none;
+  width: 100%;
+  min-height: 3rem;
+  padding: 0.6rem 2.4rem 0.6rem 0.75rem;
+  border: 1px solid var(--color-border);
+  border-radius: 0.65rem;
+  background: var(--color-background);
+  color: var(--color-text-primary);
+  font: inherit;
+  background-image:
+    linear-gradient(45deg, transparent 50%, var(--color-text-primary) 50%),
+    linear-gradient(135deg, var(--color-text-primary) 50%, transparent 50%);
+  background-position:
+    calc(100% - 1.1rem) 50%,
+    calc(100% - 0.85rem) 50%;
+  background-repeat: no-repeat;
+  background-size: 0.35rem 0.35rem;
+}
+
+.dateNavigation {
+  justify-content: center;
+}
+
+.datePicker {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.dateNavigation .datePickerButton {
+  min-width: 15rem;
+  min-height: 0;
+  padding: 0.25rem 0.5rem;
+  border-color: transparent;
+  background: transparent;
+  color: var(--color-text-primary);
+  text-align: center;
+  font-size: 1.25rem;
+  text-transform: capitalize;
+  white-space: normal;
+}
+
+.dateNavigation .datePickerButton:hover {
+  text-decoration: underline;
+}
+
+.datePickerInput {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.dayGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 15rem), 1fr));
+  gap: 0.6rem;
+}
+
+.room {
+  min-height: 12rem;
+  padding: 0.6rem;
+  border: 1px solid var(--color-border);
+  border-radius: 0.75rem;
+}
+
+.room h3,
+.roomName {
+  margin: 0;
+  padding: 0.7rem;
+  border-radius: 0.55rem;
+  background: var(--color-primary-soft);
+  font-size: 1rem;
+}
+
+.lesson {
+  display: grid;
+  gap: 0.2rem;
+  margin-top: 0.5rem;
+  padding: 0.7rem;
+  border-radius: 0.55rem;
+  background: var(--color-primary-soft);
+}
+
+.lesson strong {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.lesson[data-school="TH"],
+.list li[data-school="TH"],
+.overrideList li[data-school="TH"] {
+  background: var(--color-th-primary);
+  color: var(--color-text-white);
+}
+
+.lesson[data-school="VH"],
+.list li[data-school="VH"],
+.overrideList li[data-school="VH"] {
+  background: var(--color-vh-primary);
+  color: var(--color-text-white);
+}
+
+.lesson[data-school="TH"] span,
+.lesson[data-school="TH"] small,
+.list li[data-school="TH"] small,
+.overrideList li[data-school="TH"] small {
+  color: #d9e9e6;
+}
+
+.lesson[data-school="VH"] span,
+.lesson[data-school="VH"] small,
+.list li[data-school="VH"] small,
+.overrideList li[data-school="VH"] small {
+  color: #ecd9e0;
+}
+
+.lesson[data-school] .overrideBadge,
+.lesson[data-school] .cancelBadge {
+  border-color: currentColor;
+  color: var(--color-text-white);
+}
+
+.lesson span,
+.lesson small,
+.list small {
+  color: var(--color-text-secondary);
+}
+
+.available {
+  display: block;
+  margin: 3rem 0 0;
+  color: var(--color-text-muted);
+  text-align: center;
+}
+
+.weekGrid {
+  display: grid;
+  grid-template-columns: minmax(9rem, 1.2fr) repeat(5, minmax(8rem, 1fr));
+  gap: 0.5rem;
+  max-width: 100%;
+  overflow-x: auto;
+}
+
+.weekGrid > strong {
+  padding: 0.75rem 0.4rem;
+  border-radius: 0.55rem;
+  background: var(--color-primary-soft);
+  text-align: center;
+  text-transform: capitalize;
+}
+
+.weekRow {
+  display: contents;
+}
+
+.roomName {
+  min-height: 7rem;
+}
+
+.weekCell {
+  min-height: 7rem;
+  padding: 0.45rem;
+  border: 1px solid var(--color-border);
+  border-radius: 0.65rem;
+  background: var(--color-surface);
+}
+
+.weekCell .available {
+  margin-top: 2.4rem;
+}
+
+.list {
+  display: grid;
+  gap: 0.5rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.list li {
+  display: grid;
+  grid-template-columns: 8rem minmax(0, 1fr) auto;
+  gap: 0.7rem;
+  padding: 0.7rem;
+  border: 1px solid var(--color-border);
+  border-radius: 0.65rem;
+}
+
+.list li > strong {
+  display: grid;
+  place-items: center;
+  border-radius: 0.5rem;
+  background: var(--color-primary-soft);
+}
+
+.list li[data-school="TH"] > strong {
+  background: #deeae8;
+  color: var(--color-th-primary);
+}
+
+.list li[data-school="VH"] > strong {
+  background: #f5e8ee;
+  color: var(--color-vh-primary);
+}
+
+.lessonDetails {
+  display: grid;
+  gap: 0.2rem;
+}
+
+.listActions,
+.overrideActions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.4rem;
+}
+
+.editIconButton {
+  display: grid;
+  width: 2.6rem;
+  height: 2.6rem;
+  align-self: center;
+  place-items: center;
+  border: 1px solid var(--color-primary);
+  border-radius: 0.5rem;
+  background: var(--color-primary-soft);
+  color: var(--color-primary);
+  cursor: pointer;
+}
+
+.editIconButton:hover {
+  border-color: var(--color-primary);
+  background: var(--color-primary);
+  color: var(--color-text-white);
+}
+
+.deleteIconButton {
+  display: grid;
+  width: 2.6rem;
+  height: 2.6rem;
+  align-self: center;
+  place-items: center;
+  border: 1px solid var(--color-error);
+  border-radius: 0.5rem;
+  background: var(--color-error-light);
+  color: var(--color-error);
+  cursor: pointer;
+}
+
+.deleteIconButton:hover {
+  background: var(--color-error);
+  color: var(--color-text-white);
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.headerActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+}
+
+.createButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.8rem 1.2rem;
+  border: 0;
+  border-radius: 0.7rem;
+  background: var(--color-secondary-light);
+  color: var(--color-secondary-dark);
+  cursor: pointer;
+  font: inherit;
+  font-weight: 600;
+}
+
+.createButton:hover {
+  background: var(--color-secondary);
+  color: var(--color-text-white);
+}
+
+.empty,
+.error {
+  margin: 0;
+  padding: 1rem;
+  text-align: center;
+}
+
+.empty {
+  color: var(--color-text-muted);
+}
+
+.error {
+  color: var(--color-error);
+}
+.success {
+  margin: 0;
+  padding: 0.75rem 1rem;
+  border-radius: 0.6rem;
+  background: var(--color-primary-soft);
+  color: var(--color-primary);
+}
+
+.overrideBadge {
+  justify-self: start;
+  padding: 0.15rem 0.45rem;
+  border: 1px solid var(--color-secondary-dark);
+  border-radius: 0.35rem;
+  color: var(--color-secondary-dark);
+}
+
+.cancelBadge {
+  justify-self: start;
+  padding: 0.15rem 0.45rem;
+  border: 1px solid var(--color-error);
+  border-radius: 0.35rem;
+  color: var(--color-error);
+}
+
+.overrideSection {
+  display: grid;
+  gap: 0.75rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--color-border);
+}
+
+.overrideSection h2 {
+  margin: 0;
+  font-size: 1.2rem;
+}
+
+.overrideList {
+  display: grid;
+  gap: 0.5rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.overrideList li {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: start;
+  gap: 0.75rem;
+  padding: 0.75rem;
+  border: 1px solid var(--color-border);
+  border-left: 0.3rem solid var(--color-secondary);
+  border-radius: 0.55rem;
+  background: var(--color-background);
+}
+
+.overrideDetails {
+  display: grid;
+  gap: 0.2rem;
+  min-width: 0;
+}
+
+.overrideList small {
+  color: var(--color-text-muted);
+}
+
+@media (max-width: 600px) {
+  .header {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .headerActions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+  .page {
+    padding: 1.25rem 0.75rem 2rem;
+  }
+
+  .panel {
+    padding: 0.8rem;
+  }
+
+  .filters {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+  }
+
+  .filters label {
+    min-width: 0;
+    font-size: 0.85rem;
+  }
+
+  .filters select {
+    padding: 0.55rem 2rem 0.55rem 0.4rem;
+    font-size: 0.85rem;
+  }
+
+  .dateNavigation {
+    gap: 0.35rem;
+  }
+
+  .datePicker {
+    min-width: 0;
+    flex: 1;
+  }
+
+  .dateNavigation .datePickerButton {
+    min-width: 0;
+    width: 100%;
+    font-size: 1rem;
+  }
+
+  .list li {
+    grid-template-columns: 4rem minmax(0, 1fr) auto;
+    gap: 0.5rem;
+  }
+
+  .overrideList li {
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 0.4rem;
+    padding: 0.55rem;
+  }
+
+}
