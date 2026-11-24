@@ -1,10 +1,10 @@
 import { useQuery } from "@tanstack/react-query";
 import { getPrograms } from "../services/programApi";
 
-const usePrograms = () => {
+const usePrograms = (includeArchived: boolean = false) => {
     return useQuery({
-        queryKey: ["programs"],
-        queryFn: () => getPrograms(),
+        queryKey: ["programs", includeArchived],
+        queryFn: () => getPrograms(includeArchived),
     });
 };
 
