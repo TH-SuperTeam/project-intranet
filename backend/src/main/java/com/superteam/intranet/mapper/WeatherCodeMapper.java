@@ -6,10 +6,10 @@ public class WeatherCodeMapper {
     public static String toDescription(int code) {
         return switch (code) {
             case 1 -> "Klart";
-            case 2 -> "Nästan klart";
+            case 2 -> "Mestadels klart";
             case 3 -> "Halvklart";
             case 4 -> "Molnigt";
-            case 5 -> "Mycket molnigt";
+            case 5 -> "Mestadels mulet";
             case 6 -> "Mulet";
             case 7 -> "Dimma";
             case 8 -> "Lätta regnskurar";
