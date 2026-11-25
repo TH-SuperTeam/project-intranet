@@ -4,6 +4,7 @@ import NewsDetails from "../components/News/NewsDetails"
 import { useAudience } from "../hooks/useAudience"
 import { useNewsById } from "../hooks/NewsHooks/useNewsById"
 import { ListSkeleton } from "../components/Loaders/Skeletons/ListSkeleton"
+import ErrorState from "../components/errors/ErrorState"
 
 const NewsDetailsPage = () => {
   // useParams returns the :id from the URL, always as a string (or undefined)
@@ -27,9 +28,9 @@ const NewsDetailsPage = () => {
 
   if (isError)
     return (
-      <p className={styles.errorState} role="alert">
-        Gick inte att hämta nyhet.
-      </p>
+      <article className={styles.newsDetails}>
+        <ErrorState resource="nyhet" />
+      </article>
     )
 
   return <NewsDetails news={news} />

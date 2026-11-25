@@ -3,6 +3,7 @@ import { useWeather } from "../../hooks/useWeather"
 import styles from "./Widgets.module.css"
 import { Wind } from "lucide-react"
 import { ListSkeleton } from "../Loaders/Skeletons/ListSkeleton"
+import ErrorState from "../errors/ErrorState"
 
 // Omvandlar vindriktning i grader till väderstreck
 function getWindDirection(degrees: number): string {
@@ -67,7 +68,7 @@ const WeatherWidget = ({ variant = "default" }: WeatherWidgetProps) => {
         {isPending ? (
           <ListSkeleton variant="list" count={2} />
         ) : isError ? (
-          <p role="alert">Kunde inte hämta väderinformationen.</p>
+          <ErrorState resource="väderinformationen" />
         ) : variant === "public" ? (
           /* Kompakt väderwidget för publik TV-skärm */
           <div className={styles.publicWeatherContent}>

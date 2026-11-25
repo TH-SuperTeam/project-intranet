@@ -22,6 +22,7 @@ import ScheduleWeekView from "../components/Schedule/ScheduleWeekView"
 import ScheduleEducationList from "../components/Schedule/ScheduleEducationList"
 import ScheduleOverridesAccordion from "../components/Schedule/ScheduleOverridesAccordion"
 import ScheduleViewControls from "../components/Schedule/ScheduleViewControls"
+import ErrorState from "../components/errors/ErrorState"
 import type { DisplayLesson, EducationScheduleGroup, ScheduleView } from "../types/ScheduleView"
 import { addDays, formatDate, getDateKey, getWeekday, isActiveOnDate } from "../utils/schedule/scheduleUtils"
 
@@ -246,9 +247,35 @@ const SchedulePage = () => {
     updateOverride.reset()
     setQuickChange(null)
   }
-  const error = options.error ?? schedulesQuery.error ?? allSchedulesQuery.error ?? overridesQuery.error
+  const isError = options.isError || schedulesQuery.isError || allSchedulesQuery.isError || overridesQuery.isError
   const isLoading =
     options.isLoading || schedulesQuery.isLoading || allSchedulesQuery.isLoading || overridesQuery.isLoading
+
+  if (isLoading) {
+    return (
+      <main className={styles.page}>
+        <header className={styles.header}>
+          <h1>Schema</h1>
+        </header>
+        <section className={styles.panel} aria-label="Schemalagda lektioner">
+          <ScheduleSkeleton />
+        </section>
+      </main>
+    )
+  }
+
+  if (isError) {
+    return (
+      <main className={styles.page}>
+        <header className={styles.header}>
+          <h1>Schema</h1>
+        </header>
+        <section className={styles.panel} aria-label="Schemalagda lektioner">
+          <ErrorState resource={view === "week" ? "veckoschemat" : "schemat"} />
+        </section>
+      </main>
+    )
+  }
 
   const getClassDisplayName = (classId: number, className: string) => {
     const schoolClass = options.allClasses.find((item) => item.id === classId)
@@ -340,9 +367,7 @@ const SchedulePage = () => {
   return (
     <main className={styles.page}>
       <header className={styles.header}>
-        <div>
-          <h1>Schema</h1>
-        </div>
+        <h1>Schema</h1>
 
         {canManageSchedule && (
           <div className={styles.headerActions}>
@@ -382,170 +407,160 @@ const SchedulePage = () => {
       </header>
 
       <section className={styles.panel} aria-label="Schemalagda lektioner">
-        {isLoading ? (
-          <ScheduleSkeleton />
-        ) : error ? (
-          <p className={styles.error} role="alert">
-            {error instanceof Error ? error.message : "Schemat kunde inte hämtas."}
+        {successMessage && (
+          <p className={styles.success} role="status">
+            {successMessage}
           </p>
-        ) : (
-          <>
-            {successMessage && (
-              <p className={styles.success} role="status">
-                {successMessage}
-              </p>
-            )}
-            <div ref={formRef} className={styles.formSection}>
-              {(showCreateForm || editingSchedule) && canManageSchedule && (
-                <ScheduleForm
-                  key={editingSchedule?.id ?? "new"}
-                  classes={options.classes}
-                  classrooms={options.classrooms}
-                  getClassDisplayName={getClassDisplayName}
-                  schedule={editingSchedule ?? undefined}
-                  isPending={formMutation.isPending}
-                  error={formMutation.error instanceof Error ? formMutation.error.message : null}
-                  onSubmit={handleSaveSchedule}
-                  onCancel={() => {
-                    createSchedule.reset()
-                    updateSchedule.reset()
-                    setEditingSchedule(null)
-                    setShowCreateForm(false)
-                  }}
-                />
-              )}
-              {(showOverrideForm || editingOverride) && canManageSchedule && (
-                <ScheduleOverrideForm
-                  key={editingOverride?.id ?? "new-override"}
-                  schedules={allSchedulesQuery.data ?? []}
-                  classrooms={options.classrooms}
-                  getClassDisplayName={getClassDisplayName}
-                  scheduleOverride={editingOverride ?? undefined}
-                  isPending={overrideMutation.isPending}
-                  error={overrideMutation.error instanceof Error ? overrideMutation.error.message : null}
-                  onSubmit={handleSaveOverride}
-                  onCancel={cancelOverrideForm}
-                />
-              )}
-            </div>
-            <ScheduleViewControls
-              view={view}
-              onViewChange={setView}
+        )}
+        <div ref={formRef} className={styles.formSection}>
+          {(showCreateForm || editingSchedule) && canManageSchedule && (
+            <ScheduleForm
+              key={editingSchedule?.id ?? "new"}
               classes={options.classes}
               classrooms={options.classrooms}
-              classId={classId}
-              classroomId={classroomId}
-              onClassChange={setClassId}
-              onClassroomChange={setClassroomId}
               getClassDisplayName={getClassDisplayName}
-              date={date}
-              dateTitle={dateTitle}
-              datePickerRef={datePickerRef}
-              onOpenDatePicker={openDatePicker}
-              onMoveDate={moveDate}
-              onSelectDate={setDate}
-              onToday={() => setDate(new Date())}
+              schedule={editingSchedule ?? undefined}
+              isPending={formMutation.isPending}
+              error={formMutation.isError ? "Lektionen kunde inte sparas just nu." : null}
+              onSubmit={handleSaveSchedule}
+              onCancel={() => {
+                createSchedule.reset()
+                updateSchedule.reset()
+                setEditingSchedule(null)
+                setShowCreateForm(false)
+              }}
             />
+          )}
+          {(showOverrideForm || editingOverride) && canManageSchedule && (
+            <ScheduleOverrideForm
+              key={editingOverride?.id ?? "new-override"}
+              schedules={allSchedulesQuery.data ?? []}
+              classrooms={options.classrooms}
+              getClassDisplayName={getClassDisplayName}
+              scheduleOverride={editingOverride ?? undefined}
+              isPending={overrideMutation.isPending}
+              error={overrideMutation.isError ? "Den tillfälliga ändringen kunde inte sparas just nu." : null}
+              onSubmit={handleSaveOverride}
+              onCancel={cancelOverrideForm}
+            />
+          )}
+        </div>
+        <ScheduleViewControls
+          view={view}
+          onViewChange={setView}
+          classes={options.classes}
+          classrooms={options.classrooms}
+          classId={classId}
+          classroomId={classroomId}
+          onClassChange={setClassId}
+          onClassroomChange={setClassroomId}
+          getClassDisplayName={getClassDisplayName}
+          date={date}
+          dateTitle={dateTitle}
+          datePickerRef={datePickerRef}
+          onOpenDatePicker={openDatePicker}
+          onMoveDate={moveDate}
+          onSelectDate={setDate}
+          onToday={() => setDate(new Date())}
+        />
 
-            {view === "day" && (
-              <ScheduleDayView
-                rooms={rooms}
-                lessons={dayLessons}
-                date={date}
-                canManageSchedule={canManageSchedule}
-                getClassDisplayName={getClassDisplayName}
-                getClassSchool={getClassSchool}
-                onQuickChange={openQuickChange}
-              />
-            )}
+        {view === "day" && (
+          <ScheduleDayView
+            rooms={rooms}
+            lessons={dayLessons}
+            date={date}
+            canManageSchedule={canManageSchedule}
+            getClassDisplayName={getClassDisplayName}
+            getClassSchool={getClassSchool}
+            onQuickChange={openQuickChange}
+          />
+        )}
 
-            {view === "week" && (
-              <ScheduleWeekView
-                rooms={rooms}
-                weekDates={weekDates}
-                canManageSchedule={canManageSchedule}
-                getClassDisplayName={getClassDisplayName}
-                getClassSchool={getClassSchool}
-                getLessonsForDate={getLessonsForDate}
-                onQuickChange={openQuickChange}
-              />
-            )}
+        {view === "week" && (
+          <ScheduleWeekView
+            rooms={rooms}
+            weekDates={weekDates}
+            canManageSchedule={canManageSchedule}
+            getClassDisplayName={getClassDisplayName}
+            getClassSchool={getClassSchool}
+            getLessonsForDate={getLessonsForDate}
+            onQuickChange={openQuickChange}
+          />
+        )}
 
-            {view === "list" &&
-              (schedules.length === 0 ? (
-                <p className={styles.empty}>Det finns inga schemalagda lektioner.</p>
-              ) : (
-                <ScheduleEducationList
-                  groups={educationGroups}
-                  canManageSchedule={canManageSchedule}
-                  getClassDisplayName={getClassDisplayName}
-                  getClassSchool={getClassSchool}
-                  onEdit={handleEditSchedule}
-                  onDelete={setScheduleToDelete}
-                />
-              ))}
+        {view === "list" &&
+          (schedules.length === 0 ? (
+            <p className={styles.empty}>Det finns inga schemalagda lektioner.</p>
+          ) : (
+            <ScheduleEducationList
+              groups={educationGroups}
+              canManageSchedule={canManageSchedule}
+              getClassDisplayName={getClassDisplayName}
+              getClassSchool={getClassSchool}
+              onEdit={handleEditSchedule}
+              onDelete={setScheduleToDelete}
+            />
+          ))}
 
-            {view === "list" && (
-              <ScheduleOverridesAccordion
-                overrides={displayedOverrides}
-                schedules={allSchedulesQuery.data ?? []}
-                showExpired={showExpiredOverrides}
-                canManageSchedule={canManageSchedule}
-                getClassDisplayName={getClassDisplayName}
-                getClassSchool={getClassSchool}
-                onShowExpiredChange={setShowExpiredOverrides}
-                onEdit={handleEditOverride}
-                onDelete={(override) => {
-                  deleteOverride.reset()
-                  setOverrideToDelete(override)
-                }}
-              />
-            )}
+        {view === "list" && (
+          <ScheduleOverridesAccordion
+            overrides={displayedOverrides}
+            schedules={allSchedulesQuery.data ?? []}
+            showExpired={showExpiredOverrides}
+            canManageSchedule={canManageSchedule}
+            getClassDisplayName={getClassDisplayName}
+            getClassSchool={getClassSchool}
+            onShowExpiredChange={setShowExpiredOverrides}
+            onEdit={handleEditOverride}
+            onDelete={(override) => {
+              deleteOverride.reset()
+              setOverrideToDelete(override)
+            }}
+          />
+        )}
 
-            {scheduleToDelete && (
-              <ConfirmDialog
-                title="Ta bort lektion?"
-                message={`Vill du ta bort ${scheduleToDelete.className}? Tillfälliga ändringar som hör till lektionen tas också bort.`}
-                confirmLabel="Ta bort"
-                onConfirm={handleDeleteSchedule}
-                onCancel={() => setScheduleToDelete(null)}
-                isPending={deleteSchedule.isPending}
-                errorMessage={deleteSchedule.error instanceof Error ? deleteSchedule.error.message : undefined}
-              />
-            )}
-            {quickChange && canManageSchedule && (
-              <FormModal
-                title="Snabbändring av lektion"
-                onClose={closeQuickChange}
-                isPending={quickChangeMutation.isPending}>
-                <ScheduleOverrideForm
-                  key={`quick-${quickChange.schedule.id}-${quickChange.date}-${quickChange.override?.id ?? "new"}`}
-                  schedules={allSchedulesQuery.data ?? []}
-                  classrooms={options.classrooms}
-                  getClassDisplayName={getClassDisplayName}
-                  scheduleOverride={quickChange.override ?? undefined}
-                  initialWeeklyScheduleId={quickChange.schedule.id}
-                  initialDate={quickChange.date}
-                  lockScheduleSelection
-                  isPending={quickChangeMutation.isPending}
-                  error={quickChangeMutation.error instanceof Error ? quickChangeMutation.error.message : null}
-                  onSubmit={handleQuickChangeSave}
-                  onCancel={closeQuickChange}
-                />
-              </FormModal>
-            )}
-            {overrideToDelete && (
-              <ConfirmDialog
-                title="Ta bort tillfällig ändring?"
-                message={`Vill du ta bort ändringen för ${overrideToDelete.className}? Grundschemat återställs för perioden.`}
-                confirmLabel="Ta bort"
-                onConfirm={handleDeleteOverride}
-                onCancel={() => setOverrideToDelete(null)}
-                isPending={deleteOverride.isPending}
-                errorMessage={deleteOverride.error instanceof Error ? deleteOverride.error.message : undefined}
-              />
-            )}
-          </>
+        {scheduleToDelete && (
+          <ConfirmDialog
+            title="Ta bort lektion?"
+            message={`Vill du ta bort ${scheduleToDelete.className}? Tillfälliga ändringar som hör till lektionen tas också bort.`}
+            confirmLabel="Ta bort"
+            onConfirm={handleDeleteSchedule}
+            onCancel={() => setScheduleToDelete(null)}
+            isPending={deleteSchedule.isPending}
+            errorMessage={deleteSchedule.isError ? "Lektionen kunde inte tas bort just nu." : undefined}
+          />
+        )}
+        {quickChange && canManageSchedule && (
+          <FormModal
+            title="Snabbändring av lektion"
+            onClose={closeQuickChange}
+            isPending={quickChangeMutation.isPending}>
+            <ScheduleOverrideForm
+              key={`quick-${quickChange.schedule.id}-${quickChange.date}-${quickChange.override?.id ?? "new"}`}
+              schedules={allSchedulesQuery.data ?? []}
+              classrooms={options.classrooms}
+              getClassDisplayName={getClassDisplayName}
+              scheduleOverride={quickChange.override ?? undefined}
+              initialWeeklyScheduleId={quickChange.schedule.id}
+              initialDate={quickChange.date}
+              lockScheduleSelection
+              isPending={quickChangeMutation.isPending}
+              error={quickChangeMutation.isError ? "Den tillfälliga ändringen kunde inte sparas just nu." : null}
+              onSubmit={handleQuickChangeSave}
+              onCancel={closeQuickChange}
+            />
+          </FormModal>
+        )}
+        {overrideToDelete && (
+          <ConfirmDialog
+            title="Ta bort tillfällig ändring?"
+            message={`Vill du ta bort ändringen för ${overrideToDelete.className}? Grundschemat återställs för perioden.`}
+            confirmLabel="Ta bort"
+            onConfirm={handleDeleteOverride}
+            onCancel={() => setOverrideToDelete(null)}
+            isPending={deleteOverride.isPending}
+            errorMessage={deleteOverride.isError ? "Ändringen kunde inte tas bort just nu." : undefined}
+          />
         )}
       </section>
     </main>

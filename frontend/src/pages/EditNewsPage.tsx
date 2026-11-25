@@ -5,6 +5,7 @@ import EditNewsForm from "../components/News/EditNewsForm"
 import { useNewsById } from "../hooks/NewsHooks/useNewsById"
 import { useAudience } from "../hooks/useAudience"
 import { PacmanSpinner } from "../components/Loaders/Spinners/PacmanSpinner"
+import ErrorState from "../components/errors/ErrorState"
 
 const EditNewsPage = () => {
   // Hämtar nyhetens ID från URL:en, exempelvis /news/5/edit
@@ -24,7 +25,7 @@ const EditNewsPage = () => {
   }
 
   if (isError) {
-    return <p>Kunde inte hämta nyheten.</p>
+    return <ErrorState resource="nyheten" />
   }
 
   if (!news) {

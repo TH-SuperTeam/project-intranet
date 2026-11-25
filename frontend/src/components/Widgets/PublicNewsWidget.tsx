@@ -3,6 +3,7 @@ import { usePublicNews } from "../../hooks/NewsHooks/usePublicNews"
 import styles from "./Widgets.module.css"
 import NewsImage from "../common/NewsImage"
 import { ListSkeleton } from "../Loaders/Skeletons/ListSkeleton"
+import ErrorState from "../errors/ErrorState"
 
 const PublicNewsWidget = () => {
   const { data: news, isPending, isError } = usePublicNews()
@@ -14,7 +15,7 @@ const PublicNewsWidget = () => {
   if (isError) {
     return (
       <section className={styles.infoWidget}>
-        <p role="alert">Det gick inte att ladda nyheterna.</p>
+        <ErrorState resource="nyheterna" />
       </section>
     )
   }

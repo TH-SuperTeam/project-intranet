@@ -19,6 +19,7 @@ import UserProfilePage from "./pages/UserProfilePage";
 import EducationPage from "./pages/EducationPage";
 import SchedulePage from "./pages/SchedulePage";
 import ThemeManager from "./components/auth/ThemeManager";
+import NotFoundPage from "./pages/errors/NotFoundPage";
 
 function App() {
     return (
@@ -34,6 +35,8 @@ function App() {
                         />
 
                         <Route element={<ProtectedRoute />}>
+                            <Route path="*" element={<NotFoundPage />} />
+
                             {/* All authenticated users */}
                             <Route element={<MainLayout />}>
                                 <Route
