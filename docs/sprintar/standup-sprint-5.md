@@ -10,7 +10,7 @@
 -->
 
 
-## Tisdag ÅÅÅÅ-MM-DD
+## Tisdag 2026-11-24
 
 | Namn | Närvaro | Igår | Idag | Hinder |
 | ---- | ------- | ---- | ---- | ------ |
@@ -20,7 +20,17 @@
 |   Inna   |     Ja    |  #131    |   #131, #164   |        |
 |   Sofie   |    Ja     |  #102    |  #102    |        |
 
-## Onsdag ÅÅÅÅ-MM-DD
+## Onsdag 2026-11-25
+
+| Namn | Närvaro | Igår | Idag | Hinder |
+| ---- | ------- | ---- | ---- | ------ |
+|  Mette    |     Ja    |  #157, #177    |   #162   |        |
+|   Josefine   |  Ja       |  #149    |   #175   |        |
+|   Caroline   |     Ja    |   #171, #180   |   #169, #168, #186   |        |
+|   Inna   |     Ja    |  #131, #164    |   #131, #103  |        |
+|   Sofie   |    Ja     |  #102    |  #102    |        |
+
+## Torsdag 2026-11-26
 
 | Namn | Närvaro | Igår | Idag | Hinder |
 | ---- | ------- | ---- | ---- | ------ |
@@ -29,16 +39,7 @@
 |      |         |      |      |        |
 |      |         |      |      |        |
 
-## Torsdag ÅÅÅÅ-MM-DD
-
-| Namn | Närvaro | Igår | Idag | Hinder |
-| ---- | ------- | ---- | ---- | ------ |
-|      |         |      |      |        |
-|      |         |      |      |        |
-|      |         |      |      |        |
-|      |         |      |      |        |
-
-## Fredag ÅÅÅÅ-MM-DD
+## Fredag 2026-11-27
 
 | Namn | Närvaro | Igår | Idag | Hinder |
 | ---- | ------- | ---- | ---- | ------ |
