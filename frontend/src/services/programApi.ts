@@ -1,25 +1,33 @@
-import { apiFetch } from "./api";
-import type { Program } from "../types/Program";
-import type { SchoolClass } from "../types/SchoolClass";
+import { apiFetch } from "./api"
+import type { Program } from "../types/Program"
+import type { SchoolClass } from "../types/SchoolClass"
 
 export const getPrograms = async (): Promise<Program[]> => {
-    const response = await apiFetch("/api/programs");
+  const response = await apiFetch("/api/programs")
 
-    if (!response.ok) {
-        throw new Error("Kunde inte hämta utbildningar.");
-    }
+  if (!response.ok) {
+    throw new Error("Kunde inte hämta utbildningar.")
+  }
 
-    return response.json();
-};
+  return response.json()
+}
 
-export const getClassesByProgramId = async (
-    programId: number
-): Promise<SchoolClass[]> => {
-    const response = await apiFetch(`/api/classes?programId=${programId}`);
+export const getClassesByProgramId = async (programId: number): Promise<SchoolClass[]> => {
+  const response = await apiFetch(`/api/classes?programId=${programId}`)
 
-    if (!response.ok) {
-        throw new Error("Kunde inte hämta klasser.");
-    }
+  if (!response.ok) {
+    throw new Error("Kunde inte hämta klasser.")
+  }
 
-    return response.json();
-};
+  return response.json()
+}
+
+export const getClasses = async (): Promise<SchoolClass[]> => {
+  const response = await apiFetch("/api/classes")
+
+  if (!response.ok) {
+    throw new Error("Kunde inte hämta klasser.")
+  }
+
+  return response.json()
+}
