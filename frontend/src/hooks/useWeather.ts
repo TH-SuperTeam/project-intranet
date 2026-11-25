@@ -9,6 +9,9 @@ export function useWeather() {
 		// Uppdaterar vädret varje timme
 		refetchInterval: 60 * 60 * 1000,
 
+		// Uppdaterar även när fliken inte är aktiv
+		refetchIntervalInBackground: true,
+
 		// Betraktar väderinformationen som aktuell i en timme
 		staleTime: 60 * 60 * 1000,
 
