@@ -2,664 +2,734 @@
 
 .newsWidget,
 .infoWidget {
-    min-width: 0;
-    padding: 1rem;
-    border: 1px solid var(--color-border);
-    border-radius: 16px;
-    background-color: var(--color-surface);
+  min-width: 0;
+  padding: 1rem;
+  border: 1px solid var(--color-border);
+  border-radius: 16px;
+  background-color: var(--color-surface);
 }
 
 /* ===== WIDGET HEADERS ===== */
 
 .widgetHeader {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    gap: 1rem;
-    margin-bottom: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
 }
 
 .widgetTitle,
 .infoWidgetHeader {
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-    color: var(--color-secondary-dark);
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  color: var(--color-secondary-dark);
 }
 
 .infoWidgetHeader {
-    margin-bottom: 0.5rem;
+  margin-bottom: 0.5rem;
 }
 
 .widgetTitle h2,
 .infoWidgetHeader h2 {
-    margin: 0;
-    color: var(--color-text-primary);
-    font-size: 1.25rem;
-    font-weight: 700;
+  margin: 0;
+  color: var(--color-text-primary);
+  font-size: 1.25rem;
+  font-weight: 700;
 }
 
 .viewAll {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    color: var(--color-text-accent);
-    font-size: 0.875rem;
-    font-weight: 600;
-    text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--color-text-accent);
+  font-size: 0.875rem;
+  font-weight: 600;
+  text-decoration: none;
 }
 
 .viewAll:hover {
-    text-decoration: underline;
+  text-decoration: underline;
 }
 
 /* ===== NEWS LIST ===== */
 
 .newsList {
-    display: flex;
-    flex-direction: column;
-    margin: 0;
-    padding: 0;
-    list-style: none;
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  padding: 0;
+  list-style: none;
 }
 
 .newsList li + li {
-    border-top: 1px solid var(--color-border);
+  border-top: 1px solid var(--color-border);
 }
 
 /* ===== NEWS ITEM ===== */
 
 .newsItem {
-    display: flex;
-    align-items: flex-start;
-    gap: 1rem;
-    padding: 1rem 0.75rem;
-    border: 1px solid transparent;
-    border-radius: 8px;
-    color: inherit;
-    text-decoration: none;
-    transition:
-        border-color 0.2s ease,
-        background-color 0.2s ease;
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  padding: 1rem 0.75rem;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  color: inherit;
+  text-decoration: none;
+  transition:
+    border-color 0.2s ease,
+    background-color 0.2s ease;
 }
 
 .newsItem:hover {
-    border-color: var(--color-border-hover);
-    background-color: var(--color-background);
+  border-color: var(--color-border-hover);
+  background-color: var(--color-background);
 }
 
 .newsItem:focus-visible {
-    outline: 2px solid var(--color-secondary);
-    outline-offset: 2px;
+  outline: 2px solid var(--color-secondary);
+  outline-offset: 2px;
 }
 
 .newsWidgetImage {
-    width: 10rem;
-    height: 9rem;
-    flex-shrink: 0;
-    object-fit: cover;
-    border-radius: 8px;
+  width: 10rem;
+  height: 9rem;
+  flex-shrink: 0;
+  object-fit: cover;
+  border-radius: 8px;
 }
 
 .newsContent {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-    min-width: 0;
-    margin: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  min-width: 0;
+  margin: 10px;
 }
 
 .newsContent h3 {
-    margin: 0;
-    color: var(--color-text-primary);
-    font-size: 1rem;
-    font-weight: 600;
+  margin: 0;
+  color: var(--color-text-primary);
+  font-size: 1rem;
+  font-weight: 600;
 }
 
 .newsContent p {
-    display: -webkit-box;
-    margin: 0;
-    overflow: hidden;
-    color: var(--color-text-secondary);
-    font-size: 0.875rem;
-    line-height: 1.5;
-    -webkit-box-orient: vertical;
-    -webkit-line-clamp: 3;
-    line-clamp: 3;
+  display: -webkit-box;
+  margin: 0;
+  overflow: hidden;
+  color: var(--color-text-secondary);
+  font-size: 0.875rem;
+  line-height: 1.5;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
 }
 
 .newsContent time {
-    color: var(--color-text-muted);
-    font-size: 0.75rem;
+  color: var(--color-text-muted);
+  font-size: 0.75rem;
 }
 
 .newsArrow {
-    flex-shrink: 0;
-    color: var(--color-secondary-dark);
-    margin: 10px;
-    margin-left: auto;
-    align-self: flex-start;
+  flex-shrink: 0;
+  color: var(--color-secondary-dark);
+  margin: 10px;
+  margin-left: auto;
+  align-self: flex-start;
 }
 
 .publicNewsWidget {
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-    min-height: 0;
-    overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 0;
+  overflow: hidden;
 }
 
 .publicNewsWidget .newsList {
-    display: grid;
-    grid-template-rows: repeat(2, minmax(0, 1fr));
-    flex: 1;
-    min-height: 0;
+  display: grid;
+  grid-template-rows: repeat(2, minmax(0, 1fr));
+  flex: 1;
+  min-height: 0;
 }
 
 .publicNewsItem {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    min-height: 0;
-    padding: 0 0.75rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  min-height: 0;
+  padding: 0 0.75rem;
 }
 
 .publicNewsItem .newsContent {
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-    min-height: 0;
-    padding: 1rem 0;
-    margin: 0;
-    box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 0;
+  padding: 1rem 0;
+  margin: 0;
+  box-sizing: border-box;
 }
 
 .publicNewsItem .newsContent time {
-    margin-top: auto;
+  margin-top: auto;
 }
 
 .publicNewsItem .newsContent p {
-    display: block;
-    overflow: visible;
-    -webkit-line-clamp: unset;
-    line-clamp: unset;
-    font-size: 0.75rem;
-    line-height: 1.4;
+  display: block;
+  overflow: visible;
+  -webkit-line-clamp: unset;
+  line-clamp: unset;
+  font-size: 0.75rem;
+  line-height: 1.4;
 }
 
 .publicNewsItem .newsWidgetImage {
-    width: 20rem;
-    height: 13rem;
+  width: 20rem;
+  height: 13rem;
 }
 
 /* ===== EMPTY STATE ===== */
 
 .emptyState {
-    padding: 2rem 0;
-    color: var(--color-text-muted);
-    text-align: center;
-    font-size: 0.875rem;
+  padding: 2rem 0;
+  color: var(--color-text-muted);
+  text-align: center;
+  font-size: 0.875rem;
 }
 
 /* ===== INFO WIDGETS (WEATHER & TRANSPORT) ===== */
 
 .infoWidgetContent {
-    min-height: 160px;
+  min-height: 160px;
 }
 
 /* ===== WEATHER WIDGET ===== */
 .weatherWidget .infoWidgetHeader {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) auto;
-    align-items: start;
-    gap: 0.75rem;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: start;
+  gap: 0.75rem;
 }
 
 .weatherWidget {
-    display: flex;
-    flex-direction: column;
+  display: flex;
+  flex-direction: column;
 }
 
 .weatherWidget .infoWidgetContent {
-    display: flex;
-    flex: 1;
-    min-height: 0;
+  display: flex;
+  flex: 1;
+  min-height: 0;
 }
 
 .weatherContent {
-    display: flex;
-    flex-direction: column;
-    flex: 1;
-    min-height: 0;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
 }
 
 .weatherMain {
-    display: grid;
-    grid-template-columns: 1fr 1.5fr 1fr;
-    align-items: center;
-    gap: 1rem;
-    width: 100%;
-    flex: 1;
+  display: grid;
+  grid-template-columns: 1fr 1.5fr 1fr;
+  align-items: center;
+  gap: 1rem;
+  width: 100%;
+  flex: 1;
 }
 
 .weatherDetails {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: flex-start;
-    min-width: 0;
-    gap: 0.5rem;
-    padding-left: 1rem;
-    border-left: 2px solid var(--color-border);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  min-width: 0;
+  gap: 0.5rem;
+  padding-left: 1rem;
+  border-left: 2px solid var(--color-border);
 }
 
 .weatherMain svg {
-    flex-shrink: 0;
+  flex-shrink: 0;
 }
 
 .weatherTemperature {
-    margin: 0;
-    font-size: clamp(3.5rem, 4vw, 4.5rem);
-    font-weight: 700;
-    line-height: 1.1;
-    color: var(--color-text-primary);
-    white-space: nowrap;
+  margin: 0;
+  font-size: clamp(3.5rem, 4vw, 4.5rem);
+  font-weight: 700;
+  line-height: 1.1;
+  color: var(--color-text-primary);
+  white-space: nowrap;
 }
 
 .weatherCondition {
-    margin: 0;
-    font-size: 1.15rem;
-    color: var(--color-text-secondary);
+  margin: 0;
+  font-size: 1.15rem;
+  color: var(--color-text-secondary);
 }
 
 .weatherWind {
-    display: flex;
-    align-items: center;
-    gap: 0.4rem;
-    margin: 0;
-    font-size: 0.8rem;
-    color: var(--color-text-secondary);
-    white-space: nowrap;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin: 0;
+  font-size: 0.8rem;
+  color: var(--color-text-secondary);
+  white-space: nowrap;
 }
 
 .weatherWind svg {
-    flex-shrink: 0;
+  flex-shrink: 0;
 }
 
 .weatherUpdated {
-    margin: 0;
-    font-size: 0.8rem;
-    color: var(--color-text-muted);
-    white-space: nowrap;
+  margin: 0;
+  font-size: 0.8rem;
+  color: var(--color-text-muted);
+  white-space: nowrap;
 }
 
 /* Timprognoser */
 .weatherHourly {
-    display: grid;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-    gap: 0.5rem;
-    border-top: 1px solid var(--color-border);
-    padding-top: 1rem;
-    margin-top: 1rem;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.5rem;
+  border-top: 1px solid var(--color-border);
+  padding-top: 1rem;
+  margin-top: 1rem;
 }
 
 .weatherHourlyItem {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 0.5rem;
-    min-width: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  min-width: 0;
 }
 
 .weatherHourlyTime {
-    margin: 0;
-    font-size: 0.85rem;
-    color: var(--color-text-secondary);
+  margin: 0;
+  font-size: 0.85rem;
+  color: var(--color-text-secondary);
 }
 
 .weatherHourlyTemperature {
-    margin: 0;
-    font-size: 1rem;
-    font-weight: 700;
-    color: var(--color-text-primary);
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--color-text-primary);
 }
 
 /* ===== PUBLIC WEATHER WIDGET ===== */
 
 .publicWeatherWidget {
-    padding: 0.75rem 1rem;
-    overflow: hidden;
+  padding: 0.75rem 1rem;
+  overflow: hidden;
 }
 
 .publicWeatherWidget .infoWidgetHeader {
-    margin-bottom: 0.5rem;
+  margin-bottom: 0.5rem;
 }
 
 .publicWeatherWidget .infoWidgetContent {
-    min-height: 0;
+  min-height: 0;
 }
 
 /* Vänster: aktuellt väder | Höger: fyra prognoser */
 
 .publicWeatherContent {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr);
-    align-items: center;
-    gap: 1rem;
-    width: 100%;
-    min-width: 0;
-    height: 100%;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr);
+  align-items: center;
+  gap: 1rem;
+  width: 100%;
+  min-width: 0;
+  height: 100%;
 }
 
 /* ===== AKTUELLT VÄDER ===== */
 
 .publicWeatherCurrent {
-    display: grid;
-    grid-template-columns: 90px max-content;
-    grid-template-rows: auto auto;
-    align-items: center;
-    align-content: center;
-    justify-content: start;
-    column-gap: 1rem;
-    min-width: 0;
+  display: grid;
+  grid-template-columns: 90px max-content;
+  grid-template-rows: auto auto;
+  align-items: center;
+  align-content: center;
+  justify-content: start;
+  column-gap: 1rem;
+  min-width: 0;
 }
 
 .publicWeatherCurrent > img {
-    grid-column: 1;
-    grid-row: 1;
-    width: 80px;
-    height: 80px;
-    object-fit: contain;
+  grid-column: 1;
+  grid-row: 1;
+  width: 80px;
+  height: 80px;
+  object-fit: contain;
 }
 
 .publicWeatherCurrentDetails {
-    display: contents;
+  display: contents;
 }
 
 .publicWeatherWidget .weatherTemperature {
-    grid-column: 2;
-    grid-row: 1;
-    font-size: clamp(2rem, 2.5vw, 3rem);
-    font-weight: 700;
-    white-space: nowrap;
+  grid-column: 2;
+  grid-row: 1;
+  font-size: clamp(2rem, 2.5vw, 3rem);
+  font-weight: 700;
+  white-space: nowrap;
 }
 
 .publicWeatherWidget .weatherCondition {
-    grid-column: 1;
-    grid-row: 2;
-    font-size: 0.95rem;
-    text-align: center;
+  grid-column: 1;
+  grid-row: 2;
+  font-size: 0.95rem;
+  text-align: center;
 }
 
 .publicWeatherCurrent > .weatherWind {
-    grid-column: 2;
-    grid-row: 2;
-    justify-self: start;
-    font-size: 0.75rem;
-    white-space: nowrap;
+  grid-column: 2;
+  grid-row: 2;
+  justify-self: start;
+  font-size: 0.75rem;
+  white-space: nowrap;
 }
 
 /* ===== FYRA PROGNOSER ===== */
 
 .publicWeatherForecasts {
-    display: grid;
-    grid-template-columns: repeat(2, max-content);
-    grid-template-rows: repeat(2, auto);
-    grid-auto-flow: column;
-    align-content: center;
-    justify-content: space-evenly;
-    gap: 0.75rem 1rem;
-    min-width: 0;
-    padding-left: 1rem;
-    border-left: 1px solid var(--color-border);
+  display: grid;
+  grid-template-columns: repeat(2, max-content);
+  grid-template-rows: repeat(2, auto);
+  grid-auto-flow: column;
+  align-content: center;
+  justify-content: space-evenly;
+  gap: 0.75rem 1rem;
+  min-width: 0;
+  padding-left: 1rem;
+  border-left: 1px solid var(--color-border);
 }
 
 .publicWeatherForecastItem {
-    display: grid;
-    grid-template-columns: auto 36px auto;
-    align-items: center;
-    justify-content: start;
-    column-gap: 0.5rem;
-    min-width: 0;
+  display: grid;
+  grid-template-columns: auto 36px auto;
+  align-items: center;
+  justify-content: start;
+  column-gap: 0.5rem;
+  min-width: 0;
 }
 
 .publicWeatherForecastTime {
-    font-size: 0.85rem;
-    white-space: nowrap;
-    color: var(--color-text-secondary);
+  font-size: 0.85rem;
+  white-space: nowrap;
+  color: var(--color-text-secondary);
 }
 
 .publicWeatherForecastItem img {
-    width: 36px;
-    height: 36px;
-    justify-self: center;
-    object-fit: contain;
+  width: 36px;
+  height: 36px;
+  justify-self: center;
+  object-fit: contain;
 }
 
 .publicWeatherForecastTemperature {
-    font-size: 1rem;
-    font-weight: 700;
-    white-space: nowrap;
-    color: var(--color-text-primary);
+  font-size: 1rem;
+  font-weight: 700;
+  white-space: nowrap;
+  color: var(--color-text-primary);
 }
 /* ===== TRANSPORT WIDGET ===== */
 
 .departureList {
-    display: flex;
-    flex-direction: column;
-    gap: 0.75rem;
-    padding: 0;
-    margin: 0;
-    list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding: 0;
+  margin: 0;
+  list-style: none;
 }
 
 .departureCard {
-    padding: 0.75rem;
-    border: 1px solid var(--color-border);
-    border-radius: 10px;
-    background: var(--color-background);
+  padding: 0.75rem;
+  border: 1px solid var(--color-border);
+  border-radius: 10px;
+  background: var(--color-background);
 }
 
 .departureHeader {
-    display: grid;
-    grid-template-columns: auto minmax(0, 1fr) auto;
-    align-items: center;
-    gap: 0.75rem;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 0.75rem;
 }
 
 .departureLine {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    min-width: 2.5rem;
-    padding: 0.4rem;
-    border-radius: 6px;
-    background: var(--color-primary);
-    color: white;
-    font-size: 1.1rem;
-    font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 2.5rem;
+  padding: 0.4rem;
+  border-radius: 6px;
+  background: var(--color-primary);
+  color: white;
+  font-size: 1.1rem;
+  font-weight: 700;
 }
 
 .departureDestination {
-    min-width: 0;
-    margin: 0;
-    color: var(--color-text-primary);
-    font-weight: 600;
+  min-width: 0;
+  margin: 0;
+  color: var(--color-text-primary);
+  font-weight: 600;
 }
 
 .departureTime {
-    text-align: right;
-    white-space: nowrap;
-    color: var(--color-text-primary);
-    font-size: 1.1rem;
-    font-weight: 700;
+  text-align: right;
+  white-space: nowrap;
+  color: var(--color-text-primary);
+  font-size: 1.1rem;
+  font-weight: 700;
 }
 
 .departureTimes {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    white-space: nowrap;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  white-space: nowrap;
 }
 
 .departureScheduled {
-    color: var(--color-text-muted);
-    text-decoration: line-through;
-    font-size: 0.9rem;
+  color: var(--color-text-muted);
+  text-decoration: line-through;
+  font-size: 0.9rem;
 }
 
 .departureDetails {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 0.5rem;
-    margin-top: 0.5rem;
-    padding-left: 3.25rem;
-    font-size: 0.8rem;
-    color: var(--color-text-secondary);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+  padding-left: 3.25rem;
+  font-size: 0.8rem;
+  color: var(--color-text-secondary);
 }
 
 .departureCountdown {
-    font-weight: 600;
+  font-weight: 600;
 }
 
 .departureDelay {
-    color: var(--color-error);
-    font-weight: 600;
+  color: var(--color-error);
+  font-weight: 600;
 }
 
 .departureEarly {
-    color: var(--color-success);
-    font-weight: 600;
+  color: var(--color-success);
+  font-weight: 600;
 }
 
 .departureLineDirectionOne {
-    background: var(--color-primary);
+  background: var(--color-primary);
 }
 
 .departureLineDirectionTwo {
-    background: var(--color-secondary);
+  background: var(--color-secondary);
+}
+
+.classroomWidget {
+  min-width: 0;
+}
+
+.classroomGrid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.classroomCard {
+  min-width: 0;
+  padding: 1rem;
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+  background: var(--color-background);
+}
+
+.classroomCard h3 {
+  margin: 0 0 0.75rem;
+  color: var(--color-text-primary);
+  font-size: 1rem;
+}
+
+.classroomLesson {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  padding: 0.75rem;
+  border-radius: 8px;
+  color: var(--color-text-primary);
+}
+
+.classroomLesson[data-school="TH"] {
+  background: color-mix(in srgb, var(--color-th-primary) 75%, transparent);
+  color: var(--color-text-white);
+}
+
+.classroomLesson[data-school="TH"] span {
+  color: #d9e9e6;
+}
+
+.classroomLesson[data-school="VH"] {
+  background: color-mix(in srgb, var(--color-vh-primary) 75%, transparent);
+  color: var(--color-text-white);
+}
+
+.classroomLesson[data-school="VH"] span {
+  color: #ecd9e0;
+}
+
+.classroomLesson span,
+.classroomFree,
+.widgetError {
+  color: var(--color-text-secondary);
+}
+
+.classroomFree {
+  margin: 0;
+}
+
+.widgetError {
+  padding: 1rem 0;
 }
 
 /* ===== RESPONSIVE ===== */
+@media (max-width: 700px) {
+  .classroomGrid {
+    grid-template-columns: 1fr;
+  }
+}
 
 @media (max-width: 640px) {
-    .newsWidget,
-    .infoWidget {
-        padding: 1.25rem;
-    }
+  .newsWidget,
+  .infoWidget {
+    padding: 1.25rem;
+  }
 
-    .widgetTitle h2,
-    .infoWidgetHeader h2 {
-        font-size: 1.1rem;
-    }
+  .widgetTitle h2,
+  .infoWidgetHeader h2 {
+    font-size: 1.1rem;
+  }
 
-    .newsItem {
-        padding: 1rem 0;
-    }
+  .newsItem {
+    padding: 1rem 0;
+  }
 
-    .infoWidgetContent {
-        min-height: 120px;
-    }
+  .infoWidgetContent {
+    min-height: 120px;
+  }
 }
 
 @media (min-width: 1600px) {
-    .widgetTitle h2,
-    .infoWidgetHeader h2 {
-        font-size: 1.75rem;
-    }
+  .widgetTitle h2,
+  .infoWidgetHeader h2 {
+    font-size: 1.75rem;
+  }
 
-    .widgetTitle svg,
-    .infoWidgetHeader svg {
-        width: 32px;
-        height: 32px;
-    }
+  .widgetTitle svg,
+  .infoWidgetHeader svg {
+    width: 32px;
+    height: 32px;
+  }
 
-    .newsContent h3 {
-        font-size: 1.5rem;
-    }
+  .newsContent h3 {
+    font-size: 1.5rem;
+  }
 
-    .publicNewsItem .newsContent p {
-        font-size: 1.25rem;
-        line-height: 1.6;
-    }
+  .publicNewsItem .newsContent p {
+    font-size: 1.25rem;
+    line-height: 1.6;
+  }
 
-    .newsContent time {
-        font-size: 1rem;
-    }
+  .newsContent time {
+    font-size: 1rem;
+  }
 
-    .infoWidgetContent {
-        font-size: 1.25rem;
-    }
+  .infoWidgetContent {
+    font-size: 1.25rem;
+  }
 
-    .emptyState {
-        font-size: 1.25rem;
-    }
+  .emptyState {
+    font-size: 1.25rem;
+  }
 
-    .publicWeatherWidget {
-        padding: 1.25rem 1.5rem;
-    }
+  .publicWeatherWidget {
+    padding: 1.25rem 1.5rem;
+  }
 
-    /* Fördelning mellan aktuellt väder och prognoser */
-    .publicWeatherContent {
-        grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr);
-        gap: 1.5rem;
-    }
+  /* Fördelning mellan aktuellt väder och prognoser */
+  .publicWeatherContent {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr);
+    gap: 1.5rem;
+  }
 
-    /* Vänstersidan */
-    .publicWeatherCurrent {
-        grid-template-columns: 110px max-content;
-        column-gap: 1.25rem;
-        row-gap: 0.25rem;
-        align-content: center;
-    }
+  /* Vänstersidan */
+  .publicWeatherCurrent {
+    grid-template-columns: 110px max-content;
+    column-gap: 1.25rem;
+    row-gap: 0.25rem;
+    align-content: center;
+  }
 
-    .publicWeatherCurrent > img {
-        width: 115px;
-        height: 115px;
-    }
+  .publicWeatherCurrent > img {
+    width: 115px;
+    height: 115px;
+  }
 
-    .publicWeatherWidget .weatherTemperature {
-        font-size: clamp(3.5rem, 3.5vw, 4.5rem);
-    }
+  .publicWeatherWidget .weatherTemperature {
+    font-size: clamp(3.5rem, 3.5vw, 4.5rem);
+  }
 
-    .publicWeatherWidget .weatherCondition {
-        font-size: 1.3rem;
-    }
+  .publicWeatherWidget .weatherCondition {
+    font-size: 1.3rem;
+  }
 
-    .publicWeatherCurrent > .weatherWind {
-        font-size: 0.95rem;
-    }
+  .publicWeatherCurrent > .weatherWind {
+    font-size: 0.95rem;
+  }
 
-    /* Högersidan */
-    .publicWeatherForecasts {
-        column-gap: 1.5rem;
-        row-gap: 1rem;
-        padding-left: 1.5rem;
-    }
+  /* Högersidan */
+  .publicWeatherForecasts {
+    column-gap: 1.5rem;
+    row-gap: 1rem;
+    padding-left: 1.5rem;
+  }
 
-    .publicWeatherForecastItem {
-        grid-template-columns: auto 52px auto;
-        column-gap: 0.75rem;
-    }
+  .publicWeatherForecastItem {
+    grid-template-columns: auto 52px auto;
+    column-gap: 0.75rem;
+  }
 
-    .publicWeatherForecastTime {
-        font-size: 1.1rem;
-    }
+  .publicWeatherForecastTime {
+    font-size: 1.1rem;
+  }
 
-    .publicWeatherForecastItem img {
-        width: 52px;
-        height: 52px;
-    }
+  .publicWeatherForecastItem img {
+    width: 52px;
+    height: 52px;
+  }
 
-    .publicWeatherForecastTemperature {
-        font-size: 1.35rem;
-    }
+  .publicWeatherForecastTemperature {
+    font-size: 1.35rem;
+  }
 }
 
 @media (max-height: 1050px) {
-    .departureList > li:nth-child(n + 4) {
-        display: none;
-    }
+  .departureList > li:nth-child(n + 4) {
+    display: none;
+  }
 }
