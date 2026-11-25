@@ -22,16 +22,20 @@ public class SchoolClassController {
         this.schoolClassService = schoolClassService;
     }
 
-    // Hämta alla klasser eller filtrera på utbildning
+    // Hämta klasser med möjlighet att filtrera på utbildning och status
     @GetMapping
     public List<SchoolClassResponse> getAllClasses(
-            @RequestParam(required = false) Long programId
+            @RequestParam(required = false) Long programId,
+            @RequestParam(defaultValue = "false") boolean includeArchived
     ) {
         if (programId != null) {
-            return schoolClassService.getClassesByProgramId(programId);
+            return schoolClassService.getClassesByProgramId(
+                    programId,
+                    includeArchived
+            );
         }
 
-        return schoolClassService.getAllClasses();
+        return schoolClassService.getAllClasses(includeArchived);
     }
 
     // Hämta en klass via ID
@@ -56,6 +60,18 @@ public class SchoolClassController {
             @Valid @RequestBody SchoolClassRequest request
     ) {
         return schoolClassService.updateClass(id, request);
+    }
+
+    // Arkivera en klass
+    @PatchMapping("/{id}/archive")
+    public SchoolClassResponse archiveClass(@PathVariable Long id) {
+        return schoolClassService.archiveClass(id);
+    }
+
+    // Återaktivera en klass
+    @PatchMapping("/{id}/restore")
+    public SchoolClassResponse restoreClass(@PathVariable Long id) {
+        return schoolClassService.restoreClass(id);
     }
 
     // Ta bort en klass

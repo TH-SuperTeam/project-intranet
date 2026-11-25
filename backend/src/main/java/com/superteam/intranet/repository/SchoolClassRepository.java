@@ -2,8 +2,6 @@ package com.superteam.intranet.repository;
 
 import com.superteam.intranet.model.SchoolClass;
 import org.springframework.data.jpa.repository.JpaRepository;
-
-import java.time.LocalDate;
 import java.util.List;
 
 public interface SchoolClassRepository extends JpaRepository<SchoolClass, Long> {
@@ -14,15 +12,23 @@ public interface SchoolClassRepository extends JpaRepository<SchoolClass, Long> 
     boolean existsByProgramId(Long programId);
 
     // Kontrollera dubbletter vid skapande
-    boolean existsByProgramIdAndStartDate(
+    boolean existsByProgramIdAndNameIgnoreCase(
             Long programId,
-            LocalDate startDate
+            String name
     );
 
     // Kontrollera dubbletter vid uppdatering
-    boolean existsByProgramIdAndStartDateAndIdNot(
+    boolean existsByProgramIdAndNameIgnoreCaseAndIdNot(
             Long programId,
-            LocalDate startDate,
+            String name,
             Long id
+    );
+
+    // Hämta aktiva klasser inom aktiva program
+    List<SchoolClass> findByIsActiveTrueAndProgram_IsActiveTrue();
+
+    // Hämta aktiva klasser för ett specifikt aktivt program
+    List<SchoolClass> findByProgramIdAndIsActiveTrueAndProgram_IsActiveTrue(
+            Long programId
     );
 }

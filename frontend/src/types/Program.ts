@@ -5,4 +5,5 @@ export interface Program {
     name: string;
     schoolId: number;
     school: SchoolName;
+    isActive: boolean;
 }

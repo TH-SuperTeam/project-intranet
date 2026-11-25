@@ -6,6 +6,7 @@ public record ProgramResponse(
         Long id,
         String name,
         Long schoolId,
-        SchoolName school
+        SchoolName school,
+        boolean isActive
 ) {
 }

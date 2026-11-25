@@ -21,7 +21,8 @@ class NewsMapperTest {
         CreateNewsRequest request = new CreateNewsRequest(
                 "Viktig information",
                 "Skolan håller stängt på fredag.",
-                Set.of(TargetAudience.STUDENT)
+                Set.of(TargetAudience.STUDENT),
+                null
         );
 
         // Act

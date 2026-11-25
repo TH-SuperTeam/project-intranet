@@ -32,22 +32,32 @@ public class SchoolClassService {
         this.programRepository = programRepository;
     }
 
-    // Hämta alla klasser
+    // Hämta klasser med möjlighet att inkludera arkiverade
     @Transactional(readOnly = true)
-    public List<SchoolClassResponse> getAllClasses() {
-        return schoolClassRepository.findAll()
-                .stream()
+    public List<SchoolClassResponse> getAllClasses(boolean includeArchived) {
+        List<SchoolClass> classes = includeArchived
+                ? schoolClassRepository.findAll()
+                : schoolClassRepository.findByIsActiveTrueAndProgram_IsActiveTrue();
+
+        return classes.stream()
                 .map(SchoolClassMapper::toResponse)
                 .toList();
     }
 
     // Hämta klasser för en specifik utbildning
     @Transactional(readOnly = true)
-    public List<SchoolClassResponse> getClassesByProgramId(Long programId) {
+    public List<SchoolClassResponse> getClassesByProgramId(
+            Long programId,
+            boolean includeArchived
+    ) {
         findProgramById(programId);
 
-        return schoolClassRepository.findByProgramId(programId)
-                .stream()
+        List<SchoolClass> classes = includeArchived
+                ? schoolClassRepository.findByProgramId(programId)
+                : schoolClassRepository
+                .findByProgramIdAndIsActiveTrueAndProgram_IsActiveTrue(programId);
+
+        return classes.stream()
                 .map(SchoolClassMapper::toResponse)
                 .toList();
     }
@@ -64,12 +74,13 @@ public class SchoolClassService {
         validateDates(request.startDate(), request.endDate());
 
         Program program = findProgramById(request.programId());
+        validateActiveProgram(program);
 
-        if (schoolClassRepository.existsByProgramIdAndStartDate(
-                request.programId(), request.startDate())) {
+        if (schoolClassRepository.existsByProgramIdAndNameIgnoreCase(
+                request.programId(), request.name().trim())) {
             throw new ResponseStatusException(
                     HttpStatus.CONFLICT,
-                    "Det finns redan en klass med detta startdatum på utbildningen"
+                    "Det finns redan en klass med detta namn på utbildningen"
             );
         }
 
@@ -100,15 +111,20 @@ public class SchoolClassService {
         SchoolClass schoolClass = findClassById(id);
         Program program = findProgramById(request.programId());
 
-        if (schoolClassRepository.existsByProgramIdAndStartDateAndIdNot(
-                request.programId(), request.startDate(), id)) {
+        // Kontrollera att utbildningen är aktiv vid byte av utbildning
+        if (!schoolClass.getProgram().getId().equals(request.programId())) {
+            validateActiveProgram(program);
+        }
+
+        if (schoolClassRepository.existsByProgramIdAndNameIgnoreCase(
+                request.programId(), request.name().trim())) {
             throw new ResponseStatusException(
                     HttpStatus.CONFLICT,
-                    "Det finns redan en klass med detta startdatum på utbildningen"
+                    "Det finns redan en klass med detta namn på utbildningen"
             );
         }
 
-        schoolClass.setName(request.name());
+        schoolClass.setName(request.name().trim());
         schoolClass.setStartDate(request.startDate());
         schoolClass.setEndDate(request.endDate());
         schoolClass.setProgram(program);
@@ -125,6 +141,26 @@ public class SchoolClassService {
                     e
             );
         }
+    }
+
+    // Arkivera en klass
+    @Transactional
+    public SchoolClassResponse archiveClass(Long id) {
+        SchoolClass schoolClass = findClassById(id);
+
+        schoolClass.setActive(false);
+
+        return SchoolClassMapper.toResponse(schoolClass);
+    }
+
+    // Återaktivera en klass
+    @Transactional
+    public SchoolClassResponse restoreClass(Long id) {
+        SchoolClass schoolClass = findClassById(id);
+
+        schoolClass.setActive(true);
+
+        return SchoolClassMapper.toResponse(schoolClass);
     }
 
     // Ta bort en klass
@@ -170,6 +206,16 @@ public class SchoolClassService {
             throw new ResponseStatusException(
                     HttpStatus.BAD_REQUEST,
                     "Slutdatum får inte vara före startdatum"
+            );
+        }
+    }
+
+    // Hjälpmetod: kontrollera att utbildningen är aktiv
+    private void validateActiveProgram(Program program) {
+        if (!program.isActive()) {
+            throw new ResponseStatusException(
+                    HttpStatus.CONFLICT,
+                    "Utbildningen är arkiverad"
             );
         }
     }

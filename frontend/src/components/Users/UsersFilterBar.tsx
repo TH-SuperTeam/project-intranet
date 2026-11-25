@@ -1,5 +1,5 @@
 import FilterSelect from "../common/FilterSelect";
-import { useClasses } from "../../hooks/useClasses";
+import { useClasses } from "../../hooks/EducationHooks/useClasses";
 import type { Program } from "../../types/Program";
 import type { UserFilters } from "../../types/UserFilters";
 import styles from "./UsersFilterBar.module.css";
@@ -27,7 +27,7 @@ const schoolOptions = [
     { value: "VH", label: "Vårdyrkeshögskolan" },
 ];
 
-const statusOptions = Object.values(Status).map(status => ({
+const statusOptions = Object.values(Status).map((status) => ({
     value: status,
     label: statusLabels[status],
 }));
@@ -57,13 +57,13 @@ const UsersFilterBar = ({
     // omvandlade till { value, label } som FilterSelect förstår.
     const programOptions = (programs ?? [])
         .filter(
-            program =>
+            (program) =>
                 filters.school === null || program.school === filters.school,
         )
-        .map(program => ({ value: String(program.id), label: program.name }));
+        .map((program) => ({ value: String(program.id), label: program.name }));
 
     // Samma omvandling för klasser.
-    const classOptions = (classes ?? []).map(c => ({
+    const classOptions = (classes ?? []).map((c) => ({
         value: String(c.id),
         label: c.name,
     }));
@@ -76,7 +76,7 @@ const UsersFilterBar = ({
                 value={filters.school ?? ""}
                 options={schoolOptions}
                 defaultLabel="Alla skolor"
-                onChange={value =>
+                onChange={(value) =>
                     onSchoolChange(value === "" ? null : (value as SchoolName))
                 }
             />
@@ -89,7 +89,7 @@ const UsersFilterBar = ({
                 }
                 options={programOptions}
                 defaultLabel="Alla program"
-                onChange={value =>
+                onChange={(value) =>
                     onProgramChange(value === "" ? null : Number(value))
                 }
             />
@@ -100,7 +100,7 @@ const UsersFilterBar = ({
                 value={filters.classId === null ? "" : String(filters.classId)}
                 options={classOptions}
                 defaultLabel="Alla klasser"
-                onChange={value =>
+                onChange={(value) =>
                     onClassChange(value === "" ? null : Number(value))
                 }
                 disabled={
@@ -114,7 +114,7 @@ const UsersFilterBar = ({
                     aria-label="Användartyp"
                     className={styles.userTypeGroup}
                 >
-                    {userTypeOptions.map(option => {
+                    {userTypeOptions.map((option) => {
                         const isDisabled =
                             option.value === UserType.TEACHER &&
                             filters.classId !== null;
@@ -149,7 +149,7 @@ const UsersFilterBar = ({
                             }
                             options={statusOptions}
                             defaultLabel="Alla"
-                            onChange={value =>
+                            onChange={(value) =>
                                 onStatusChange(
                                     value === "" ? null : (value as Status),
                                 )

@@ -14,6 +14,9 @@ public class SchoolClass {
     @Column(nullable = false, length = 100)
     private String name;
 
+    @Column(name = "is_active", nullable = false)
+    private boolean isActive = true;
+
     @Column(name = "start_date", nullable = false)
     private LocalDate startDate;
 
@@ -41,6 +44,14 @@ public class SchoolClass {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public boolean isActive() {
+        return isActive;
+    }
+
+    public void setActive(boolean active) {
+        this.isActive = active;
     }
 
     public LocalDate getStartDate() {

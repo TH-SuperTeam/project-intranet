@@ -49,7 +49,12 @@ class UserServiceTest {
                 "My bio",
                 null,
                 null,
-                null
+                null,
+                null, // school
+                null, // programId
+                null, // programName
+                null, // classId
+                null  // className
         );
 
         when(userRepository.findById(1L))

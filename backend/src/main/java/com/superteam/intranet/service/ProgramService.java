@@ -35,10 +35,14 @@ public class ProgramService {
         this.schoolClassRepository = schoolClassRepository;
     }
 
-    // Hämta alla utbildningar
-    public List<ProgramResponse> getAllPrograms() {
-        return programRepository.findAll()
-                .stream()
+    // Hämta utbildningar med möjlighet att inkludera arkiverade
+    @Transactional(readOnly = true)
+    public List<ProgramResponse> getAllPrograms(boolean includeArchived) {
+        List<Program> programs = includeArchived
+                ? programRepository.findAll()
+                : programRepository.findByIsActiveTrue();
+
+        return programs.stream()
                 .map(ProgramMapper::toResponse)
                 .toList();
     }
@@ -78,7 +82,14 @@ public class ProgramService {
     // Uppdatera en utbildning
     public ProgramResponse updateProgram(Long id, ProgramRequest request) {
         Program program = findProgramById(id);
-        School school = findSchoolById(request.schoolId());
+
+        // Förhindra byte av skoltillhörighet
+        if (!program.getSchool().getId().equals(request.schoolId())) {
+            throw new ResponseStatusException(
+                    HttpStatus.BAD_REQUEST,
+                    "Utbildningens skoltillhörighet kan inte ändras"
+            );
+        };
 
         if (programRepository.existsByNameAndSchoolIdAndIdNot(
                 request.name(), request.schoolId(), id)) {
@@ -89,7 +100,6 @@ public class ProgramService {
         }
 
         program.setName(request.name());
-        program.setSchool(school);
 
         try {
             Program updatedProgram = programRepository.saveAndFlush(program);
@@ -101,6 +111,26 @@ public class ProgramService {
                     e
             );
         }
+    }
+
+    // Arkivera en utbildning
+    @Transactional
+    public ProgramResponse archiveProgram(Long id) {
+        Program program = findProgramById(id);
+
+        program.setActive(false);
+
+        return ProgramMapper.toResponse(program);
+    }
+
+    // Återaktivera en utbildning
+    @Transactional
+    public ProgramResponse restoreProgram(Long id) {
+        Program program = findProgramById(id);
+
+        program.setActive(true);
+
+        return ProgramMapper.toResponse(program);
     }
 
     // Ta bort en utbildning
