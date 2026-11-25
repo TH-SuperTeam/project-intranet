@@ -1,10 +1,13 @@
 package com.superteam.intranet.dto;
 
+import com.superteam.intranet.model.SchoolName;
 import java.time.LocalTime;
 
 public record ClassroomBookingResponse(
-    Long classId,
-    String className,
-    LocalTime startTime,
-    LocalTime endTime
-){}
+        Long classId,
+        String className,
+        String programName,
+        SchoolName school,
+        LocalTime startTime,
+        LocalTime endTime
+) {}

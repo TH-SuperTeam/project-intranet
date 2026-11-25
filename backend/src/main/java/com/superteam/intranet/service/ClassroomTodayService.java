@@ -84,6 +84,8 @@ public class ClassroomTodayService {
                         .add(new ClassroomBookingResponse(
                                 schedule.getSchoolClass().getId(),
                                 schedule.getSchoolClass().getName(),
+                                schedule.getSchoolClass().getProgram().getName(),
+                                schedule.getSchoolClass().getProgram().getSchool().getName(),
                                 booking.startTime(),
                                 booking.endTime()
                         ));
