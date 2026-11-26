@@ -19,6 +19,8 @@ import UserProfilePage from "./pages/UserProfilePage";
 import EducationPage from "./pages/EducationPage";
 import SchedulePage from "./pages/SchedulePage";
 import ThemeManager from "./components/auth/ThemeManager";
+import ForgotPasswordPage from "./pages/ForgotPasswordPage";
+import ResetPasswordPage from "./pages/ResetPasswordPage";
 
 function App() {
     return (
@@ -31,6 +33,14 @@ function App() {
                         <Route
                             path="/public"
                             element={<PublicDashboardPage />}
+                        />
+                        <Route
+                            path="/login/forgot-password"
+                            element={<ForgotPasswordPage />}
+                        />
+                        <Route
+                            path="/reset-password"
+                            element={<ResetPasswordPage />}
                         />
 
                         <Route element={<ProtectedRoute />}>

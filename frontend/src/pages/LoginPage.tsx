@@ -1,6 +1,6 @@
 import { useState, type FormEvent } from "react";
 import { useMutation } from "@tanstack/react-query";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
 import SubmitButton from "../components/common/SubmitButton";
 import styles from "../components/auth/Login.module.css";
@@ -250,6 +250,12 @@ const LoginPage = () => {
                                     )}
                                 </button>
                             </div>
+                            <Link
+                                to="/login/forgot-password"
+                                className={styles.forgotLink}
+                            >
+                                Glömt lösenord?
+                            </Link>
                         </div>
 
                         {validationError && (
