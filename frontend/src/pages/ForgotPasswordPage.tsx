@@ -52,7 +52,8 @@ const ForgotPasswordPage = () => {
                 {mutation.isSuccess ? (
                     <p role="status" className={styles.successMessage}>
                         Om e-postadressen finns hos oss har vi skickat en länk
-                        för att återställa lösenordet.
+                        för att återställa lösenordet. Länken är giltig i 10
+                        minuter.
                     </p>
                 ) : (
                     <form

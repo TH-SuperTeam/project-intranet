@@ -389,13 +389,6 @@ input[type="password"]::-ms-reveal {
     outline-offset: 2px;
 }
 
-/* ===== AUTH PAGES (forgot/reset password) ===== */
-
-.formSection.authPage {
-    min-height: 100vh;
-    min-height: 100dvh;
-}
-
 /* ===== FEEDBACK ===== */
 
 .errorMessage {
@@ -430,6 +423,13 @@ input[type="password"]::-ms-reveal {
     font-size: 0.875rem;
     font-weight: 500;
     text-align: center;
+}
+
+/* ===== AUTH PAGES (forgot/reset password) ===== */
+
+.formSection.authPage {
+    min-height: 100vh;
+    min-height: 100dvh;
 }
 
 /* ===== RESPONSIVE ===== */
