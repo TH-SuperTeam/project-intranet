@@ -1,26 +1,16 @@
-import { Link, useParams } from "react-router-dom"
+import { useParams } from "react-router-dom"
 import UserProfileCard from "../components/Users/UserProfileCard"
 import { useUserProfile } from "../hooks/UsersHooks/useUserProfile"
 import styles from "./UserProfilePage.module.css"
 import BackLink from "../components/common/BackLink"
 import { ProfileSkeleton } from "../components/Loaders/Skeletons/ProfileSkeleton"
+import ErrorState from "../components/errors/ErrorState"
 
 const UserProfilePage = () => {
   const { id } = useParams<{ id: string }>()
   const userId = Number(id)
 
-  const isValidId = id !== undefined && Number.isInteger(userId) && userId > 0
-
   const { data: profile, isLoading, isError, error } = useUserProfile(userId)
-
-  if (!isValidId) {
-    return (
-      <section className={styles.profilePage}>
-        <p className={styles.errorMessage}>Ogiltigt användar-ID.</p>
-        <Link to="/users">Tillbaka till användare</Link>
-      </section>
-    )
-  }
 
   if (isLoading) {
     return <ProfileSkeleton />
@@ -32,10 +22,8 @@ const UserProfilePage = () => {
     return (
       <section className={styles.profilePage}>
         <p className={styles.errorMessage}>
-          {isNotFound ? "Användaren kunde inte hittas." : "Kunde inte hämta profilen. Försök igen senare."}
+          {isNotFound ? "Användaren kunde inte hittas." : <ErrorState resource="profilen" />}
         </p>
-
-        <Link to="/users">Tillbaka till användare</Link>
       </section>
     )
   }

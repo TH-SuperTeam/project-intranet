@@ -1,0 +1,149 @@
+.page {
+    position: relative;
+    isolation: isolate;
+    display: grid;
+    min-height: 100dvh;
+    overflow: hidden;
+    padding: 2rem;
+    box-sizing: border-box;
+    background: var(--color-background);
+    color: var(--color-text-primary);
+}
+
+.page::before {
+    position: absolute;
+    z-index: -1;
+    inset: 0 0 auto;
+    height: 52%;
+    content: "";
+    background-image:
+        linear-gradient(to bottom, rgb(250 245 247 / 35%), var(--color-background)),
+        url("../../assets/red-school-building.png");
+    background-repeat: no-repeat;
+    background-position: center, center 65%;
+    background-size: cover, min(100%, 1500px) auto;
+    opacity: 0.5;
+    pointer-events: none;
+}
+
+:global(:root[data-theme="TH"]) .page::before {
+    background-image:
+        linear-gradient(to bottom, rgb(245 248 248 / 35%), var(--color-background)),
+        url("../../assets/lilac-school-building.png");
+    opacity: 1;
+}
+
+.content {
+    display: flex;
+    width: min(100%, 1280px);
+    margin: 0 auto;
+    flex-direction: column;
+    align-items: center;
+}
+
+.logo {
+    width: min(320px, 75vw);
+    height: auto;
+}
+
+.message {
+    display: flex;
+    width: 100%;
+    margin: auto 0;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.code {
+    margin: 0;
+    color: var(--color-primary);
+    font-size: clamp(7rem, 16vw, 11rem);
+    font-weight: 800;
+    letter-spacing: -0.06em;
+    line-height: 0.95;
+}
+
+.message h1 {
+    margin: 1rem 0 0.5rem;
+    font-size: clamp(1.8rem, 4vw, 3.5rem);
+    font-weight: 700;
+}
+
+.description {
+    margin: 0;
+    color: var(--color-text-secondary);
+    font-size: clamp(1.1rem, 2vw, 1.6rem);
+    font-weight: 500;
+}
+
+.homeLink,
+.backButton {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    font-size: 1.25rem;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.homeLink {
+    min-width: 340px;
+    min-height: 78px;
+    margin-top: 2.75rem;
+    padding: 0 2rem;
+    border-radius: 12px;
+    background: var(--color-primary);
+    color: var(--color-text-white);
+    transition: background-color 150ms ease;
+}
+
+.homeLink:hover {
+    background: var(--color-primary-hover);
+}
+
+.homeLink svg {
+    width: 2rem;
+    height: 2rem;
+}
+
+.backButton {
+    margin-top: 2rem;
+    padding: 0.5rem;
+    border: 0;
+    background: transparent;
+    color: var(--color-primary);
+    cursor: pointer;
+}
+
+.backButton:hover {
+    color: var(--color-primary-hover);
+}
+
+@media (max-width: 600px) {
+    .page {
+        padding: 1.5rem 1rem;
+    }
+
+    .page::before {
+        height: 42%;
+        background-size: cover, auto 100%;
+    }
+
+    .message h1 {
+        max-width: 20ch;
+    }
+
+    .homeLink {
+        min-width: 0;
+        width: min(100%, 340px);
+        min-height: 64px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .homeLink {
+        transition: none;
+    }
+}

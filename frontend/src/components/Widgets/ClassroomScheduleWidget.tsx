@@ -1,28 +1,43 @@
 import { CalendarDays } from "lucide-react"
 import { useClassroomsToday } from "../../hooks/ScheduleHooks/useClassroomsToday"
 import styles from "./Widgets.module.css"
+import ErrorState from "../errors/ErrorState"
 
 const formatTime = (time: string) => time.slice(0, 5)
 
 const ClassroomScheduleWidget = () => {
-  const { data, isLoading, isError, error } = useClassroomsToday()
+  const { data, isLoading, isError } = useClassroomsToday()
+  const header = (
+    <div className={styles.infoWidgetHeader}>
+      <CalendarDays size={22} />
+      <h2>Dagens lektioner</h2>
+    </div>
+  )
 
-  return (
-    <section className={`${styles.infoWidget} ${styles.classroomWidget}`}>
-      <div className={styles.infoWidgetHeader}>
-        <CalendarDays size={22} />
-        <h2>Dagens lektioner</h2>
-      </div>
-
-      {isLoading ? (
+  if (isLoading) {
+    return (
+      <section className={`${styles.infoWidget} ${styles.classroomWidget}`}>
+        {header}
         <p className={styles.emptyState} role="status">
           Hämtar dagens schema…
         </p>
-      ) : isError ? (
-        <p className={styles.widgetError} role="alert">
-          {error instanceof Error ? error.message : "Dagens schema kunde inte hämtas."}
-        </p>
-      ) : !data?.classrooms.length ? (
+      </section>
+    )
+  }
+
+  if (isError) {
+    return (
+      <section className={`${styles.infoWidget} ${styles.classroomWidget}`}>
+        <ErrorState resource="dagens schema" />
+      </section>
+    )
+  }
+
+  return (
+    <section className={`${styles.infoWidget} ${styles.classroomWidget}`}>
+      {header}
+
+      {!data?.classrooms.length ? (
         <p className={styles.emptyState}>Inga klassrum hittades.</p>
       ) : (
         <div className={styles.classroomGrid}>
@@ -36,14 +51,12 @@ const ClassroomScheduleWidget = () => {
                     <div
                       className={styles.classroomLesson}
                       data-school={booking.school}
-                      key={`${booking.classId}-${booking.startTime}`}
-                    >
+                      key={`${booking.classId}-${booking.startTime}`}>
                       <strong>
                         {booking.programName} {booking.className}
                       </strong>
                       <span>
-                        {formatTime(booking.startTime)}–
-                        {formatTime(booking.endTime)}
+                        {formatTime(booking.startTime)}–{formatTime(booking.endTime)}
                       </span>
                     </div>
                   ))
