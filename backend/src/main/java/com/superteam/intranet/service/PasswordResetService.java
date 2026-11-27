@@ -137,4 +137,9 @@ public class PasswordResetService {
 
         return resetToken;
     }
+
+    @Transactional (readOnly = true)
+    public void validateToken(String token) {
+        checkToken(token);
+    }
 }
