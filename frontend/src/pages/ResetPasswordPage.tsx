@@ -4,6 +4,7 @@ import { Eye, EyeOff, Lock } from "lucide-react";
 import useResetPassword from "../hooks/useResetPassword";
 import SubmitButton from "../components/common/SubmitButton";
 import styles from "../components/auth/Login.module.css";
+import useValidateResetToken from "../hooks/useValidateResetToken";
 
 // Länk som ser ut som SubmitButton
 const linkButtonClass =
@@ -20,6 +21,65 @@ const ResetPasswordPage = () => {
     const [validationError, setValidationError] = useState("");
 
     const mutation = useResetPassword();
+
+    const tokenCheck = useValidateResetToken(token);
+
+    if (tokenCheck.error instanceof TypeError) {
+        return (
+            <main className={`${styles.formSection} ${styles.authPage}`}>
+                <div className={styles.loginCard}>
+                    <div className={styles.cardHeader}>
+                        <h1 className={styles.formTitle}>Något gick fel</h1>
+                        <p className={styles.formDescription}>
+                            Kunde inte ansluta till servern. Försök igen.
+                        </p>
+                    </div>
+
+                    <button
+                        type="button"
+                        onClick={() => tokenCheck.refetch()}
+                        className={`${linkButtonClass} cursor-pointer`}
+                    >
+                        Försök igen
+                    </button>
+                </div>
+            </main>
+        );
+    }
+
+    if (!token || tokenCheck.isError) {
+        return (
+            <main className={`${styles.formSection} ${styles.authPage}`}>
+                <div className={styles.loginCard}>
+                    <div className={styles.cardHeader}>
+                        <h1 className={styles.formTitle}>Ogiltig länk</h1>
+                        <p className={styles.formDescription}>
+                            Länken är ogiltig eller har gått ut.
+                        </p>
+                    </div>
+
+                    <Link
+                        to="/login/forgot-password"
+                        className={linkButtonClass}
+                    >
+                        Begär en ny länk
+                    </Link>
+                </div>
+            </main>
+        );
+    }
+
+    if (tokenCheck.isPending) {
+        return (
+            <main className={`${styles.formSection} ${styles.authPage}`}>
+                <div className={styles.loginCard}>
+                    <p role="status" className={styles.formDescription}>
+                        Kontrollerar länken...
+                    </p>
+                </div>
+            </main>
+        );
+    }
 
     const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -43,29 +103,6 @@ const ResetPasswordPage = () => {
         // Bekräftelsefältet skickas inte till backend
         mutation.mutate({ token, newPassword });
     };
-
-    // Länken saknar token: visa inget formulär
-    if (!token) {
-        return (
-            <main className={`${styles.formSection} ${styles.authPage}`}>
-                <div className={styles.loginCard}>
-                    <div className={styles.cardHeader}>
-                        <h1 className={styles.formTitle}>Ogiltig länk</h1>
-                        <p className={styles.formDescription}>
-                            Länken är ogiltig eller har gått ut.
-                        </p>
-                    </div>
-
-                    <Link
-                        to="/login/forgot-password"
-                        className={linkButtonClass}
-                    >
-                        Begär en ny länk
-                    </Link>
-                </div>
-            </main>
-        );
-    }
 
     return (
         <main className={`${styles.formSection} ${styles.authPage}`}>
