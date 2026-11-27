@@ -5,86 +5,73 @@ import type { TargetAudience } from "../../types/TargetAudience"
 import styles from "./Widgets.module.css"
 import NewsImage from "../common/NewsImage"
 import { ListSkeleton } from "../Loaders/Skeletons/ListSkeleton"
+import ErrorState from "../errors/ErrorState"
 
 interface NewsWidgetProps {
-	audience: TargetAudience
+  audience: TargetAudience
 }
 
 const NewsWidget = ({ audience }: NewsWidgetProps) => {
-	const { data: news, isPending, isError } = useNews({ audience })
+  const { data: news, isPending, isError } = useNews({ audience })
 
-	if (isPending) {
-		return <ListSkeleton variant="news" />
-	}
+  if (isPending) {
+    return <ListSkeleton variant="news" />
+  }
 
-	if (isError) {
-		return (
-			<section className={styles.newsWidget}>
-				<p role="alert">Det gick inte att ladda nyheterna.</p>
-			</section>
-		)
-	}
+  if (isError) {
+    return (
+      <section className={styles.newsWidget}>
+        <ErrorState resource="nyheterna" />
+      </section>
+    )
+  }
 
-	const latestNews = news.content.slice(0, 3)
+  const latestNews = news.content.slice(0, 3)
 
-	return (
-		<section className={styles.newsWidget}>
-			<div className={styles.widgetHeader}>
-				<div className={styles.widgetTitle}>
-					<Newspaper size={24} />
-					<h2>Skolnyheter</h2>
-				</div>
+  return (
+    <section className={styles.newsWidget}>
+      <div className={styles.widgetHeader}>
+        <div className={styles.widgetTitle}>
+          <Newspaper size={24} />
+          <h2>Skolnyheter</h2>
+        </div>
 
-				<Link to="/news" className={styles.viewAll}>
-					Visa alla nyheter
-					<ArrowRight size={18} />
-				</Link>
-			</div>
+        <Link to="/news" className={styles.viewAll}>
+          Visa alla nyheter
+          <ArrowRight size={18} />
+        </Link>
+      </div>
 
-			{latestNews.length === 0 ? (
-				<p className={styles.emptyState}>
-					Det finns inga publicerade nyheter just nu.
-				</p>
-			) : (
-				<ul className={styles.newsList}>
-					{latestNews.map(item => (
-						<li key={item.id}>
-							<Link
-								to={`/news/${item.id}`}
-								state={{ from: "/dashboard" }}
-								className={styles.newsItem}
-							>
-								<NewsImage
-									src={item.newsImageUrl}
-									className={styles.newsWidgetImage}
-								/>
-								<div className={styles.newsContent}>
-									<h3>{item.title}</h3>
+      {latestNews.length === 0 ? (
+        <p className={styles.emptyState}>Det finns inga publicerade nyheter just nu.</p>
+      ) : (
+        <ul className={styles.newsList}>
+          {latestNews.map((item) => (
+            <li key={item.id}>
+              <Link to={`/news/${item.id}`} state={{ from: "/dashboard" }} className={styles.newsItem}>
+                <NewsImage src={item.newsImageUrl} className={styles.newsWidgetImage} />
+                <div className={styles.newsContent}>
+                  <h3>{item.title}</h3>
 
-									<p>{item.content}</p>
+                  <p>{item.content}</p>
 
-									<time dateTime={item.createdAt}>
-										{new Date(
-											item.createdAt,
-										).toLocaleDateString("sv-SE", {
-											day: "numeric",
-											month: "short",
-											year: "numeric",
-										})}
-									</time>
-								</div>
+                  <time dateTime={item.createdAt}>
+                    {new Date(item.createdAt).toLocaleDateString("sv-SE", {
+                      day: "numeric",
+                      month: "short",
+                      year: "numeric",
+                    })}
+                  </time>
+                </div>
 
-								<ArrowRight
-									size={18}
-									className={styles.newsArrow}
-								/>
-							</Link>
-						</li>
-					))}
-				</ul>
-			)}
-		</section>
-	)
+                <ArrowRight size={18} className={styles.newsArrow} />
+              </Link>
+            </li>
+          ))}
+        </ul>
+      )}
+    </section>
+  )
 }
 
 export default NewsWidget

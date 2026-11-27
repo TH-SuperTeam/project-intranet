@@ -40,7 +40,9 @@ export const useScheduleOptions = (includeAllSchools = false) => {
             programsQuery.isLoading ||
             classesQuery.isLoading ||
             classroomsQuery.isLoading,
-        error:
-            programsQuery.error ?? classesQuery.error ?? classroomsQuery.error,
+        isError:
+            programsQuery.isError ||
+            classesQuery.isError ||
+            classroomsQuery.isError,
     };
 };

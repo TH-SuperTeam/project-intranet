@@ -178,17 +178,48 @@
   overflow-wrap: anywhere;
 }
 
+.quickChangeIconButton {
+  display: grid;
+  width: 1.8rem;
+  height: 1.8rem;
+  margin-left: auto;
+  flex: 0 0 auto;
+  place-items: center;
+  border: 1px solid currentColor;
+  border-radius: 0.4rem;
+  background: color-mix(in srgb, currentColor 10%, transparent);
+  color: inherit;
+  cursor: pointer;
+}
+
+.quickChangeIconButton:hover {
+  background: color-mix(in srgb, currentColor 22%, transparent);
+}
+
+.lessonFooter {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.5rem;
+  min-height: 1.8rem;
+}
+
+.lessonFooter .overrideBadge,
+.lessonFooter .cancelBadge {
+  margin-right: auto;
+}
+
 .lesson[data-school="TH"],
 .list li[data-school="TH"],
 .overrideList li[data-school="TH"] {
-  background: var(--color-th-primary);
+  background: color-mix(in srgb, var(--color-th-primary) 75%, transparent);
   color: var(--color-text-white);
 }
 
 .lesson[data-school="VH"],
 .list li[data-school="VH"],
 .overrideList li[data-school="VH"] {
-  background: var(--color-vh-primary);
+  background: color-mix(in srgb, var(--color-vh-primary) 75%, transparent);
   color: var(--color-text-white);
 }
 
@@ -206,11 +237,10 @@
   color: #ecd9e0;
 }
 
-.lesson[data-school] .overrideBadge,
+/* .lesson[data-school] .overrideBadge,
 .lesson[data-school] .cancelBadge {
   border-color: currentColor;
-  color: var(--color-text-white);
-}
+} */
 
 .lesson span,
 .lesson small,
@@ -267,6 +297,48 @@
   margin: 0;
   padding: 0;
   list-style: none;
+}
+
+.educationList {
+  display: grid;
+  gap: 0.65rem;
+}
+
+.educationAccordion {
+  overflow: hidden;
+  border: 1px solid var(--color-border);
+  border-radius: 0.75rem;
+  background: var(--color-surface);
+}
+
+.educationAccordion > summary {
+  padding: 0.9rem 1rem;
+  background: var(--color-primary-soft);
+  color: var(--color-text-primary);
+  cursor: pointer;
+  font-weight: 700;
+}
+
+.educationAccordion[open] > summary {
+  border-bottom: 1px solid var(--color-border);
+}
+
+.educationClasses {
+  display: grid;
+  gap: 1rem;
+  padding: 1rem;
+}
+
+.classScheduleGroup {
+  display: grid;
+  gap: 0.5rem;
+  min-width: 0;
+}
+
+.classScheduleGroup h3 {
+  margin: 0;
+  color: var(--color-text-primary);
+  font-size: 1rem;
 }
 
 .list li {
@@ -393,27 +465,57 @@
   color: var(--color-error);
 }
 .success {
+  position: fixed;
+  top: 1rem;
+  left: 50%;
+  z-index: 1000;
+  width: min(36rem, calc(100vw - 2rem));
+  box-sizing: border-box;
+  overflow: hidden;
   margin: 0;
   padding: 0.75rem 1rem;
   border-radius: 0.6rem;
   background: var(--color-primary-soft);
   color: var(--color-primary);
+  box-shadow: 0 8px 24px rgb(0 0 0 / 16%);
+  transform: translateX(-50%);
+}
+
+.success::after {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  height: 3px;
+  background: var(--color-primary);
+  content: "";
+  transform: scaleX(1);
+  transform-origin: left;
+  animation: successCountdown 5s linear forwards;
+}
+
+@keyframes successCountdown {
+  to {
+    transform: scaleX(0);
+  }
 }
 
 .overrideBadge {
   justify-self: start;
   padding: 0.15rem 0.45rem;
-  border: 1px solid var(--color-secondary-dark);
+  border: 1px solid var(--color-warning-light);
   border-radius: 0.35rem;
   color: var(--color-secondary-dark);
+  background-color: var(--color-warning);
 }
 
 .cancelBadge {
   justify-self: start;
   padding: 0.15rem 0.45rem;
-  border: 1px solid var(--color-error);
+  border: 1px solid var(--color-error-light);
   border-radius: 0.35rem;
   color: var(--color-error);
+  background-color: var(--color-error);
 }
 
 .overrideSection {
@@ -423,9 +525,37 @@
   border-top: 1px solid var(--color-border);
 }
 
-.overrideSection h2 {
-  margin: 0;
+.overrideSection > summary {
+  color: var(--color-text-primary);
+  cursor: pointer;
   font-size: 1.2rem;
+  font-weight: 700;
+}
+
+.overrideSectionContent {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.overrideListToolbar {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.expiredOverridesToggle {
+  display: flex;
+  width: fit-content;
+  align-items: center;
+  gap: 0.55rem;
+  color: var(--color-text-secondary);
+  cursor: pointer;
+}
+
+.expiredOverridesToggle input {
+  width: 1rem;
+  height: 1rem;
+  margin: 0;
+  accent-color: var(--color-primary);
 }
 
 .overrideList {
@@ -517,5 +647,4 @@
     gap: 0.4rem;
     padding: 0.55rem;
   }
-
 }

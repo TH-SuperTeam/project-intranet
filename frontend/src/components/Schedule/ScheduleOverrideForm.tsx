@@ -9,6 +9,9 @@ type Props = {
   classrooms: Classroom[]
   getClassDisplayName: (classId: number, className: string) => string
   scheduleOverride?: ScheduleOverride
+  initialWeeklyScheduleId?: number
+  initialDate?: string
+  lockScheduleSelection?: boolean
   isPending: boolean
   error: string | null
   onSubmit: (override: ScheduleOverrideInput) => void
@@ -22,20 +25,26 @@ const ScheduleOverrideForm = ({
   classrooms,
   getClassDisplayName,
   scheduleOverride,
+  initialWeeklyScheduleId,
+  initialDate,
+  lockScheduleSelection = false,
   isPending,
   error,
   onSubmit,
   onCancel,
 }: Props) => {
-  const [weeklyScheduleId, setWeeklyScheduleId] = useState(String(scheduleOverride?.weeklyScheduleId ?? ""))
+  const [weeklyScheduleId, setWeeklyScheduleId] = useState(
+    String(scheduleOverride?.weeklyScheduleId ?? initialWeeklyScheduleId ?? ""),
+  )
   const [overrideType, setOverrideType] = useState<OverrideType>(scheduleOverride?.overrideType ?? "CANCEL")
   const [classroomId, setClassroomId] = useState(String(scheduleOverride?.classroomId ?? ""))
   const [startTime, setStartTime] = useState(scheduleOverride?.startTime?.slice(0, 5) ?? "")
   const [endTime, setEndTime] = useState(scheduleOverride?.endTime?.slice(0, 5) ?? "")
-  const [validFrom, setValidFrom] = useState(scheduleOverride?.validFrom ?? "")
-  const [validUntil, setValidUntil] = useState(scheduleOverride?.validUntil ?? "")
+  const [validFrom, setValidFrom] = useState(scheduleOverride?.validFrom ?? initialDate ?? "")
+  const [validUntil, setValidUntil] = useState(scheduleOverride?.validUntil ?? initialDate ?? "")
   const [note, setNote] = useState(scheduleOverride?.note ?? "")
   const [validationError, setValidationError] = useState("")
+  const selectedSchedule = schedules.find((schedule) => schedule.id === Number(weeklyScheduleId))
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
@@ -77,18 +86,28 @@ const ScheduleOverrideForm = ({
     <form className={styles.form} onSubmit={handleSubmit}>
       <h2>{scheduleOverride ? "Redigera tillfällig schemaändring" : "Ny tillfällig schemaändring"}</h2>
 
-      <label>
-        Schemalagd lektion
-        <select required value={weeklyScheduleId} onChange={(event) => setWeeklyScheduleId(event.target.value)}>
-          <option value="">Välj lektion</option>
-          {schedules.map((schedule) => (
-            <option key={schedule.id} value={schedule.id}>
-              {getClassDisplayName(schedule.classId, schedule.className)} – {schedule.classroomName}, {weekdays[schedule.weekday]}{" "}
-              {schedule.startTime.slice(0, 5)}–{schedule.endTime.slice(0, 5)}
-            </option>
-          ))}
-        </select>
-      </label>
+      {lockScheduleSelection && selectedSchedule ? (
+        <label>
+          Schemalagd lektion
+          <input
+            readOnly
+            value={`${getClassDisplayName(selectedSchedule.classId, selectedSchedule.className)} – ${selectedSchedule.classroomName}, ${weekdays[selectedSchedule.weekday]} ${selectedSchedule.startTime.slice(0, 5)}–${selectedSchedule.endTime.slice(0, 5)}`}
+          />
+        </label>
+      ) : (
+        <label>
+          Schemalagd lektion
+          <select required value={weeklyScheduleId} onChange={(event) => setWeeklyScheduleId(event.target.value)}>
+            <option value="">Välj lektion</option>
+            {schedules.map((schedule) => (
+              <option key={schedule.id} value={schedule.id}>
+                {getClassDisplayName(schedule.classId, schedule.className)} – {schedule.classroomName}, {weekdays[schedule.weekday]}{" "}
+                {schedule.startTime.slice(0, 5)}–{schedule.endTime.slice(0, 5)}
+              </option>
+            ))}
+          </select>
+        </label>
+      )}
 
       <label>
         Typ av ändring

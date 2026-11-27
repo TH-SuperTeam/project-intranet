@@ -2,7 +2,9 @@ import WeatherIcon from "./WeatherIcon"
 import { useWeather } from "../../hooks/useWeather"
 import styles from "./Widgets.module.css"
 import { Wind } from "lucide-react"
+import { useEffect, useState } from "react"
 import { ListSkeleton } from "../Loaders/Skeletons/ListSkeleton"
+import ErrorState from "../errors/ErrorState"
 
 // Omvandlar vindriktning i grader till väderstreck
 function getWindDirection(degrees: number): string {
@@ -29,10 +31,21 @@ type WeatherWidgetProps = {
 const WeatherWidget = ({ variant = "default" }: WeatherWidgetProps) => {
   const { data, isPending, isError } = useWeather()
 
+  const [currentTime, setCurrentTime] = useState(() => new Date().toISOString())
+
+  // Uppdaterar aktuell tid varje minut
+  useEffect(() => {
+    const interval = window.setInterval(() => {
+      setCurrentTime(new Date().toISOString())
+    }, 60_000)
+
+    return () => window.clearInterval(interval)
+  }, [])
+
   const publicForecasts = (() => {
     if (!data || variant !== "public") return []
 
-    const now = new Date()
+    const now = new Date(currentTime)
 
     return data.hourlyForecasts
       .filter((forecast) => new Date(forecast.time) > now)
@@ -67,12 +80,12 @@ const WeatherWidget = ({ variant = "default" }: WeatherWidgetProps) => {
         {isPending ? (
           <ListSkeleton variant="list" count={2} />
         ) : isError ? (
-          <p role="alert">Kunde inte hämta väderinformationen.</p>
+          <ErrorState resource="väderinformationen" />
         ) : variant === "public" ? (
           /* Kompakt väderwidget för publik TV-skärm */
           <div className={styles.publicWeatherContent}>
             <div className={styles.publicWeatherCurrent}>
-              <WeatherIcon weatherCode={data.weatherCode} size={60} />
+              <WeatherIcon weatherCode={data.weatherCode} forecastTime={currentTime} size={60} />
 
               <div className={styles.publicWeatherCurrentDetails}>
                 <p className={styles.weatherTemperature}>{Math.round(data.temperature)} °C</p>
@@ -86,13 +99,13 @@ const WeatherWidget = ({ variant = "default" }: WeatherWidgetProps) => {
               </p>
             </div>
 
-            {/* Två utvalda prognoser */}
+            {/* Visar upp till fyra kommande prognoser */}
             <div className={styles.publicWeatherForecasts}>
               {publicForecasts.map((forecast) => (
                 <div key={forecast.time} className={styles.publicWeatherForecastItem}>
                   <span className={styles.publicWeatherForecastTime}>{formatWeatherTime(forecast.time)}</span>
 
-                  <WeatherIcon weatherCode={forecast.weatherCode} size={42} />
+                  <WeatherIcon weatherCode={forecast.weatherCode} forecastTime={forecast.time} size={42} />
 
                   <span className={styles.publicWeatherForecastTemperature}>{Math.round(forecast.temperature)}°</span>
                 </div>
@@ -114,7 +127,7 @@ const WeatherWidget = ({ variant = "default" }: WeatherWidgetProps) => {
                 </p>
               </div>
 
-              <WeatherIcon weatherCode={data.weatherCode} size={120} />
+              <WeatherIcon weatherCode={data.weatherCode} forecastTime={currentTime} size={120} />
             </div>
 
             <div className={styles.weatherHourly}>
@@ -122,7 +135,7 @@ const WeatherWidget = ({ variant = "default" }: WeatherWidgetProps) => {
                 <div key={forecast.time} className={styles.weatherHourlyItem}>
                   <p className={styles.weatherHourlyTime}>{formatWeatherTime(forecast.time)}</p>
 
-                  <WeatherIcon weatherCode={forecast.weatherCode} size={48} />
+                  <WeatherIcon weatherCode={forecast.weatherCode} forecastTime={forecast.time} size={48} />
 
                   <p className={styles.weatherHourlyTemperature}>{Math.round(forecast.temperature)} °C</p>
                 </div>
