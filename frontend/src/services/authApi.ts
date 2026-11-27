@@ -88,3 +88,23 @@ export const resetPassword = async (
         throw new Error("Kunde inte uppdatera lösenordet. Försök igen.");
     }
 };
+
+export const validateResetToken = async (token: string): Promise<void> => {
+    const res = await fetch(`${API_URL}/api/auth/validate-reset-token`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ token }),
+    });
+
+    if (res.status === 400) {
+        throw new Error(
+            "Länken är ogiltig eller har gått ut. Begär en ny länk.",
+        );
+    }
+
+    if (!res.ok) {
+        throw new Error("Kunde inte kontrollera länken. Försök igen.");
+    }
+};
