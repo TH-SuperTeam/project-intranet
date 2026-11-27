@@ -12,23 +12,23 @@
 
 ## Teamet
 
-| Namn | GitHub |
-|---|---|
-| Inna Kuljanac | |
-| Caroline Enggren | |
-| Josefine Asplund | |
-| Sofie Törnqvist | |
-| Mette Karlsson | |
+| Namn             | GitHub |
+| ---------------- | ------ |
+| Inna Kuljanac    |        |
+| Caroline Enggren |        |
+| Josefine Asplund |        |
+| Sofie Törnqvist  |        |
+| Mette Karlsson   |        |
 
 ## Teknik
 
 <!-- Frontend, backend, databas och eventuella större bibliotek. Motivera valet i docs/beslutslogg.md. -->
 
-| Del | Teknik |
-|---|---|
+| Del      | Teknik            |
+| -------- | ----------------- |
 | Frontend | TypeScript, React |
-| Backend | Java, Spring Boot |
-| Databas | |
+| Backend  | Java, Spring Boot |
+| Databas  |                   |
 
 ## Kom igång
 
@@ -125,7 +125,7 @@ jwt.expiration=3600000
 
 Standardinställningen är `3600000`, vilket motsvarar **1 timme**.
 
-I din fil `backend/src/main/resources/application-local.properties` lägger du till ```JWT_SECRET=DIN_JWT_NYCKEL_123456```
+I din fil `backend/src/main/resources/application-local.properties` lägger du till `JWT_SECRET=DIN_JWT_NYCKEL_123456`
 
 ### 4. Konfigurera Trafiklab API
 
@@ -224,17 +224,37 @@ När båda är igång kan frontend och backend utvecklas och testas parallellt.
 
 **Tips:** Om `npm` inte känns igen i terminalen behöver Node.js installeras. Om du får problem med beroenden, kontrollera att du står i `frontend`-mappen och att du använder en Node.js-version som stöds av projektets Vite-version.
 
+### Testa återställning av lösenord
+
+Funktionen "Glömt lösenord?" använder en **simulerad mejlsändning**. Ingen e-post skickas på riktigt. I stället skrivs återställningslänken ut i backendens konsol.
+
+Så här provar du flödet:
+
+1. Starta backend och frontend.
+2. Gå till `http://localhost:5173/login` och klicka på **Glömt lösenord?**.
+3. Ange e-postadressen till ett aktivt konto och skicka in.
+4. Leta i backendens terminal efter en rad som börjar med `Återställningslänk för ...` och kopiera länken.
+5. Öppna länken i webbläsaren, välj ett nytt lösenord (minst 12 tecken) och logga in med det.
+
+Bra att veta:
+
+- Länken gäller en gång och i 10 minuter. Tiden styrs av `password-reset.expiration-minutes` i `application.properties`.
+- Om du begär en ny länk slutar den förra att fungera.
+- Länkens adress byggs från `app.frontend-url` (som standard `http://localhost:5173`). Ändra den om frontend körs på en annan adress.
+- Av säkerhetsskäl visas alltid samma bekräftelse, oavsett om e-postadressen finns eller inte. Om kontot inte finns, eller inte är aktivt, loggas ingen länk.
+- Funktionen är inte produktionsklar eftersom en riktig användare inte kan nå backendens konsol. Riktig mejlsändning är en framtida förbättring.
+
 ## Dokumentation
 
-| Dokument | Innehåll |
-|---|---|
-| [Gruppkontrakt](docs/gruppkontrakt.md) | Hur vi samarbetar |
-| [Definition of Done](docs/definition-of-done.md) | När en story räknas som klar |
-| [MVP](docs/mvp.md) | Vad som ingår i första versionen |
-| [Databasschema](docs/databasschema.md) | Tabeller och relationer |
-| [Beslutslogg](docs/beslutslogg.md) | Viktiga beslut och varför |
-| [Sprintar](docs/sprintar/) | Planning, standups, review och retro per sprint |
-| [Individuella reflektioner](docs/reflektioner/) | En per person, lämnas in vecka 8 |
+| Dokument                                         | Innehåll                                        |
+| ------------------------------------------------ | ----------------------------------------------- |
+| [Gruppkontrakt](docs/gruppkontrakt.md)           | Hur vi samarbetar                               |
+| [Definition of Done](docs/definition-of-done.md) | När en story räknas som klar                    |
+| [MVP](docs/mvp.md)                               | Vad som ingår i första versionen                |
+| [Databasschema](docs/databasschema.md)           | Tabeller och relationer                         |
+| [Beslutslogg](docs/beslutslogg.md)               | Viktiga beslut och varför                       |
+| [Sprintar](docs/sprintar/)                       | Planning, standups, review och retro per sprint |
+| [Individuella reflektioner](docs/reflektioner/)  | En per person, lämnas in vecka 8                |
 
 ## Board
 
