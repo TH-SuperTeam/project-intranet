@@ -77,20 +77,9 @@ public class PasswordResetService {
     @Transactional
     public void resetPassword(String token, String newPassword) {
 
-        String tokenHash = hashToken(token);
-
-        PasswordResetToken resetToken = passwordResetTokenRepository
-                .findByTokenHash(tokenHash)
-                .orElseThrow(this::invalidToken);
+        PasswordResetToken resetToken = checkToken(token);
 
         User user = resetToken.getUser();
-
-        // Samma felmeddelande oavsett orsak, så vi inte avslöjar vilka tokens som finns
-        if (resetToken.isUsed()
-                || LocalDateTime.now().isAfter(resetToken.getExpiresAt())
-                || !user.isActive()) {
-            throw invalidToken();
-        }
 
         user.setPasswordHash(passwordEncoder.encode(newPassword));
         resetToken.setUsed(true);
@@ -128,5 +117,24 @@ public class PasswordResetService {
             // SHA-256 finns alltid i Java, men kompilatorn kräver att vi hanterar det
             throw new IllegalStateException("SHA-256 finns inte tillgängligt", e);
         }
+    }
+
+    private PasswordResetToken checkToken(String token) {
+        String tokenHash = hashToken(token);
+
+        PasswordResetToken resetToken = passwordResetTokenRepository
+                .findByTokenHash(tokenHash)
+                .orElseThrow(this::invalidToken);
+
+        User user = resetToken.getUser();
+
+        // Samma felmeddelande oavsett orsak, så vi inte avslöjar vilka tokens som finns
+        if (resetToken.isUsed()
+                || LocalDateTime.now().isAfter(resetToken.getExpiresAt())
+                || !user.isActive()) {
+            throw invalidToken();
+        }
+
+        return resetToken;
     }
 }
